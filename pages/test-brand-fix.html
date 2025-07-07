@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Brand Dropdown Fix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Brand Dropdown Fix</h1>
+    
+    <div class="test-section">
+        <h2>Test Status</h2>
+        <div id="testStatus">Click "Run Test" to check if all brands are loading correctly.</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Products Loaded</h2>
+        <div id="productsInfo">Waiting for test...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Brands Found</h2>
+        <div id="brandsInfo">Waiting for test...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Actions</h2>
+        <button onclick="runTest()">Run Test</button>
+        <button onclick="location.href='/pages/surfaces.html'">Go to Surfaces Page</button>
+    </div>
+    
+    <script src="../js/services/errorHandler.js"></script>
+    <script src="../js/services/bitrixService.js"></script>
+    <script>
+        async function runTest() {
+            const statusEl = document.getElementById('testStatus');
+            const productsEl = document.getElementById('productsInfo');
+            const brandsEl = document.getElementById('brandsInfo');
+            
+            statusEl.innerHTML = '<span style="color: blue;">Running test...</span>';
+            
+            try {
+                // Load products from Bitrix
+                const products = await BitrixService.getPaintProducts();
+                window.bitrixProducts = products;
+                
+                // Count products by brand
+                const brandCounts = {};
+                const brands = new Set();
+                
+                products.forEach(product => {
+                    if (product.brand) {
+                        brands.add(product.brand);
+                        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + 1;
+                    }
+                });
+                
+                // Display results
+                productsEl.innerHTML = `
+                    <p>Total products loaded: <strong>${products.length}</strong></p>
+                    <p>Products by brand:</p>
+                    <ul>
+                        ${Object.entries(brandCounts).map(([brand, count]) => 
+                            `<li>${brand}: ${count} products</li>`
+                        ).join('')}
+                    </ul>
+                `;
+                
+                brandsEl.innerHTML = `
+                    <p>Unique brands found: <strong>${brands.size}</strong></p>
+                    <p>Brand list: <strong>${Array.from(brands).join(', ')}</strong></p>
+                `;
+                
+                // Check if all expected brands are present
+                const expectedBrands = ['Sherwin-Williams', 'Benjamin Moore', 'UCI'];
+                const missingBrands = expectedBrands.filter(brand => !brands.has(brand));
+                
+                if (missingBrands.length === 0) {
+                    statusEl.innerHTML = '<span class="success">✓ Test passed! All expected brands are loaded.</span>';
+                } else {
+                    statusEl.innerHTML = `<span class="error">✗ Test failed! Missing brands: ${missingBrands.join(', ')}</span>`;
+                }
+                
+            } catch (error) {
+                statusEl.innerHTML = '<span class="error">✗ Test failed! Error loading products.</span>';
+                productsEl.innerHTML = `<pre>Error: ${error.message}</pre>`;
+                brandsEl.innerHTML = 'Error occurred';
+                console.error('Test error:', error);
+            }
+        }
+        
+        // Run test automatically on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(runTest, 1000);
+        });
+    </script>
+</body>
+</html>

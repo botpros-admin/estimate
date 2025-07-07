@@ -325,6 +325,15 @@
       container.innerHTML = '<div class="text-center p-6"><p class="text-gray-600">Initializing paint selections...</p></div>';
     }
     
+    // Clear any stale cache before loading
+    try {
+      sessionStorage.removeItem('cachedPaintServices');
+      sessionStorage.removeItem('paintCacheTimestamp');
+      console.log('Cleared paint products cache');
+    } catch (e) {
+      console.warn('Could not clear cache:', e);
+    }
+    
     // Determine what services to load based on selected service types
     const serviceTypes = formState.data.serviceTypes || [];
     const needsPaint = serviceTypes.includes('painting');
@@ -335,6 +344,20 @@
       allServices = await BitrixService.getAllServices();
       window.bitrixProducts = allServices.paint || [];
       abrasiveServices = allServices.abrasive || [];
+      
+      // Debug: Log what we received
+      console.log('=== BITRIX API RESPONSE DEBUG ===');
+      console.log('Total paint products received:', window.bitrixProducts.length);
+      const brandSummary = {};
+      window.bitrixProducts.forEach(p => {
+        if (p.brand) {
+          brandSummary[p.brand] = (brandSummary[p.brand] || 0) + 1;
+        }
+      });
+      console.log('Products by brand:', brandSummary);
+      console.log('Unique brands:', Object.keys(brandSummary));
+      console.log('First 3 products:', window.bitrixProducts.slice(0, 3));
+      console.log('=================================');
       
       if ((!needsPaint || window.bitrixProducts.length === 0) && (!needsAbrasive || abrasiveServices.length === 0)) {
         if (container) {

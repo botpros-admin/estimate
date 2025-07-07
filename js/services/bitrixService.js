@@ -151,13 +151,16 @@ const BitrixService = (function() {
   
   // Fetch all paint products from Bitrix
   async function fetchAllPaintProducts() {
+    console.log('Fetching all paint products from Bitrix...');
     const allItems = [];
     let start = 0;
     const limit = 50;
     let hasMore = true;
+    let pageCount = 0;
     
     while (hasMore) {
       try {
+        console.log(`Fetching page ${pageCount + 1} (start: ${start}, limit: ${limit})`);
         const response = await makeRequest('crm.item.list', {
           entityTypeId: SERVICE_CATALOG_SPA_ID,
           select: [
@@ -176,23 +179,42 @@ const BitrixService = (function() {
         });
         
         if (response.result && response.result.items) {
-          allItems.push(...response.result.items);
+          const pageItems = response.result.items;
+          console.log(`Page ${pageCount + 1} returned ${pageItems.length} items`);
+          allItems.push(...pageItems);
           
           // Check if there are more items
-          if (response.result.items.length < limit) {
+          // Check total count if available, otherwise check if we got a full page
+          const hasTotal = response.total !== undefined;
+          const totalItems = hasTotal ? response.total : (response.result.total || 0);
+          
+          if (hasTotal && allItems.length >= totalItems) {
             hasMore = false;
+            console.log(`Fetched all ${totalItems} items`);
+          } else if (pageItems.length < limit) {
+            hasMore = false;
+            console.log('Received less than limit, no more pages');
           } else {
             start += limit;
+            pageCount++;
+            // Safety check: don't fetch more than 10 pages (500 items)
+            if (pageCount >= 10) {
+              console.warn('Reached maximum page limit, stopping pagination');
+              hasMore = false;
+            }
           }
         } else {
           hasMore = false;
+          console.log('No items in response, stopping');
         }
       } catch (error) {
-        // If connection fails, return empty array
+        console.error('Error fetching paint products:', error);
+        // If connection fails, return what we have so far
         hasMore = false;
       }
     }
     
+    console.log(`Total paint products fetched: ${allItems.length}`);
     return allItems;
   }
   

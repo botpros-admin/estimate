@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Bitrix API Response</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .brand-summary {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .loading {
+            color: blue;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Bitrix API Response</h1>
+    
+    <div class="section">
+        <h2>API Endpoints</h2>
+        <p><strong>Local Backend:</strong> http://localhost:3000/api/bitrix/</p>
+        <p><strong>Production Backend:</strong> https://hartzell-paint-api.onrender.com/api/bitrix/</p>
+        <p id="currentEndpoint"></p>
+    </div>
+    
+    <div class="section">
+        <h2>Actions</h2>
+        <button onclick="testDirectAPI()">Test Direct Bitrix API</button>
+        <button onclick="testBackendAPI()">Test Backend API</button>
+        <button onclick="clearCache()">Clear Cache & Retry</button>
+    </div>
+    
+    <div class="section">
+        <h2>Results Summary</h2>
+        <div id="summary" class="brand-summary">Click a button above to test the API</div>
+    </div>
+    
+    <div class="section">
+        <h2>Raw API Response</h2>
+        <pre id="rawResponse">No data yet...</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Products by Brand</h2>
+        <div id="brandBreakdown">No data yet...</div>
+    </div>
+    
+    <script src="../js/services/errorHandler.js"></script>
+    <script src="../js/services/bitrixService.js"></script>
+    <script>
+        // Show current endpoint
+        const isLocal = window.location.hostname === 'localhost';
+        document.getElementById('currentEndpoint').innerHTML = 
+            `<strong>Current Environment:</strong> ${isLocal ? 'Local' : 'Production'} - Using ${isLocal ? 'local' : 'production'} backend`;
+        
+        async function testDirectAPI() {
+            const summaryEl = document.getElementById('summary');
+            const rawEl = document.getElementById('rawResponse');
+            const brandEl = document.getElementById('brandBreakdown');
+            
+            summaryEl.innerHTML = '<span class="loading">Testing direct Bitrix API...</span>';
+            rawEl.textContent = 'Loading...';
+            brandEl.innerHTML = 'Loading...';
+            
+            try {
+                // Test the direct API
+                const products = await BitrixService.getPaintProducts();
+                
+                // Analyze the response
+                const brandCounts = {};
+                const brands = new Set();
+                const productsByBrand = {};
+                
+                products.forEach(product => {
+                    if (product.brand) {
+                        brands.add(product.brand);
+                        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + 1;
+                        
+                        if (!productsByBrand[product.brand]) {
+                            productsByBrand[product.brand] = [];
+                        }
+                        productsByBrand[product.brand].push({
+                            name: product.name,
+                            finishes: product.finishes,
+                            interior: product.interior,
+                            exterior: product.exterior
+                        });
+                    }
+                });
+                
+                // Display summary
+                summaryEl.innerHTML = `
+                    <p class="success">✓ API call successful!</p>
+                    <p><strong>Total products:</strong> ${products.length}</p>
+                    <p><strong>Unique brands:</strong> ${brands.size} - ${Array.from(brands).join(', ')}</p>
+                    ${brands.size < 3 ? '<p class="error">⚠️ WARNING: Expected 3 brands but only found ' + brands.size + '</p>' : ''}
+                `;
+                
+                // Display raw response
+                rawEl.textContent = JSON.stringify(products, null, 2);
+                
+                // Display brand breakdown
+                let brandHTML = '';
+                for (const [brand, productList] of Object.entries(productsByBrand)) {
+                    brandHTML += `
+                        <div class="brand-summary">
+                            <h3>${brand} (${productList.length} products)</h3>
+                            <details>
+                                <summary>View products</summary>
+                                <ul>
+                                    ${productList.map(p => `<li>${p.name} - ${p.finishes.join(', ')}</li>`).join('')}
+                                </ul>
+                            </details>
+                        </div>
+                    `;
+                }
+                brandEl.innerHTML = brandHTML;
+                
+                // Store globally for debugging
+                window.debugProducts = products;
+                console.log('Products stored in window.debugProducts');
+                
+            } catch (error) {
+                summaryEl.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+                rawEl.textContent = error.stack;
+                brandEl.innerHTML = 'Error occurred';
+            }
+        }
+        
+        async function testBackendAPI() {
+            const summaryEl = document.getElementById('summary');
+            const rawEl = document.getElementById('rawResponse');
+            
+            summaryEl.innerHTML = '<span class="loading">Testing backend API directly...</span>';
+            
+            const backendUrl = window.location.hostname === 'localhost' 
+                ? 'http://localhost:3000/api/bitrix/crm.item.list'
+                : 'https://hartzell-paint-api.onrender.com/api/bitrix/crm.item.list';
+            
+            try {
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        entityTypeId: 1058,
+                        select: ['id', 'title', 'ufCrm7Brand'],
+                        start: 0,
+                        limit: 50
+                    })
+                });
+                
+                const data = await response.json();
+                
+                summaryEl.innerHTML = `
+                    <p class="success">✓ Backend API call successful!</p>
+                    <p><strong>Response status:</strong> ${response.status}</p>
+                    <p><strong>Items returned:</strong> ${data.result?.items?.length || 0}</p>
+                `;
+                
+                rawEl.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                summaryEl.innerHTML = `<span class="error">✗ Backend Error: ${error.message}</span>`;
+                rawEl.textContent = error.stack;
+            }
+        }
+        
+        async function clearCache() {
+            // Clear all caches
+            sessionStorage.clear();
+            localStorage.clear();
+            
+            const summaryEl = document.getElementById('summary');
+            summaryEl.innerHTML = '<span class="success">✓ Cache cleared! Now retrying API...</span>';
+            
+            // Retry the API call
+            setTimeout(() => testDirectAPI(), 500);
+        }
+        
+        // Run test automatically on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(testDirectAPI, 1000);
+        });
+    </script>
+</body>
+</html>
