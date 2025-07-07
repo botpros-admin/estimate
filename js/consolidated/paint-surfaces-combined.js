@@ -2167,9 +2167,32 @@
       <h3 class="text-lg font-semibold text-gray-700 flex items-center gap-2">
         <img src="../img/${method.icon}" alt="${method.name} icon" class="w-5 h-5">
         ${method.name}
+        <svg class="chevron-icon ml-auto transform transition-transform" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+        </svg>
       </h3>
     `;
     methodCard.appendChild(methodHeader);
+    
+    // Create collapsible content wrapper
+    const serviceContent = document.createElement('div');
+    serviceContent.className = 'service-content';
+    serviceContent.style.display = 'none';
+    
+    // Set chevron to collapsed state initially
+    const chevron = methodHeader.querySelector('.chevron-icon');
+    if (chevron) {
+      chevron.style.transform = 'rotate(-90deg)';
+    }
+    
+    // Add click handler to header for collapse/expand
+    methodHeader.addEventListener('click', (e) => {
+      // Only handle click if it's not a long press
+      if (!isLongPress) {
+        const chevron = methodHeader.querySelector('.chevron-icon');
+        handleAccordionToggle(methodHeader, serviceContent, chevron);
+      }
+    });
     
     // Add long press handler for price editing on abrasive methods
     let longPressTimer = null;
@@ -2232,7 +2255,10 @@
     
     // Add surfaces directly - EXACTLY like paint card
     const surfacesFragment = renderSurfacesInPaintCard(methodId, methodValue);
-    methodCard.appendChild(surfacesFragment);
+    serviceContent.appendChild(surfacesFragment);
+    
+    // Append service content to method card
+    methodCard.appendChild(serviceContent);
     
     // Ensure delete button visibility is correct after rendering
     setTimeout(() => {

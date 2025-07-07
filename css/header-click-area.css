@@ -1,0 +1,53 @@
+/* Header Click Area Enhancement - Make entire header clickable */
+
+/* Ensure the header takes full width and has proper cursor */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"] {
+  /* Ensure full width clickable area */
+  display: block !important;
+  width: 100% !important;
+  position: relative !important;
+  user-select: none !important; /* Prevent text selection on click */
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Make the h3 inside non-interactive to prevent event bubbling issues */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"] h3 {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* Make all child elements non-interactive except the header itself */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"] * {
+  pointer-events: none !important;
+}
+
+/* Ensure header has minimum height for easy clicking */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"] {
+  min-height: 48px !important;
+  /* Add hover effect for better user feedback */
+  transition: background-color 0.2s ease !important;
+}
+
+/* Hover effect for the entire header */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"]:hover {
+  background-color: #e5e7eb !important;
+}
+
+/* Active/pressed state */
+.mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"]:active {
+  background-color: #d1d5db !important;
+}
+
+/* Ensure proper spacing and clickable area on mobile */
+@media (max-width: 768px), (pointer: coarse) {
+  .mb-4.p-3.bg-gray-50.rounded-lg[style*="cursor: pointer"] {
+    /* Larger touch target on mobile */
+    min-height: 56px !important;
+    padding: 16px !important;
+    /* Extend clickable area slightly beyond visible boundary */
+    margin: -4px !important;
+    padding: 20px !important;
+  }
+}

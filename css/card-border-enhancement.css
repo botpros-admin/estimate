@@ -1,0 +1,27 @@
+/* Card Border Enhancement - Thicker and Darker Borders */
+
+/* Apply to all paint cards and service cards */
+.paint-card {
+  /* Override existing border with thicker, darker version */
+  border: 2px solid #6b7280 !important; /* Thicker (2px) and darker (#6b7280) */
+  /* Keep other properties as-is */
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure consistency on hover states if any */
+.paint-card:hover {
+  border-color: #4b5563 !important; /* Even darker on hover */
+}
+
+/* Apply same styling to method cards and abrasive cards */
+[data-service-id] {
+  border: 2px solid #6b7280 !important;
+}
