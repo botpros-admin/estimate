@@ -205,10 +205,17 @@
     window.BitrixService.getAllServices = async function() {
       const result = await originalGetAllServices.call(this);
       
-      // If no paint products from Bitrix, use our fallback
+      // Check if Bitrix products are incomplete or missing
       if (!result.paint || result.paint.length === 0) {
         console.log('No Bitrix paint products found, loading fallback data...');
         result.paint = await loadPaintProducts();
+      } else {
+        // Check if we only have products from one brand (incomplete data)
+        const brands = [...new Set(result.paint.map(p => p.brand || p.PROPERTY_BRAND_VALUE).filter(Boolean))];
+        if (brands.length <= 1) {
+          console.log(`Only ${brands.length} brand(s) found in Bitrix (${brands.join(', ')}), loading complete fallback data...`);
+          result.paint = await loadPaintProducts();
+        }
       }
       
       return result;
@@ -218,7 +225,7 @@
   // Ensure bitrixProducts is globally available
   window.bitrixProducts = window.bitrixProducts || [];
   
-  // Immediately load products if BitrixService is available and has no products
+  // Immediately load products if BitrixService is available and has incomplete products
   if (window.BitrixService) {
     // Check if we need to load products immediately
     (async function() {
@@ -228,6 +235,15 @@
           console.log('No paint products found, loading fallback immediately...');
           window.bitrixProducts = await loadPaintProducts();
           console.log('Loaded', window.bitrixProducts.length, 'fallback products');
+        } else {
+          // Check if we only have products from one brand
+          const brands = [...new Set(services.paint.map(p => p.brand || p.PROPERTY_BRAND_VALUE).filter(Boolean))];
+          if (brands.length <= 1) {
+            console.log(`Only ${brands.length} brand(s) found (${brands.join(', ')}), loading fallback immediately...`);
+            window.bitrixProducts = await loadPaintProducts();
+            console.log('Loaded', window.bitrixProducts.length, 'fallback products with', [...new Set(window.bitrixProducts.map(p => p.brand))].length, 'brands');
+          }
+        }
         }
       } catch (error) {
         console.error('Error checking services:', error);
