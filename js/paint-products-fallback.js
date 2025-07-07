@@ -218,6 +218,23 @@
   // Ensure bitrixProducts is globally available
   window.bitrixProducts = window.bitrixProducts || [];
   
+  // Immediately load products if BitrixService is available and has no products
+  if (window.BitrixService) {
+    // Check if we need to load products immediately
+    (async function() {
+      try {
+        const services = await window.BitrixService.getAllServices();
+        if (!services.paint || services.paint.length === 0) {
+          console.log('No paint products found, loading fallback immediately...');
+          window.bitrixProducts = await loadPaintProducts();
+          console.log('Loaded', window.bitrixProducts.length, 'fallback products');
+        }
+      } catch (error) {
+        console.error('Error checking services:', error);
+      }
+    })();
+  }
+  
   // Preload products on page load
   document.addEventListener('DOMContentLoaded', async function() {
     if (window.bitrixProducts.length === 0) {
@@ -226,6 +243,12 @@
         window.bitrixProducts = await loadPaintProducts();
         console.log('Loaded', window.bitrixProducts.length, 'paint products');
         console.log('Available brands:', [...new Set(window.bitrixProducts.map(p => p.brand))]);
+        
+        // If the paint selection has already initialized, re-render it
+        if (typeof renderPaintSelectionsEnhanced === 'function') {
+          console.log('Re-rendering paint selections with loaded products...');
+          renderPaintSelectionsEnhanced();
+        }
       } catch (error) {
         console.error('Failed to preload paint products:', error);
         window.bitrixProducts = convertToBitrixFormat(defaultPaintProducts);
