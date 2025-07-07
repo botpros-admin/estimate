@@ -11,7 +11,7 @@
   const FIXED_UNIT = 'Sq Ft';
   
   // State variables
-  let bitrixProducts = [];
+  window.bitrixProducts = window.bitrixProducts || [];
   let abrasiveServices = [];
   let allServices = {};
   let isLoading = false;
@@ -333,10 +333,10 @@
     try {
       // Load all services
       allServices = await BitrixService.getAllServices();
-      bitrixProducts = allServices.paint || [];
+      window.bitrixProducts = allServices.paint || [];
       abrasiveServices = allServices.abrasive || [];
       
-      if ((!needsPaint || bitrixProducts.length === 0) && (!needsAbrasive || abrasiveServices.length === 0)) {
+      if ((!needsPaint || window.bitrixProducts.length === 0) && (!needsAbrasive || abrasiveServices.length === 0)) {
         if (container) {
           container.innerHTML = `
             <div class="text-center p-6">
@@ -350,7 +350,7 @@
       // Now render the paint selections UI
       renderPaintSelectionsEnhanced();
     } catch (error) {
-      bitrixProducts = [];
+      window.bitrixProducts = [];
       abrasiveServices = [];
       allServices = {};
       if (container) {
@@ -1451,13 +1451,13 @@
     productsGrid.innerHTML = '<p class="text-gray-500">Loading products...</p>';
     
     // Check if Bitrix products are available
-    if (!bitrixProducts || bitrixProducts.length === 0) {
+    if (!window.bitrixProducts || window.bitrixProducts.length === 0) {
       productsGrid.innerHTML = '<p class="text-red-500">Unable to load products from catalog. Please try refreshing the page.</p>';
       return;
     }
     
     // Filter products by brand, scope, and finish (if selected)
-    let filteredProducts = bitrixProducts.filter(product => {
+    let filteredProducts = window.bitrixProducts.filter(product => {
       if (!brand) return false;
       
       const brandMatch = product.brand === brand;
@@ -1805,7 +1805,7 @@
     // Paint brand selection - populate from Bitrix data
     const brandSection = document.createElement('div');
     brandSection.className = 'mt-4';
-    let uniqueBrands = [...new Set(bitrixProducts.map(p => p.brand))].filter(Boolean);
+    let uniqueBrands = [...new Set(window.bitrixProducts.map(p => p.brand))].filter(Boolean);
     
     // Filter out UCI for interior paint selection
     if (projectType === 'interior') {
@@ -2527,9 +2527,9 @@
   
   // Get available finishes for a brand (or all brands if brand is null)
   function getAvailableFinishesForBrand(brand, projectType) {
-    if (!bitrixProducts || bitrixProducts.length === 0) return [];
+    if (!window.bitrixProducts || window.bitrixProducts.length === 0) return [];
     
-    let filteredProducts = bitrixProducts.filter(product => {
+    let filteredProducts = window.bitrixProducts.filter(product => {
       // Exclude UCI products for interior paint
       if (projectType === 'interior' && product.brand === 'UCI') {
         return false;
@@ -2610,7 +2610,7 @@
     // Get all unique brands that have products with the selected finish
     const availableBrands = new Set();
     
-    bitrixProducts.forEach(product => {
+    window.bitrixProducts.forEach(product => {
       // Skip UCI for interior
       if (projectType === 'interior' && product.brand === 'UCI') {
         return;
