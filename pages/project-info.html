@@ -20,6 +20,7 @@
   <!-- Cross-Browser Compatibility - Ensures consistent rendering across browsers -->
   <link rel="stylesheet" href="../css/cross-browser-compatibility.css">
   <link rel="stylesheet" href="../css/icon-overrides.css">
+  <link rel="stylesheet" href="../css/validation-styles.css">
   
   <style>
     /* Scope Selection Styles */
@@ -272,8 +273,8 @@
   <script src="../js/error-debug-enhanced.js"></script>
   <!-- Load formState.js first -->
   <script src="../js/formState.js"></script>
-  <script src="../js/utils/localStorage.js"></script>
   <script src="../js/form-validator.js"></script>
+  <script src="../js/modules/comprehensive-validation.js"></script>
 </head>
 <body>
   <!-- Application Header -->
@@ -1120,7 +1121,7 @@
           fieldsHTML = `
             <div class="form-group">
               <label class="form-label">
-                Community Name <span class="required-indicator">*</span>
+                Community Name <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="community-name"
@@ -1135,7 +1136,7 @@
           fieldsHTML = `
             <div class="form-group">
               <label class="form-label">
-                Location Name <span class="required-indicator">*</span>
+                Location Name <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="location-name"
@@ -1145,7 +1146,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">
-                Company Name <span class="required-indicator">*</span>
+                Company Name <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="company-name"
@@ -1160,7 +1161,7 @@
           fieldsHTML = `
             <div class="form-group">
               <label class="form-label">
-                Community Name <span class="required-indicator">*</span>
+                Community Name <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="community-name"
@@ -1170,7 +1171,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">
-                Company Name <span class="required-indicator">*</span>
+                Company Name <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="company-name"
@@ -1185,7 +1186,7 @@
           fieldsHTML = `
             <div class="form-group">
               <label class="form-label">
-                Government Jurisdiction <span class="required-indicator">*</span>
+                Government Jurisdiction <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="government-jurisdiction"
@@ -1195,7 +1196,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">
-                Government Agency <span class="required-indicator">*</span>
+                Government Agency <span class="required-indicator"></span>
               </label>
               <input type="text" 
                     id="government-agency"
@@ -1562,85 +1563,18 @@
       });
       
       document.getElementById('next-button').addEventListener('click', function() {
-        // Get the form element
-        const form = document.querySelector('form') || document.querySelector('.form-content');
+        // Use comprehensive validation
+        const isValid = window.ComprehensiveValidation.validateAll();
         
-        // Clear previous errors
-        if (form && FormValidator.clearAllValidation) {
-          FormValidator.clearAllValidation(form);
-        }
-        
-        // Simple validation for required fields
-        let hasErrors = false;
-        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
-        
-        requiredFields.forEach(field => {
-          if (!field.value || field.value.trim() === '') {
-            hasErrors = true;
-            if (FormValidator.showError) {
-              FormValidator.showError(field, 'This field is required');
-            } else {
-              // Fallback if FormValidator methods not available
-              field.classList.add('validation-error');
-              const errorMsg = document.createElement('div');
-              errorMsg.className = 'validation-error-message';
-              errorMsg.textContent = 'This field is required';
-              field.parentNode.appendChild(errorMsg);
-            }
-          }
-        });
-        
-        if (hasErrors) {
-          // Focus on first error field
-          const firstError = document.querySelector('.validation-error');
-          if (firstError) {
-            firstError.focus();
-            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
+        if (!isValid) {
+          // Show validation modal with all errors
+          window.ComprehensiveValidation.showValidationModal();
           return;
         }
         
-        // Validate painting scope (interior/exterior) only if painting is selected
-        const serviceTypes = formState.data.serviceTypes || [];
-        const includesPainting = serviceTypes.includes('painting');
-    
-    if (includesPainting && (!formState.data.projectScope || (!formState.data.projectScope.interior && !formState.data.projectScope.exterior))) {
-      const scopeError = document.getElementById('scope-error');
-      scopeError.textContent = 'Please select at least one painting scope (Interior or Exterior)';
-      scopeError.style.color = '#dc2626';
-      scopeError.style.display = 'block';
-      // Scroll to the scope section
-      document.getElementById('scope-interior').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    
-    // Additional validation: Check if abrasive-only with interior selected (shouldn't happen with new logic but keeping for safety)
-    if (includesPainting) {
-      const isAbrasiveOnly = serviceTypes.length === 1 && serviceTypes[0] === 'abrasive';
-      if (isAbrasiveOnly && formState.data.projectScope.interior) {
-        const scopeError = document.getElementById('scope-error');
-        scopeError.textContent = 'Interior is not available for abrasive cleaning services. Please select only Exterior.';
-        scopeError.style.display = 'block';
-        scopeError.style.color = '#dc2626';
-        
-        // Uncheck interior
-        const interiorCheckbox = document.getElementById('scope-interior');
-        if (interiorCheckbox) {
-          interiorCheckbox.checked = false;
-          formState.data.projectScope.interior = false;
-          formState.saveState();
-        }
-        
-        // Scroll to the scope section
-        document.getElementById('scope-interior').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-    }
-        
-        // Allow navigation to next page
+        // All validations passed - proceed to next page
         formState.currentStep = 2; // Surfaces is step 2
         formState.saveState();
-        // console.log('Project Details: Navigating to surfaces, currentStep:', formState.currentStep); // Suppress
         
         // Add delay to ensure state is saved
         setTimeout(function() {
