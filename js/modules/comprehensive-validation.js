@@ -34,7 +34,7 @@ window.ComprehensiveValidation = {
             this.validationErrors.push({
                 field: fieldLabel,
                 element: element,
-                message: `${fieldLabel} is required`
+                message: fieldLabel + ' is required'
             });
             return false;
         }
@@ -58,7 +58,7 @@ window.ComprehensiveValidation = {
             this.validationErrors.push({
                 field: fieldLabel,
                 element: container,
-                message: `Please select at least one ${fieldLabel.toLowerCase()}`
+                message: 'Please select at least one ' + fieldLabel.toLowerCase()
             });
             return false;
         }
@@ -81,9 +81,10 @@ window.ComprehensiveValidation = {
     
     // Validate contact information
     validateContacts() {
-        const contactRows = document.querySelectorAll('.crm-entity-widget-content-inner-row');
+        // Get contacts from formState data to know how many contacts exist
+        const contacts = window.formState?.data?.contacts || [];
         
-        if (!contactRows || contactRows.length === 0) {
+        if (!contacts || contacts.length === 0) {
             this.validationErrors.push({
                 field: 'Contact Information',
                 element: document.querySelector('#contacts-container'),
@@ -93,52 +94,112 @@ window.ComprehensiveValidation = {
         }
         
         let hasValidContact = false;
+        let contactErrors = false;
         
-        contactRows.forEach((row, index) => {
+        // Get all visible contact rows from DOM for element references
+        const contactRows = document.querySelectorAll('.crm-entity-widget-content-inner-row');
+        
+        // Only validate contacts that exist in formState data
+        contacts.forEach((contact, index) => {
+            // Get the corresponding DOM row if it exists
+            const row = contactRows[index];
+            if (!row) return; // Skip if no corresponding DOM element
+            
             const nameInput = row.querySelector('.crm-entity-widget-content-search-input');
             const phoneInput = row.querySelector('.crm-entity-phone-field input');
             const emailInput = row.querySelector('.crm-entity-email-field input');
             
+            // Read values directly from inputs (not from formState)
             const name = nameInput?.value?.trim() || '';
             const phone = phoneInput?.value?.trim() || '';
-            const email = emailInput?.value?.trim() || '';
-            
-            // Check if any field has content
-            if (name || phone || email) {
-                // If any field has content, validate properly
+            const email = emailInput?.value?.trim() || '';            
+            // For additional contacts (index > 0), they are ALL mandatory
+            if (index > 0) {
+                // Additional contacts must have a name
                 if (!name) {
                     this.validationErrors.push({
-                        field: `Contact ${index + 1} Name`,
+                        field: 'Contact ' + (index + 1) + ' Name',
                         element: nameInput,
-                        message: `Contact name is required when adding contact information`
+                        message: 'Contact ' + (index + 1) + ' name is required'
                     });
+                    contactErrors = true;
                 }
                 
+                // Must have either phone or email
                 if (!phone && !email) {
                     this.validationErrors.push({
-                        field: `Contact ${index + 1} Phone/Email`,
+                        field: 'Contact ' + (index + 1) + ' Phone/Email',
                         element: phoneInput || emailInput,
-                        message: `Either phone number or email is required for Contact ${index + 1}`
+                        message: 'Either phone number or email is required for Contact ' + (index + 1)
                     });
+                    contactErrors = true;
                 } else {
                     // Validate phone format if provided
                     if (phone && !this.validatePhoneNumber(phone)) {
                         this.validationErrors.push({
-                            field: `Contact ${index + 1} Phone`,
+                            field: 'Contact ' + (index + 1) + ' Phone',
                             element: phoneInput,
-                            message: `Please enter a valid phone number`
+                            message: 'Please enter a valid phone number for Contact ' + (index + 1)
                         });
+                        contactErrors = true;
                     }
                     
                     // Validate email format if provided
                     if (email && !this.validateEmail(email)) {
                         this.validationErrors.push({
-                            field: `Contact ${index + 1} Email`,
+                            field: 'Contact ' + (index + 1) + ' Email',
                             element: emailInput,
-                            message: `Please enter a valid email address`
+                            message: 'Please enter a valid email address for Contact ' + (index + 1)
                         });
-                    } else if (name && (phone || email)) {
-                        hasValidContact = true;
+                        contactErrors = true;
+                    }
+                }
+                
+                // If this additional contact is valid, mark that we have at least one valid contact
+                if (name && (phone || email) && !contactErrors) {
+                    hasValidContact = true;
+                }
+            } else {                // For the first contact (index 0), validate if any field has content
+                if (name || phone || email) {
+                    // If any field has content, validate properly
+                    if (!name) {
+                        this.validationErrors.push({
+                            field: 'Contact ' + (index + 1) + ' Name',
+                            element: nameInput,
+                            message: 'Contact name is required when adding contact information'
+                        });
+                        contactErrors = true;
+                    }
+                    
+                    if (!phone && !email) {
+                        this.validationErrors.push({
+                            field: 'Contact ' + (index + 1) + ' Phone/Email',
+                            element: phoneInput || emailInput,
+                            message: 'Either phone number or email is required for Contact ' + (index + 1)
+                        });
+                        contactErrors = true;
+                    } else {
+                        // Validate phone format if provided
+                        if (phone && !this.validatePhoneNumber(phone)) {
+                            this.validationErrors.push({
+                                field: 'Contact ' + (index + 1) + ' Phone',
+                                element: phoneInput,
+                                message: 'Please enter a valid phone number'
+                            });
+                            contactErrors = true;
+                        }
+                        
+                        // Validate email format if provided
+                        if (email && !this.validateEmail(email)) {
+                            this.validationErrors.push({
+                                field: 'Contact ' + (index + 1) + ' Email',
+                                element: emailInput,
+                                message: 'Please enter a valid email address'
+                            });
+                            contactErrors = true;
+                        } else if (name && (phone || email)) {
+                            hasValidContact = true;
+                        }
                     }
                 }
             }
@@ -266,8 +327,7 @@ window.ComprehensiveValidation = {
                 // Add visual error indicator
                 serviceTypeContainer.classList.add('validation-field-error');
             }
-        }
-        
+        }        
         // Validate contacts
         if (!this.validateContacts()) {
             // Add visual error indicator to contact rows
@@ -304,35 +364,33 @@ window.ComprehensiveValidation = {
         modal.className = 'validation-modal-overlay';
         
         const errorList = this.validationErrors.map(error => {
-            return `<li class="validation-error-item">
-                <span class="error-icon">⚠️</span>
-                <span class="error-text">${error.message}</span>
-            </li>`;
+            return '<li class="validation-error-item">' +
+                '<span class="error-icon">⚠️</span>' +
+                '<span class="error-text">' + error.message + '</span>' +
+            '</li>';
         }).join('');
         
-        modal.innerHTML = `
-            <div class="validation-modal">
-                <div class="validation-modal-header">
-                    <h3 class="validation-modal-title">Please Complete Required Fields</h3>
-                    <button class="validation-modal-close" onclick="ComprehensiveValidation.closeModal()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="validation-modal-body">
-                    <p class="validation-modal-intro">The following fields need to be completed before proceeding:</p>
-                    <ul class="validation-error-list">
-                        ${errorList}
-                    </ul>
-                </div>
-                <div class="validation-modal-footer">
-                    <button class="validation-modal-button" onclick="ComprehensiveValidation.closeModal()">
-                        OK, I'll Complete These Fields
-                    </button>
-                </div>
-            </div>
-        `;
+        modal.innerHTML = '<div class="validation-modal">' +
+            '<div class="validation-modal-header">' +
+                '<h3 class="validation-modal-title">Please Complete Required Fields</h3>' +
+                '<button class="validation-modal-close" onclick="ComprehensiveValidation.closeModal()">' +
+                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                        '<path d="M18 6L6 18M6 6l12 12"></path>' +
+                    '</svg>' +
+                '</button>' +
+            '</div>' +
+            '<div class="validation-modal-body">' +
+                '<p class="validation-modal-intro">The following fields need to be completed before proceeding:</p>' +
+                '<ul class="validation-error-list">' +
+                    errorList +
+                '</ul>' +
+            '</div>' +
+            '<div class="validation-modal-footer">' +
+                '<button class="validation-modal-button" onclick="ComprehensiveValidation.closeModal()">' +
+                    'OK, I\'ll Complete These Fields' +
+                '</button>' +
+            '</div>' +
+        '</div>';
         
         document.body.appendChild(modal);
         
@@ -378,163 +436,10 @@ window.ComprehensiveValidation = {
     injectModalStyles() {
         if (document.getElementById('validation-modal-styles')) return;
         
-        const styles = `
-            .validation-modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(0, 0, 0, 0);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                transition: background-color 0.3s ease;
-                padding: 1rem;
-            }
-            
-            .validation-modal-overlay.show {
-                background-color: rgba(0, 0, 0, 0.5);
-            }
-            
-            .validation-modal {
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                max-width: 500px;
-                width: 100%;
-                max-height: 80vh;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                transform: scale(0.9);
-                opacity: 0;
-                transition: all 0.3s ease;
-            }
-            
-            .validation-modal-overlay.show .validation-modal {
-                transform: scale(1);
-                opacity: 1;
-            }
-            
-            .validation-modal-header {
-                padding: 1.5rem;
-                border-bottom: 1px solid #e5e7eb;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            .validation-modal-title {
-                font-size: 1.25rem;
-                font-weight: 600;
-                color: #111827;
-                margin: 0;
-            }
-            
-            .validation-modal-close {
-                background: none;
-                border: none;
-                color: #6b7280;
-                cursor: pointer;
-                padding: 0.5rem;
-                border-radius: 6px;
-                transition: all 0.2s ease;
-            }
-            
-            .validation-modal-close:hover {
-                background-color: #f3f4f6;
-                color: #374151;
-            }
-            
-            .validation-modal-body {
-                padding: 1.5rem;
-                overflow-y: auto;
-                flex: 1;
-            }
-            
-            .validation-modal-intro {
-                color: #6b7280;
-                margin-bottom: 1rem;
-                font-size: 0.875rem;
-            }
-            
-            .validation-error-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            
-            .validation-error-item {
-                display: flex;
-                align-items: flex-start;
-                padding: 0.75rem;
-                margin-bottom: 0.5rem;
-                background-color: #fef2f2;
-                border: 1px solid #fee2e2;
-                border-radius: 8px;
-            }
-            
-            .error-icon {
-                margin-right: 0.75rem;
-                font-size: 1.125rem;
-                flex-shrink: 0;
-            }
-            
-            .error-text {
-                color: #991b1b;
-                font-size: 0.875rem;
-                line-height: 1.5;
-            }
-            
-            .validation-modal-footer {
-                padding: 1.5rem;
-                border-top: 1px solid #e5e7eb;
-                display: flex;
-                justify-content: center;
-            }
-            
-            .validation-modal-button {
-                background-color: #3b82f6;
-                color: white;
-                border: none;
-                padding: 0.75rem 2rem;
-                border-radius: 8px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                font-size: 1rem;
-            }
-            
-            .validation-modal-button:hover {
-                background-color: #2563eb;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            }
-            
-            .validation-modal-button:active {
-                transform: translateY(0);
-            }
-            
-            /* Mobile responsive */
-            @media (max-width: 640px) {
-                .validation-modal {
-                    max-width: 100%;
-                    margin: 0 1rem;
-                }
-                
-                .validation-modal-header,
-                .validation-modal-body,
-                .validation-modal-footer {
-                    padding: 1rem;
-                }
-            }
-        `;
+        const styles = document.createElement('style');
+        styles.id = 'validation-modal-styles';
+        styles.textContent = '.validation-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: background-color 0.3s ease; padding: 1rem; } .validation-modal-overlay.show { background-color: rgba(0, 0, 0, 0.5); } .validation-modal { background: white; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 500px; width: 100%; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column; transform: scale(0.9); opacity: 0; transition: all 0.3s ease; } .validation-modal-overlay.show .validation-modal { transform: scale(1); opacity: 1; } .validation-modal-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; } .validation-modal-title { font-size: 1.25rem; font-weight: 600; color: #111827; margin: 0; } .validation-modal-close { background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.5rem; border-radius: 6px; transition: all 0.2s ease; } .validation-modal-close:hover { background-color: #f3f4f6; color: #374151; } .validation-modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; } .validation-modal-intro { color: #6b7280; margin-bottom: 1rem; font-size: 0.875rem; } .validation-error-list { list-style: none; padding: 0; margin: 0; } .validation-error-item { display: flex; align-items: flex-start; padding: 0.75rem; margin-bottom: 0.5rem; background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 8px; } .error-icon { margin-right: 0.75rem; font-size: 1.125rem; flex-shrink: 0; } .error-text { color: #991b1b; font-size: 0.875rem; line-height: 1.5; } .validation-modal-footer { padding: 1.5rem; border-top: 1px solid #e5e7eb; display: flex; justify-content: center; } .validation-modal-button { background-color: #3b82f6; color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; font-size: 1rem; } .validation-modal-button:hover { background-color: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); } .validation-modal-button:active { transform: translateY(0); } @media (max-width: 640px) { .validation-modal { max-width: 100%; margin: 0 1rem; } .validation-modal-header, .validation-modal-body, .validation-modal-footer { padding: 1rem; } }';
         
-        const styleSheet = document.createElement('style');
-        styleSheet.id = 'validation-modal-styles';
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
+        document.head.appendChild(styles);
     }
 };
