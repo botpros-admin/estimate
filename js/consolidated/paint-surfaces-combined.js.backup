@@ -1805,24 +1805,11 @@
     // Paint brand selection - populate from Bitrix data
     const brandSection = document.createElement('div');
     brandSection.className = 'mt-4';
-    
-    // Debug logging
-    console.log('Creating brand dropdown - window.bitrixProducts:', window.bitrixProducts);
-    console.log('Number of products:', window.bitrixProducts ? window.bitrixProducts.length : 0);
-    
-    // Extract unique brands
-    let uniqueBrands = [];
-    if (window.bitrixProducts && window.bitrixProducts.length > 0) {
-      const allBrands = window.bitrixProducts.map(p => p.brand).filter(Boolean);
-      console.log('All brands from products:', allBrands);
-      uniqueBrands = [...new Set(allBrands)];
-      console.log('Unique brands:', uniqueBrands);
-    }
+    let uniqueBrands = [...new Set(window.bitrixProducts.map(p => p.brand))].filter(Boolean);
     
     // Filter out UCI for interior paint selection
     if (projectType === 'interior') {
       uniqueBrands = uniqueBrands.filter(brand => brand !== 'UCI');
-      console.log('Brands after filtering UCI for interior:', uniqueBrands);
     }
     
     let brandOptions = '<option value="">Select a brand...</option>';
@@ -1861,12 +1848,6 @@
         updatePaintFinishEnhanced(paintId, paintSelection.finish);
       }, 50);
     }
-    
-    // Ensure brand dropdown is properly populated after DOM is ready
-    setTimeout(() => {
-      console.log('Checking brand dropdown after card creation');
-      updateBrandAvailability(paintId, paintSelection.finish || '', projectType);
-    }, 100);
     
     // Paint products section
     const productsSection = document.createElement('div');
@@ -2625,55 +2606,7 @@
     const brandSelect = document.querySelector(`[data-paint-id="${paintId}"] .paint-brand-select`);
     if (!brandSelect) return;
     
-    // Debug logging
-    console.log('updateBrandAvailability called with:', { paintId, finish, projectType });
-    console.log('Current window.bitrixProducts:', window.bitrixProducts);
-    
-    // First, ensure we have all brands in the dropdown
-    const allBrands = new Set();
-    window.bitrixProducts.forEach(product => {
-      // Skip UCI for interior
-      if (projectType === 'interior' && product.brand === 'UCI') {
-        return;
-      }
-      
-      const scopeMatch = (projectType === 'interior' && product.interior) ||
-                        (projectType === 'exterior' && product.exterior);
-      
-      if (scopeMatch && product.brand) {
-        allBrands.add(product.brand);
-      }
-    });
-    
-    console.log('All brands for project type:', Array.from(allBrands));
-    
-    // Get current value before rebuilding
-    const currentBrand = brandSelect.value;
-    
-    // Check if we need to rebuild the options (if brands are missing)
-    const existingBrands = new Set(Array.from(brandSelect.options).map(opt => opt.value).filter(v => v !== ''));
-    console.log('Existing brands in dropdown:', Array.from(existingBrands));
-    
-    let needsRebuild = false;
-    for (const brand of allBrands) {
-      if (!existingBrands.has(brand)) {
-        needsRebuild = true;
-        console.log('Missing brand in dropdown:', brand);
-        break;
-      }
-    }
-    
-    // Rebuild options if needed
-    if (needsRebuild) {
-      console.log('Rebuilding brand dropdown with all brands');
-      let brandOptions = '<option value="">Select a brand...</option>';
-      Array.from(allBrands).sort().forEach(brand => {
-        brandOptions += `<option value="${brand}" title="${brand}">${brand}</option>`;
-      });
-      brandSelect.innerHTML = brandOptions;
-    }
-    
-    // Now get available brands based on finish
+    // Get all unique brands that have products with the selected finish
     const availableBrands = new Set();
     
     window.bitrixProducts.forEach(product => {
@@ -2686,7 +2619,7 @@
                         (projectType === 'exterior' && product.exterior);
       
       // Handle finish matching with compatibility for old finish names
-      let finishMatch = !finish; // If no finish selected, all brands are available
+      let finishMatch = !finish;
       if (finish && product.finishes) {
         finishMatch = product.finishes.includes(finish) ||
                      (finish === 'Low Sheen' && product.finishes.includes('Low Sheen/Lustre'));
@@ -2697,7 +2630,7 @@
       }
     });
     
-    console.log('Available brands for finish', finish, ':', Array.from(availableBrands));
+    const currentBrand = brandSelect.value;
     
     // Update each option
     Array.from(brandSelect.options).forEach(option => {
@@ -2707,7 +2640,7 @@
       option.disabled = !isAvailable;
       option.style.color = isAvailable ? '' : '#9ca3af';
       
-      // Update text to show availability
+      // Truncate text if needed to prevent overflow
       const baseText = option.value;
       const suffix = isAvailable ? '' : ' (N/A)';
       const fullText = baseText + suffix;
@@ -2721,11 +2654,8 @@
       }
     });
     
-    // Restore current brand if it's still available
-    if (currentBrand && availableBrands.has(currentBrand)) {
-      brandSelect.value = currentBrand;
-    } else if (currentBrand && !availableBrands.has(currentBrand)) {
-      // If current brand is no longer available, clear selection
+    // If current brand is no longer available, clear selection
+    if (currentBrand && !availableBrands.has(currentBrand)) {
       brandSelect.value = '';
       updatePaintBrandEnhanced(paintId, '');
     }
