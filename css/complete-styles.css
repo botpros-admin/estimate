@@ -90,9 +90,10 @@
       border: 1px solid #d1d5db;
       border-radius: 0.375rem;
       margin-bottom: 1rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      /* Removed text truncation to fix "Sherwin-Will..." issue */
+      /* overflow: hidden; */
+      /* text-overflow: ellipsis; */
+      /* white-space: nowrap; */
       box-sizing: border-box;
       -webkit-appearance: none;
       -moz-appearance: none;
