@@ -1,0 +1,11 @@
+{
+  "name": "paint-estimator",
+  "version": "1.0.0",
+  "description": "Hartzell Paint Estimator",
+  "scripts": {
+    "start": "cd server && npm start",
+    "start:dev": "cd server && npm run start:api",
+    "install:server": "cd server && npm install"
+  },
+  "private": true
+}
