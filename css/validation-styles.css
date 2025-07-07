@@ -1,0 +1,63 @@
+/* Comprehensive Validation Styles */
+
+/* Highlight fields with validation errors */
+.validation-field-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Style for required field indicators */
+.required-indicator {
+    color: #ef4444;
+    font-weight: 600;
+    margin-left: 0.25rem;
+}
+
+/* Validation error tooltip */
+.field-validation-tooltip {
+    position: absolute;
+    background-color: #991b1b;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    z-index: 1000;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Multi-select error styling */
+[data-multi-select="true"].validation-field-error {
+    box-shadow: 0 0 0 2px #ef4444 !important;
+}
+
+/* Contact widget error styling */
+.crm-entity-widget-content-inner-row.validation-field-error {
+    border: 2px solid #ef4444;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+/* Success checkmark for valid fields */
+.validation-success-indicator {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981;
+    font-size: 1.25rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-50%) scale(0.8); }
+    to { opacity: 1; transform: translateY(-50%) scale(1); }
+}
