@@ -2,8 +2,10 @@
 const BitrixService = (function() {
   'use strict';
   
-  // Bitrix webhook URL
-  const WEBHOOK_URL = 'https://hartzell.app/rest/1/jp689g5yfvre9pvd/';
+  // Bitrix webhook URL - Using backend proxy
+  const WEBHOOK_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api/bitrix/' 
+    : 'https://hartzell-paint-estimator-backend.onrender.com/api/bitrix/';
   const SERVICE_CATALOG_SPA_ID = 1058; // Service Catalog entity type ID
   const ABRASIVE_CATALOG_SPA_ID = 1068; // Abrasive Catalog entity type ID
   
