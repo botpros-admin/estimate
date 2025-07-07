@@ -345,11 +345,10 @@
             </div>
           `;
         }
-      } else {
-        }
+      }
       
       // Now render the paint selections UI
-      renderPaintSelectionsEnhanced();();
+      renderPaintSelectionsEnhanced();
     } catch (error) {
       bitrixProducts = [];
       abrasiveServices = [];
