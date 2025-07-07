@@ -1,0 +1,459 @@
+{
+  "phases": {
+    "initialContact": {
+      "id": "initial_contact",
+      "name": "Initial Client Contact",
+      "questions": [
+        {
+          "id": "property_type",
+          "question": "What type of property is this?",
+          "type": "select",
+          "options": ["Residential", "Commercial"],
+          "triggers": {
+            "Residential": ["home_size"],
+            "Commercial": ["commercial_type"]
+          }
+        },
+        {
+          "id": "home_size",
+          "question": "What is the size of the home?",
+          "type": "select",
+          "options": ["Small (1-2 BR)", "Medium (3 BR)", "Large (4+ BR)", "Custom/Luxury"],
+          "triggers": {
+            "Large (4+ BR)": ["high_ceiling_check"],
+            "Custom/Luxury": ["high_ceiling_check", "specialty_surfaces"]
+          }
+        },
+        {
+          "id": "appointment_duration",
+          "question": "How much time should we allocate for the estimate?",
+          "type": "select",
+          "options": ["1 hour", "1.5 hours", "2 hours"],
+          "dependsOn": {
+            "home_size": ["Large (4+ BR)", "Custom/Luxury"]
+          }
+        },
+        {
+          "id": "parking_access",
+          "question": "Is there adequate parking and access to the property?",
+          "type": "boolean",
+          "triggers": {
+            "false": ["access_details"]
+          }
+        },
+        {
+          "id": "access_details",
+          "question": "Please describe parking/access limitations",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "architectural_plans",
+          "question": "Do you have architectural plans or previous work documentation?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["plan_format"]
+          }
+        }
+      ]
+    },
+    "projectScope": {
+      "id": "project_scope",
+      "name": "Project Scope",
+      "questions": [
+        {
+          "id": "rooms_to_paint",
+          "question": "Which rooms need painting?",
+          "type": "multiselect",
+          "options": [
+            "Living Room", "Dining Room", "Kitchen", "Master Bedroom", 
+            "Bedroom 2", "Bedroom 3", "Bedroom 4+", "Bathroom 1", 
+            "Bathroom 2", "Bathroom 3+", "Hallways", "Stairwell", 
+            "Basement", "Home Office", "Other"
+          ],
+          "triggers": {
+            "Kitchen": ["kitchen_cabinets"],
+            "Bathroom 1": ["bathroom_moisture"],
+            "Bathroom 2": ["bathroom_moisture"],
+            "Bathroom 3+": ["bathroom_moisture"],
+            "Stairwell": ["stairwell_height"],
+            "Basement": ["basement_moisture_check"]
+          }
+        },
+        {
+          "id": "surfaces_included",
+          "question": "Which surfaces should be included?",
+          "type": "multiselect",
+          "options": [
+            "Walls only", "Ceilings", "Trim/Baseboards", "Crown Molding",
+            "Doors", "Door Frames", "Window Frames", "Closet Interiors"
+          ],
+          "triggers": {
+            "Ceilings": ["ceiling_height", "ceiling_type"],
+            "Crown Molding": ["molding_complexity"],
+            "Doors": ["door_count", "door_type"]
+          }
+        },
+        {
+          "id": "ceiling_height",
+          "question": "What is the ceiling height?",
+          "type": "select",
+          "options": ["8 ft", "9 ft", "10 ft", "12+ ft", "Vaulted/Cathedral"],
+          "triggers": {
+            "12+ ft": ["scaffold_needed"],
+            "Vaulted/Cathedral": ["scaffold_needed", "specialty_equipment"]
+          }
+        },
+        {
+          "id": "budget_range",
+          "question": "What is your budget range for this project?",
+          "type": "select",
+          "options": [
+            "Under $1,000", "$1,000-$3,000", "$3,000-$5,000", 
+            "$5,000-$10,000", "Over $10,000", "Flexible"
+          ],
+          "triggers": {
+            "Under $1,000": ["budget_priority"],
+            "$1,000-$3,000": ["value_options"]
+          }
+        },
+        {
+          "id": "timeline_preference",
+          "question": "What is your preferred timeline?",
+          "type": "select",
+          "options": [
+            "ASAP", "Within 1 week", "Within 2 weeks", 
+            "Within 1 month", "Flexible", "Specific date"
+          ],
+          "triggers": {
+            "ASAP": ["rush_charge_acceptance"],
+            "Specific date": ["specific_date_input", "event_deadline"]
+          }
+        }
+      ]
+    },
+    "surfaceAssessment": {
+      "id": "surface_assessment",
+      "name": "Surface Assessment",
+      "questions": [
+        {
+          "id": "existing_paint_condition",
+          "question": "What is the condition of existing paint?",
+          "type": "select",
+          "options": ["Excellent", "Good", "Fair", "Poor", "Peeling/Flaking"],
+          "triggers": {
+            "Poor": ["repair_extent", "prep_time_increase"],
+            "Peeling/Flaking": ["lead_paint_age", "extensive_prep"]
+          }
+        },
+        {
+          "id": "lead_paint_age",
+          "question": "Was the home built before 1978?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["lead_paint_certification", "lead_testing_needed"]
+          }
+        },
+        {
+          "id": "wall_damage",
+          "question": "Are there holes, cracks, or damage to repair?",
+          "type": "select",
+          "options": ["None", "Minor", "Moderate", "Extensive"],
+          "triggers": {
+            "Moderate": ["damage_details", "repair_materials"],
+            "Extensive": ["damage_photos", "structural_check"]
+          }
+        },
+        {
+          "id": "moisture_issues",
+          "question": "Any signs of water damage, mold, or mildew?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["moisture_location", "moisture_severity", "mold_remediation"]
+          }
+        },
+        {
+          "id": "surface_texture",
+          "question": "What is the wall texture?",
+          "type": "select",
+          "options": ["Smooth", "Orange Peel", "Knockdown", "Popcorn", "Skip Trowel", "Venetian Plaster"],
+          "triggers": {
+            "Popcorn": ["asbestos_testing"],
+            "Venetian Plaster": ["specialty_technique"]
+          }
+        },
+        {
+          "id": "wallpaper_present",
+          "question": "Is there existing wallpaper?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["wallpaper_removal", "wallpaper_layers"]
+          }
+        }
+      ]
+    },
+    "materialRequirements": {
+      "id": "material_requirements",
+      "name": "Material Requirements",
+      "questions": [
+        {
+          "id": "paint_quality_preference",
+          "question": "What paint quality level do you prefer?",
+          "type": "select",
+          "options": ["Builder Grade", "Standard", "Premium", "Ultra Premium"],
+          "triggers": {
+            "Builder Grade": ["durability_expectations"],
+            "Ultra Premium": ["specialty_finishes"]
+          }
+        },
+        {
+          "id": "paint_brand_preference",
+          "question": "Do you have a preferred paint brand?",
+          "type": "select",
+          "options": ["No preference", "Sherwin Williams", "Benjamin Moore", "Behr", "PPG", "Valspar", "Other"],
+          "triggers": {
+            "Other": ["brand_specify"]
+          }
+        },
+        {
+          "id": "eco_friendly",
+          "question": "Do you need eco-friendly/low-VOC paint?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["voc_level", "green_certification"]
+          }
+        },
+        {
+          "id": "color_selection",
+          "question": "Have you selected colors?",
+          "type": "select",
+          "options": ["Yes, all colors selected", "Partially selected", "Need color consultation", "Will select later"],
+          "triggers": {
+            "Need color consultation": ["color_consultation_scope"],
+            "Partially selected": ["rooms_needing_colors"]
+          }
+        },
+        {
+          "id": "sheen_preferences",
+          "question": "Sheen preferences by room type",
+          "type": "complex",
+          "subQuestions": [
+            {
+              "room": "Living Areas",
+              "options": ["Flat", "Eggshell", "Satin"]
+            },
+            {
+              "room": "Kitchens/Bathrooms",
+              "options": ["Satin", "Semi-gloss", "Gloss"]
+            },
+            {
+              "room": "Trim/Doors",
+              "options": ["Satin", "Semi-gloss", "Gloss"]
+            }
+          ]
+        },
+        {
+          "id": "dark_to_light",
+          "question": "Are you covering dark colors with light colors?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["extra_coats_needed", "primer_type_upgrade"]
+          }
+        }
+      ]
+    },
+    "logistics": {
+      "id": "logistics",
+      "name": "Logistics",
+      "questions": [
+        {
+          "id": "furniture_handling",
+          "question": "Who will move/protect furniture?",
+          "type": "select",
+          "options": ["Contractor handles all", "Client moves, contractor protects", "Client handles all", "Mixed responsibility"],
+          "triggers": {
+            "Contractor handles all": ["furniture_volume", "heavy_items"],
+            "Mixed responsibility": ["responsibility_details"]
+          }
+        },
+        {
+          "id": "occupancy_during_work",
+          "question": "Will the property be occupied during work?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["work_hours_preference", "dust_sensitivity", "noise_concerns"]
+          }
+        },
+        {
+          "id": "pets_present",
+          "question": "Are there pets in the home?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["pet_type", "pet_containment_plan"]
+          }
+        },
+        {
+          "id": "special_items",
+          "question": "Any valuable/fragile items requiring special care?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["special_items_list", "insurance_coverage_check"]
+          }
+        },
+        {
+          "id": "access_restrictions",
+          "question": "Any rooms/areas with restricted access?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["restriction_details", "security_requirements"]
+          }
+        }
+      ]
+    },
+    "safetyAssessment": {
+      "id": "safety_assessment",
+      "name": "Safety Assessment",
+      "questions": [
+        {
+          "id": "electrical_work_needed",
+          "question": "Will painting near electrical fixtures be required?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["electrician_coordination", "power_shutoff_plan"]
+          }
+        },
+        {
+          "id": "ventilation_adequate",
+          "question": "Is ventilation adequate in all areas?",
+          "type": "select",
+          "options": ["Excellent", "Good", "Fair", "Poor"],
+          "triggers": {
+            "Fair": ["fan_rental_needed"],
+            "Poor": ["ventilation_equipment", "extended_drying_time"]
+          }
+        },
+        {
+          "id": "dust_protection_hvac",
+          "question": "HVAC system protection needed?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["hvac_shutdown_coordination", "filter_replacement"]
+          }
+        },
+        {
+          "id": "height_work_required",
+          "question": "Work above 10 feet required?",
+          "type": "boolean",
+          "triggers": {
+            "true": ["fall_protection_equipment", "insurance_verification"]
+          }
+        }
+      ]
+    },
+    "documentation": {
+      "id": "documentation",
+      "name": "Final Documentation",
+      "questions": [
+        {
+          "id": "warranty_preference",
+          "question": "What warranty period would you like?",
+          "type": "select",
+          "options": ["1 year", "2 years", "3 years", "5 years"],
+          "triggers": {
+            "3 years": ["premium_warranty_cost"],
+            "5 years": ["premium_warranty_cost", "annual_inspection"]
+          }
+        },
+        {
+          "id": "payment_method",
+          "question": "Preferred payment method?",
+          "type": "multiselect",
+          "options": ["Cash", "Check", "Credit Card", "Financing"],
+          "triggers": {
+            "Financing": ["financing_application", "credit_check"]
+          }
+        },
+        {
+          "id": "estimate_delivery",
+          "question": "How would you like to receive the estimate?",
+          "type": "select",
+          "options": ["Email", "Printed", "Both", "Online Portal"],
+          "triggers": {
+            "Online Portal": ["portal_setup"]
+          }
+        }
+      ]
+    }
+  },
+  "conditionalRules": {
+    "multipleRooms": {
+      "condition": "(answers) => answers.rooms_to_paint?.length > 3",
+      "triggerQuestions": ["work_phases", "temporary_living_arrangements"]
+    },
+    "premiumLargeProject": {
+      "condition": "(answers) => answers.paint_quality_preference === 'Ultra Premium' && answers.home_size === 'Large (4+ BR)'",
+      "triggerQuestions": ["phased_approach", "priority_rooms"]
+    },
+    "rushWithPrep": {
+      "condition": "(answers) => answers.timeline_preference === 'ASAP' && answers.wall_damage === 'Extensive'",
+      "triggerQuestions": ["quality_vs_speed", "overtime_acceptance"]
+    },
+    "ecoVentilation": {
+      "condition": "(answers) => answers.eco_friendly === true && answers.ventilation_adequate === 'Poor'",
+      "triggerQuestions": ["extended_timeline_acceptance", "ventilation_improvement"]
+    }
+  },
+  "pricingFactors": {
+    "basePricePerSqFt": {
+      "Builder Grade": 1.50,
+      "Standard": 2.00,
+      "Premium": 2.50,
+      "Ultra Premium": 3.25
+    },    "complexityMultipliers": {
+      "high_ceilings": 1.25,
+      "extensive_prep": 1.40,
+      "occupied_home": 1.15,
+      "rush_job": 1.35,
+      "lead_paint": 1.50,
+      "specialty_finishes": 1.30,
+      "furniture_moving": 1.20
+    },
+    "roomTypeRates": {
+      "bathroom": 1.20,
+      "kitchen": 1.15,
+      "stairwell": 1.35,
+      "basement": 0.90
+    }
+  },
+  "calculations": {
+    "surfaceAreaCalc": {
+      "id": "surface_area_calc",
+      "formula": "((room_length + room_width) * 2 * ceiling_height) - (doors * 21) - (windows * 15)",
+      "inputs": ["room_dimensions", "door_count", "window_count"]
+    },
+    "paintQuantity": {
+      "id": "paint_quantity",
+      "formula": "Math.ceil((surface_area / 350) * number_of_coats * 1.15)",
+      "inputs": ["surface_area_calc", "coat_count"],
+      "adjustments": {
+        "textured_surface": 1.25,
+        "dark_to_light": 1.3
+      }
+    },
+    "laborHours": {
+      "id": "labor_hours",
+      "baseRates": {
+        "prep_work": "surface_area * 0.03",
+        "priming": "surface_area * 0.02",
+        "painting": "surface_area * 0.025 * coat_count",
+        "trim_work": "linear_feet * 0.05",
+        "cleanup": "total_rooms * 0.5"
+      },
+      "modifiers": {
+        "poor_condition": 1.5,
+        "high_ceilings": 1.3,
+        "occupied_home": 1.2
+      }
+    }
+  }
+}

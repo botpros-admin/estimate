@@ -1,0 +1,375 @@
+/* Cross-Browser Compatibility Styles - Task 016 */
+/* Ensures consistent behavior across Chrome, Firefox, Edge, and Safari */
+
+/* =================================================================
+   VENDOR PREFIXES & BROWSER NORMALIZATION
+   ================================================================= */
+
+/* Box sizing for all elements */
+*, *::before, *::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Smooth scrolling support */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Remove default margins and paddings */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, 
+figure, figcaption, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* =================================================================
+   FLEXBOX COMPATIBILITY
+   ================================================================= */
+
+/* Header flexbox with vendor prefixes */
+.app-header, #app-header,
+.header-content, #header-content {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.header-content, #header-content {
+  -webkit-box-pack: justify !important;
+  -webkit-justify-content: space-between !important;
+  -moz-box-pack: justify !important;
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+  
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -moz-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+/* Progress container flexbox */
+.progress-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+/* Form navigation flexbox */
+.form-navigation {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -moz-box-orient: horizontal !important;
+  -moz-box-direction: normal !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+}
+/* =================================================================
+   FORM ELEMENT NORMALIZATION
+   ================================================================= */
+
+/* Normalize select elements across browsers */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  line-height: inherit;
+  outline: none;
+  width: 100%;
+}
+
+/* Fix select dropdown arrow positioning */
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2714%27%20height%3D%278%27%20viewBox%3D%270%200%2014%208%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27M1%201l6%206%206-6%27%20stroke%3D%27%236b7280%27%20stroke-width%3D%272%27%20fill%3D%27none%27%20fill-rule%3D%27evenodd%27/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 14px 8px;
+  padding-right: 2.5rem;
+}
+
+/* Remove default focus outline and add custom */
+select:focus,
+input:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  border-color: #3b82f6;
+  -webkit-box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  -moz-box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+/* =================================================================
+   BUTTON NORMALIZATION
+   ================================================================= */
+
+/* Reset button styles across browsers */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-transform: none;
+  overflow: visible;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+}
+
+/* Remove inner border and padding in Firefox */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+/* =================================================================
+   TRANSITION & ANIMATION SUPPORT
+   ================================================================= */
+
+/* Vendor prefixes for transitions */
+* {
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  
+  -webkit-transition-timing-function: ease;
+  -moz-transition-timing-function: ease;
+  -o-transition-timing-function: ease;
+  transition-timing-function: ease;
+}
+
+/* Disable transitions on page load */
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+/* Transform support */
+.accordion-indicator {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+.expanded .accordion-indicator {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/* =================================================================
+   BROWSER-SPECIFIC FIXES
+   ================================================================= */
+
+/* Safari-specific fixes */
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) {
+    /* Fix Safari flexbox issues */
+    .header-content, #header-content {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 auto;
+    }
+    
+    /* Fix Safari select styling */
+    select {
+      -webkit-appearance: none;
+      background-position: right 0.75rem center;
+    }
+    
+    /* Fix Safari button styling */
+    button {
+      -webkit-appearance: none;
+    }
+  }
+}
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  /* Fix Firefox select arrow positioning */
+  select {
+    background-position: right 0.5rem center;
+    padding-right: 2.5rem;
+  }
+  
+  /* Fix Firefox button alignment */
+  button {
+    line-height: normal;
+  }
+  
+  /* Fix Firefox form elements */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+/* Edge-specific fixes */
+@supports (-ms-ime-align: auto) {
+  /* Fix Edge select styling */
+  select {
+    background-position: right 0.75rem center;
+  }
+  
+  /* Fix Edge flexbox */
+  .header-content, #header-content {
+    display: -ms-flexbox;
+    -ms-flex-pack: justify;
+    -ms-flex-align: center;
+  }
+}
+
+/* =================================================================
+   PRINT COMPATIBILITY
+   ================================================================= */
+
+@media print {
+  /* Ensure consistent print rendering across browsers */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Fix page breaks */
+  .page-break-before {
+    -webkit-page-break-before: always;
+    page-break-before: always;
+    break-before: page;
+  }
+  .page-break-after {
+    -webkit-page-break-after: always;
+    page-break-after: always;
+    break-after: page;
+  }
+  
+  .page-break-inside {
+    -webkit-page-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+/* =================================================================
+   MOBILE & TOUCH SUPPORT
+   ================================================================= */
+
+/* Touch-friendly tap targets */
+@media (pointer: coarse) {
+  button,
+  select,
+  input,
+  textarea,
+  .accordion-header,
+  .area-settings-icon,
+  .toggle-switch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent double-tap zoom */
+  * {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+  }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix iOS form zoom */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Fix iOS momentum scrolling */
+  .modal-body,
+  .form-content {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* =================================================================
+   FINAL BROWSER NORMALIZATION
+   ================================================================= */
+
+/* Ensure consistent rendering */
+.paint-card,
+.surface-card,
+.measurement-block {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Prevent text selection on buttons */
+button,
+.btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Fix input placeholders across browsers */
+::-webkit-input-placeholder { color: #9ca3af; opacity: 1; }
+::-moz-placeholder { color: #9ca3af; opacity: 1; }
+:-ms-input-placeholder { color: #9ca3af; opacity: 1; }
+::-ms-input-placeholder { color: #9ca3af; opacity: 1; }
+::placeholder { color: #9ca3af; opacity: 1; }
+
+/* End of cross-browser compatibility styles */

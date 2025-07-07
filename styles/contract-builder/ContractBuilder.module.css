@@ -1,0 +1,49 @@
+/* ContractBuilder.module.css - Main container for contract builder flow */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  background: var(--color-bg-primary, #ffffff);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Error container */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.errorContainer h2 {
+  font-size: 24px;
+  color: var(--color-text-primary, #333333);
+  margin-bottom: 20px;
+}
+
+.errorContainer button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-bg-primary, #ffffff);
+  background: var(--color-primary, #007bff);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 18px;
+  color: var(--color-text-secondary, #666666);
+}

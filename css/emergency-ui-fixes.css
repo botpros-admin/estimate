@@ -1,0 +1,144 @@
+/**
+ * AGGRESSIVE UI FIXES - MAXIMUM SPECIFICITY
+ * Emergency fix for persistent dropdown arrows and button sizing
+ * 
+ * FORCE OVERRIDES with maximum specificity and !important
+ */
+
+/* ========================================
+   KILL ALL DROPDOWN ARROWS - NUCLEAR OPTION
+   ======================================== */
+/* Target ALL select elements and their pseudo-elements */
+select::after,
+select::before,
+select:after,
+select:before,
+*::after,
+*::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Force select styling on EVERYTHING */
+select,
+select.input-field,
+select.paint-brand-select,
+select.paint-finish-select,
+select.abrasive-method-select,
+select[class*="select"],
+select[id*="select"],
+body select,
+html body select,
+div select,
+form select,
+.select-container select,
+.dropdown-container select {
+  /* REMOVE ALL PSEUDO ELEMENTS */
+  position: relative !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  
+  /* FORCE SINGLE ARROW */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.5rem center !important;
+  background-size: 20px 20px !important;
+  padding-right: 2.5rem !important;
+}
+/* REMOVE pseudo-elements from EVERYTHING that might add arrows */
+select + *::before,
+select + *::after,
+.select-container::after,
+.select-container::before,
+.dropdown-container::after,
+.dropdown-container::before,
+.input-field-container::after,
+.paint-brand-select::after,
+.paint-finish-select::after {
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ========================================
+   FORCE PREVIOUS/NEXT BUTTON SIZING
+   ======================================== */
+/* TARGET THE EXACT ELEMENTS FROM YOUR HTML */
+.form-navigation #prev-button,
+.form-navigation #next-button,
+div.form-navigation button#prev-button,
+div.form-navigation button#next-button,
+.form-navigation button,
+.form-navigation .btn,
+.form-navigation .btn-primary,
+.form-navigation .btn-secondary,
+button#prev-button,
+button#next-button,
+#prev-button,
+#next-button {
+  /* FORCE REASONABLE DESKTOP SIZES */
+  height: 38px !important;
+  max-height: 38px !important;
+  min-height: unset !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  min-width: 80px !important;
+  max-width: 120px !important;
+}
+/* MOBILE SPECIFIC - Keep touch targets but reasonable */
+@media (max-width: 768px) {
+  .form-navigation #prev-button,
+  .form-navigation #next-button,
+  #prev-button,
+  #next-button {
+    height: 44px !important;
+    max-height: 44px !important;
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* ========================================
+   OVERRIDE EVERYTHING ELSE
+   ======================================== */
+/* Kill ALL other button styles that might interfere */
+.btn-primary,
+.btn-secondary {
+  min-height: unset !important;
+  max-height: 40px !important;
+}
+
+/* FORCE form navigation spacing */
+.form-navigation,
+div.form-navigation {
+  margin-top: 1.5rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+/* ========================================
+   FINAL NUCLEAR OPTIONS
+   ======================================== */
+/* If STILL seeing arrows, kill Font Awesome */
+select.fa::after,
+select .fa::after,
+select i::after,
+select svg::after {
+  display: none !important;
+}
+
+/* Remove any possible arrow characters */
+select {
+  font-family: inherit !important;
+  font-weight: normal !important;
+}
+
+/* THIS MUST BE LOADED LAST IN THE CSS CASCADE!!! */

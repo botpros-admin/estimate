@@ -1,0 +1,298 @@
+/* Mobile-first styles for Scope of Work step */
+
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 100px; /* Space for floating nav */
+}
+
+.header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Tab Navigation */
+.tabContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+}  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.activeTab {
+  background: var(--primary-color);
+  color: white;
+}
+
+.tabIcon {
+  font-size: 20px;
+}
+
+/* Section Styles */
+.section {
+  margin-bottom: 32px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionTitle::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+/* Mobile Swipeable Cards */
+.cardContainer {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.cardTrack {
+  display: flex;
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+.surfaceCard {
+  flex: 0 0 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.cardIcon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.cardIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  opacity: 1;
+  background: var(--primary-color);
+}
+/* Desktop Surface Grid */
+.surfaceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.surfaceItem {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.surfaceItem:hover {
+  border-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.surfaceHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.surfaceIcon {
+  font-size: 24px;
+}
+
+.surfaceLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Preparation Options */
+.prepGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.prepOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px solid transparent;
+}  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prepOption:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.prepActive {
+  background: rgba(var(--primary-color-rgb), 0.1);
+  border-color: var(--primary-color);
+}
+
+.prepIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.prepContent {
+  flex: 1;
+}
+
+.prepLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.prepDescription {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Summary Section */
+.summary {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.summaryTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+.summaryContent {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.summaryCategory {
+  margin-bottom: 8px;
+}
+
+.summaryList {
+  margin: 4px 0 0 20px;
+  padding: 0;
+  list-style: disc;
+}
+
+.emptySummary {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .section,
+  .tabContainer {
+    background: var(--card-bg-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .surfaceItem,
+  .prepOption,
+  .summary {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .surfaceItem:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .prepActive {
+    background: rgba(var(--primary-color-rgb), 0.2);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .prepGrid {
+    grid-template-columns: 1fr;
+  }
+}

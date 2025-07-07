@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Preview - Paint Pro Estimator</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  
+  <!-- Cross-Browser Compatibility - Ensures consistent rendering across browsers -->
+  <link rel="stylesheet" href="../css/cross-browser-compatibility.css">
+  
+  <link rel="stylesheet" href="../css/contract-preview-final-fix.css">
+  <link rel="stylesheet" href="../css/print-optimization.css">
+  
+  <!-- Print Preview Styles -->
+  <style>
+    /* Reset root variables that might affect width */
+    :root {
+      --header-max-width: 100% !important;
+      --container-max-width: 100% !important;
+    }
+    
+    /* CRITICAL: Force header to full width on all devices */
+    #app-header {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      position: relative !important;
+      display: block !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+    
+    #app-header * {
+      max-width: 100% !important;
+    }
+    
+    #header-content,
+    .header-content,
+    #app-header #header-content,
+    #app-header .header-content {
+      max-width: 100% !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 20px !important;
+      box-sizing: border-box !important;
+    }
+    
+    /* Ensure header spans full width */
+    #app-header,
+    .app-header {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      position: relative;
+      left: 0;
+      right: 0;
+      display: block !important;
+      box-sizing: border-box !important;
+    }
+    
+    /* Fix header inner container if it exists */
+    .app-header > *,
+    .app-header .container,
+    .app-header .header-content,
+    .app-header .header-inner,
+    .app-header nav,
+    .app-header .navbar {
+      max-width: 100% !important;
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    
+    /* Ensure no horizontal scrolling */
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+    
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Fix header content overflow */
+    #header-content {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      flex-wrap: nowrap !important;
+    }
+    
+    /* Ensure contact info is visible */
+    #app-header .header-contact,
+    #app-header .header-right,
+    #app-header .contact-info {
+      flex-shrink: 1 !important;
+      min-width: 0 !important;
+      margin-right: 0 !important;
+      padding-right: 0 !important;
+    }
+    
+    /* Prevent horizontal scroll */
+    html {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    body {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    /* Hide elements during print */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        background: white;
+      }
+      
+      .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+      
+      /* Ensure page headers are visible when printed */
+      .page-header {
+        color: #4b5563 !important; /* gray-600 for better print visibility */
+      }
+    }
+    
+    /* Page setup */
+    @page {
+      size: 8.5in 11in;
+      margin: 0;
+    }
+    
+    /* Print preview container */
+    body {
+      background: #525659;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    /* Ensure no parent containers limit width */
+    body > * {
+      max-width: 100% !important;
+    }
+    
+    .print-preview-container {
+      padding: 20px 0;
+      min-height: 100vh;
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Individual pages */
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto 20px;
+      background: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Page content area */
+    .page-content {
+      padding: 0.75in 0.75in 1in 0.75in;
+      flex: 1;
+      position: relative;
+      overflow: visible;
+    }
+    
+    /* Page numbers */
+    .page-number {
+      position: absolute;
+      bottom: 0.5in;
+      right: 0.75in;
+      font-size: 10pt;
+      color: #666;
+    }
+    
+    /* Watermark */
+    .page-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      opacity: 0.08;
+      z-index: 1;
+      pointer-events: none;
+      background-image: url('../img/hartzell_watermark.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    
+    /* Fallback watermark text */
+    .watermark-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 120px;
+      font-weight: bold;
+      color: rgba(0, 102, 204, 0.08);
+      white-space: nowrap;
+      user-select: none;
+    }
+    
+    /* Header styles */
+    .contract-header {
+      position: relative;
+      z-index: 10;
+      margin-bottom: 30px;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-section h2 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #0066cc;
+      margin: 0;
+    }
+    
+    .logo-section img {
+      max-width: 250px;
+      max-height: 80px;
+      height: auto;
+      display: block;
+    }
+    
+    .contact-section {
+      text-align: right;
+      font-size: 10pt;
+      line-height: 1.4;
+    }
+    
+    .contact-numbers {
+      font-size: 9pt;
+      color: #00B4D8;
+      font-weight: bold;
+    }
+    
+    .company-info {
+      line-height: 1.3;
+    }
+    
+    .company-info div:first-child {
+      font-weight: bold;
+    }
+    
+    .dotted-separator {
+      width: 100%;
+      height: 13px;
+      margin: 10px 0 15px 0;
+      overflow: hidden;
+      clear: both;
+    }
+    
+    .dotted-separator img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      opacity: 0.7;
+    }
+    
+    /* Document styles */
+    .document-date {
+      text-align: left;
+      margin: 15px 0 15px 0;
+      font-size: 11pt;
+      font-weight: bold;
+    }
+    
+    .document-title {
+      text-align: center;
+      font-size: 18pt;
+      font-weight: bold;
+      margin: 20px 0;
+      text-transform: uppercase;
+      color: #1f2937;
+    }
+    
+    /* Client info box */
+    .client-info {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+    
+    .client-info-row {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 11pt;
+    }
+    
+    .client-info-label {
+      font-weight: bold;
+      width: 140px;
+      flex-shrink: 0;
+    }
+    
+    .client-info-value {
+      flex: 1;
+    }
+    
+    /* Content sections */
+    .content-section {
+      margin: 25px 0;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .section-title {
+      font-weight: bold;
+      font-size: 13pt;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #0066cc;
+      padding-bottom: 5px;
+    }
+    
+    .section-content {
+      font-size: 11pt;
+      line-height: 1.6;
+    }
+    
+    /* Footer */
+    .page-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 50px 30px;
+      font-size: 9pt;
+      text-align: center;
+      background: white;
+      z-index: 10;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .footer-column {
+      text-align: center;
+      flex: 1;
+    }
+    
+    .footer-county {
+      color: #00B4D8;
+      font-weight: bold;
+      font-size: 10pt;
+      margin-bottom: 3px;
+    }
+    
+    .footer-cgc {
+      color: #00B4D8;
+      font-weight: bold;
+      font-size: 10pt;
+      margin-bottom: 3px;
+    }
+    
+    .footer-license {
+      color: #666;
+      font-weight: normal;
+      font-size: 9pt;
+    }
+    
+    .footer-website {
+      color: #000;
+      font-weight: bold;
+      font-size: 10pt;
+    }
+    
+    /* Signature section */
+    .signature-section {
+      margin-top: 50px;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    
+    .signature-block {
+      text-align: left;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    
+    /* Ensure first signature block uses full width */
+    .signature-block:first-child {
+      padding-right: 0;
+      margin-right: 0;
+    }
+    
+    .signature-block:first-child .signature-line {
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    .signature-line {
+      border-bottom: 2px solid #000;
+      height: 50px;
+      margin-bottom: 5px;
+      position: relative;
+      padding: 0;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    
+    #client-signature-line {
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 300px;
+    }
+    
+    #client-signature-line:hover {
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+    
+    #sign-here-text {
+      transition: color 0.2s ease;
+    }
+    
+    #client-signature-line:hover #sign-here-text {
+      color: #3b82f6;
+    }
+    
+    .signature-label {
+      font-size: 10pt;
+      color: #666;
+      text-align: left;
+    }
+    
+    /* Ensure signature date displays properly */
+    .signature-date-display {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    /* Force signature positioning on print */
+    @media print {
+      #client-signature-canvas {
+        left: 0 !important;
+        width: 100% !important;
+      }
+      
+      .signature-line {
+        overflow: visible !important;
+      }
+    }
+    
+    /* Contact section hover effects */
+    .contact-numbers a:hover {
+      text-decoration: underline;
+    }
+    
+    .client-info-value a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Page headers for pages 2+ */
+    .page-header {
+      color: #8b92a0; /* Custom gray - lighter than gray-500 but darker than gray-400 */
+      font-size: 11pt;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+    
+    .page-header > div {
+      font-weight: 600;
+    }
+    
+    /* Action bar */
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 1000;
+      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Loading */
+    .loading-spinner {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 50px auto;
+    }
+    
+    .signature-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .signature-modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .signature-canvas {
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      cursor: crosshair;
+      width: 100%;
+      height: 150px;
+      background-color: white;
+      touch-action: none;
+      background-image: linear-gradient(to right, transparent 0%, transparent 10%, rgba(59, 130, 246, 0.02) 10%, rgba(59, 130, 246, 0.02) 90%, transparent 90%, transparent 100%);
+    }
+    
+    .signature-controls {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .signature-date {
+      font-size: 12pt;
+      color: #666;
+      margin-top: 10px;
+    }
+    
+    @media (max-width: 600px) {
+      .signature-modal-content {
+        margin: 10% auto;
+        width: 95%;
+      }
+      
+      .signature-controls button {
+        flex: 1;
+        min-width: 100px;
+      }
+    }
+    
+    /* Mobile orientation overlay */
+    .orientation-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      z-index: 99999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .orientation-overlay.show {
+      display: flex;
+    }
+    
+    .rotate-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      animation: rotatePhone 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes rotatePhone {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(-80deg); }
+      100% { transform: rotate(-90deg); }
+    }
+    
+    .orientation-message {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .orientation-submessage {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* Show overlay only on mobile in portrait mode */
+    @media only screen and (max-width: 768px) and (orientation: portrait) {
+      .orientation-overlay {
+        display: flex;
+      }
+      
+      .print-preview-container,
+      .action-bar,
+      .app-header {
+        display: none !important;
+      }
+    }
+    
+    /* Mobile landscape adjustments */
+    @media only screen and (max-width: 896px) and (orientation: landscape) {
+      /* Force header to full width on mobile landscape */
+      #app-header,
+      .app-header,
+      header {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        position: fixed !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+        box-sizing: border-box !important;
+      }
+      
+      /* Override any padding on header children */
+      #app-header > *,
+      .app-header > *,
+      header > * {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
+      /* Ensure content doesn't overflow */
+      #app-header #header-content,
+      #app-header .header-content {
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        width: 100vw;
+      }
+      
+      .print-preview-container {
+        padding: 10px 0;
+        margin-top: 60px; /* Account for fixed header */
+        width: 100%;
+      }
+      
+      .page {
+        margin: 0 auto 10px;
+        max-width: 100%;
+      }
+      
+      .action-bar {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+    }
+    
+    /* Additional mobile styles for all orientations */
+    @media only screen and (max-width: 768px) {
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+      }
+    }
+    
+    /* Override header component max-width from header.js */
+    #header-content,
+    .header-content {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    
+    @media screen and (max-width: 1024px) {
+      #header-content,
+      .header-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+    }
+    @media screen and (max-width: 1024px) {
+      #app-header {
+        width: 100% !important;
+        max-width: none !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      
+      #app-header .header-content,
+      #app-header .container,
+      #app-header nav {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+      }
+      
+      /* Remove any transforms or translations */
+      #app-header,
+      #app-header * {
+        transform: none !important;
+        translate: none !important;
+      }
+    }
+    /* Fix header navigation overflow on mobile */
+    @media screen and (max-width: 768px) {
+      #app-header .header-nav,
+      #app-header .header-links,
+      #app-header nav {
+        font-size: 14px !important;
+        gap: 10px !important;
+      }
+      
+      #app-header .header-contact,
+      #app-header .contact-info {
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+      }
+      
+      /* Ensure proper spacing */
+      #header-content,
+      .header-content {
+        padding: 0 10px !important;
+      }
+    }
+    
+    /* Critical header fix - override everything */
+    @media all {
+      #app-header #header-content {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+    }
+    
+    /* Mobile specific */
+    @media screen and (max-width: 1200px) {
+      #app-header,
+      #app-header #header-content,
+      #app-header .header-content {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+    }
+    
+    /* Absolutely force header to full width on mobile landscape */
+    @media only screen and (orientation: landscape) {
+      html body #app-header,
+      html body #app-header #header-content,
+      html body #app-header .header-content,
+      html body .app-header,
+      html body .app-header .header-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        transform: none !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+      }
+      
+      html body header#app-header > div#header-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 20px !important;
+        box-sizing: border-box !important;
+      }
+      
+      /* Ensure contact info doesn't overflow */
+      #app-header .header-contact,
+      #app-header .contact-info,
+      #app-header .header-right {
+        padding-right: 0 !important;
+        margin-right: 0 !important;
+        flex-shrink: 0 !important;
+      }
+      
+      /* Adjust font sizes for mobile */
+      @media (max-width: 768px) {
+        #app-header .header-contact {
+          font-size: 11px !important;
+        }
+      }
+      
+      body {
+        width: 100% !important;
+        overflow-x: hidden !important;
+      }
+    }
+    /* Fix for proper containment */
+    @media screen and (max-width: 768px) {
+      #app-header {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      
+      #header-content {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 10px !important;
+        gap: 10px !important;
+      }
+      
+      #header-content > * {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
+      
+      .header-logo-container {
+        flex: 0 0 auto !important;
+      }
+      
+      .header-contact {
+        text-align: right !important;
+        overflow: hidden !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Orientation Overlay -->
+  <div class="orientation-overlay" id="orientation-overlay">
+    <svg class="rotate-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Phone icon in portrait -->
+      <g id="phone-portrait">
+        <rect x="30" y="10" width="40" height="60" rx="5" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/>
+        <rect x="35" y="17" width="30" height="40" fill="#fff" stroke="#3b82f6" stroke-width="1"/>
+        <circle cx="50" cy="63" r="3" fill="#3b82f6"/>
+      </g>
+      <!-- Curved rotation arrow -->
+      <path d="M 75 35 A 20 20 0 0 1 65 55" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+      <!-- Arrow head -->
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#3b82f6" />
+        </marker>
+      </defs>
+      <!-- Phone icon in landscape (faded) -->
+      <g opacity="0.3">
+        <rect x="20" y="35" width="60" height="30" rx="5" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/>
+        <rect x="27" y="40" width="40" height="20" fill="#fff" stroke="#3b82f6" stroke-width="1"/>
+        <circle cx="73" cy="50" r="3" fill="#3b82f6"/>
+      </g>
+    </svg>
+    <div class="orientation-message">Please rotate your device</div>
+    <div class="orientation-submessage">This contract is best viewed in landscape mode</div>
+  </div>
+  
+  <header class="app-header no-print" id="app-header" style="width: 100% !important; max-width: 100% !important; margin: 0 !important; left: 0 !important; right: 0 !important; position: relative !important; display: block !important;"></header>
+  
+  <!-- Print Preview Container -->
+  <div class="print-preview-container" id="print-preview-container">
+    <!-- Pages will be dynamically generated here -->
+  </div>
+  
+  <!-- Action Bar -->
+  <div class="action-bar no-print">
+    <button class="btn btn-secondary" onclick="editContract()">
+      <i class="fas fa-edit"></i> Edit Contract
+    </button>
+    <button class="btn btn-primary" onclick="printContract()">
+      <i class="fas fa-print"></i> Print
+    </button>
+    <button class="btn btn-primary" onclick="exportPDF()">
+      <i class="fas fa-file-pdf"></i> Export PDF
+    </button>
+    <button class="btn btn-primary" onclick="emailContract()">
+      <i class="fas fa-envelope"></i> Email
+    </button>
+    <button class="btn btn-success" onclick="finalizeContract()">
+      <i class="fas fa-check"></i> Finalize
+    </button>
+  </div>
+  
+  <!-- Error Handler -->
+  <script src="../js/services/errorHandler.js"></script>
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/components/header.js"></script>
+  <script src="../js/consolidated/contract-preview-enhancements.js"></script>
+  
+  <script>
+    // Contract data variable
+    let contractData = null;
+    
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM ready, loading contract...');
+      loadContractData();
+      
+      // Check orientation on load
+      checkOrientation();
+      
+      // Fix header width on mobile
+      fixHeaderWidth();
+      
+      // Also fix header after a delay to ensure component is rendered
+      setTimeout(fixHeaderWidth, 100);
+      setTimeout(fixHeaderWidth, 500);
+      
+      // Watch for header changes
+      const headerObserver = new MutationObserver(function(mutations) {
+        fixHeaderWidth();
+      });
+      
+      const headerEl = document.getElementById('app-header');
+      if (headerEl) {
+        headerObserver.observe(headerEl, { childList: true, subtree: true });
+      }
+      
+      // Test if signature functions are available
+      console.log('E-signature functions available:', {
+        showSignatureModal: typeof showSignatureModal,
+        clearSignature: typeof clearSignature,
+        saveSignature: typeof saveSignature
+      });
+    });
+    
+    // Fix header width issues on mobile
+    function fixHeaderWidth() {
+      const header = document.getElementById('app-header');
+      if (header) {
+        // Apply fix for all screen sizes, not just mobile
+        header.style.width = '100%';
+        header.style.maxWidth = '100%';
+        header.style.left = '0';
+        header.style.right = '0';
+        header.style.margin = '0';
+        header.style.position = 'relative';
+        
+        // Remove any style attributes that might limit width
+        header.style.removeProperty('max-width');
+        
+        // Also fix any inner containers
+        const innerContainers = header.querySelectorAll('.container, .header-content, #header-content, nav');
+        innerContainers.forEach(container => {
+          container.style.maxWidth = '100%';
+          container.style.width = '100%';
+          container.style.margin = '0';
+          container.style.removeProperty('max-width');
+        });
+        
+        // Specifically target header-content from header.js
+        const headerContent = document.getElementById('header-content') || header.querySelector('.header-content');
+        if (headerContent) {
+          headerContent.style.maxWidth = '100%';
+          headerContent.style.width = '100%';
+          headerContent.style.margin = '0';
+          headerContent.style.removeProperty('max-width');
+          
+          // Force override any computed styles
+          headerContent.setAttribute('style', headerContent.getAttribute('style') + '; max-width: 100% !important; width: 100% !important; margin: 0 !important;');
+          
+          // Log for debugging
+          console.log('Header fix applied:', {
+            header: header.style.width,
+            headerContent: headerContent.style.width,
+            windowWidth: window.innerWidth
+          });
+        }
+      }
+    }
+    
+    // Also fix on window load
+    window.addEventListener('load', function() {
+      fixHeaderWidth();
+      console.log('Window loaded - applying header fix');
+      
+      // Add dynamic style to force header width
+      const style = document.createElement('style');
+      style.innerHTML = `
+        #app-header, #app-header #header-content {
+          max-width: 100% !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        #header-content {
+          padding: 0 15px !important;
+          overflow: hidden !important;
+        }
+        #header-content > * {
+          flex-shrink: 1 !important;
+        }
+        @media (max-width: 768px) {
+          #header-content {
+            padding: 0 10px !important;
+          }
+          .header-contact {
+            font-size: 11px !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    });
+    
+    // Check device orientation
+    function checkOrientation() {
+      const overlay = document.getElementById('orientation-overlay');
+      if (!overlay) return;
+      
+      // Check if it's a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isSmallScreen = window.innerWidth <= 768;
+      
+      if (isMobile || isSmallScreen) {
+        if (window.innerHeight > window.innerWidth) {
+          // Portrait mode
+          overlay.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        } else {
+          // Landscape mode
+          overlay.classList.remove('show');
+          document.body.style.overflow = '';
+        }
+      } else {
+        // Not mobile
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', function() {
+      setTimeout(function() {
+        checkOrientation();
+        fixHeaderWidth();
+      }, 100); // Small delay to ensure dimensions are updated
+    });
+    
+    // Also listen for resize events (for browsers that don't support orientationchange)
+    window.addEventListener('resize', function() {
+      checkOrientation();
+      fixHeaderWidth();
+    });
+    
+    // Load contract data
+    function loadContractData() {
+      try {
+        // Get data from localStorage - check multiple possible keys
+        let data = localStorage.getItem('contractPreview') || 
+                  localStorage.getItem('contractState') || 
+                  localStorage.getItem('paintEstimatorState');
+        
+        if (!data) {
+          // Use sample data
+          data = JSON.stringify(getSampleData());
+        }
+        
+        let parsedData = JSON.parse(data);
+        
+        // If data is wrapped in a state object, extract it
+        if (parsedData.data) {
+          contractData = parsedData.data;
+        } else {
+          contractData = parsedData;
+        }
+        
+        // If we have formState included, merge relevant data
+        if (parsedData.formState && parsedData.formState.data) {
+          // Merge formState data that might be missing
+          const fsData = parsedData.formState.data;
+          contractData.communityName = contractData.communityName || fsData.communityName;
+          contractData.projectType = contractData.projectType || fsData.projectType;
+          contractData.projectName = contractData.projectName || fsData.projectName;
+          contractData.serviceTypes = contractData.serviceTypes || fsData.serviceTypes;
+          contractData.scope = contractData.scope || fsData.scope;
+          contractData.abrasiveMethods = contractData.abrasiveMethods || fsData.abrasiveMethods;
+          
+          // Handle client info if missing
+          if (!contractData.clientName && fsData.contacts && fsData.contacts.length > 0) {
+            contractData.clientName = fsData.contacts[0].name;
+            contractData.clientEmail = fsData.contacts[0].email;
+            contractData.clientPhone = fsData.contacts[0].phone;
+          }
+          
+          // Handle address if missing
+          if (!contractData.propertyAddress && fsData.siteAddress) {
+            contractData.propertyAddress = fsData.siteAddress.street;
+            contractData.city = fsData.siteAddress.city;
+            contractData.state = fsData.siteAddress.state;
+            contractData.zipCode = fsData.siteAddress.zip;
+          }
+        }
+        
+        // Handle nested data structure if exists
+        if (contractData.data) {
+          // Merge nested data with top level
+          contractData = { ...contractData.data, ...contractData };
+        }
+        
+        // Handle legacy address format or Google Places format
+        if (contractData.propertyAddress && !contractData.propertyCity) {
+          console.log('Property address before parsing:', contractData.propertyAddress);
+          // Parse address if it's in a single string format
+          const addressParts = parseAddress(contractData.propertyAddress);
+          if (addressParts) {
+            contractData.propertyAddress = addressParts.street;
+            contractData.propertyCity = addressParts.city;
+            contractData.propertyState = addressParts.state;
+            contractData.propertyZip = addressParts.zip;
+            console.log('Parsed address parts:', addressParts);
+          }
+        }
+        
+        // Also check for alternative field names
+        if (!contractData.propertyCity) {
+          contractData.propertyCity = contractData.city || '';
+          contractData.propertyState = contractData.state || '';
+          contractData.propertyZip = contractData.zip || contractData.zipCode || '';
+        }
+        
+        console.log('Contract data loaded:', contractData);
+        console.log('All available fields:', Object.keys(contractData).sort());
+        console.log('Address fields:', {
+          propertyAddress: contractData.propertyAddress,
+          propertyCity: contractData.propertyCity,
+          propertyState: contractData.propertyState,
+          propertyZip: contractData.propertyZip,
+          city: contractData.city,
+          state: contractData.state,
+          zip: contractData.zip,
+          address: contractData.address,
+          clientAddress: contractData.clientAddress,
+          siteAddress: contractData.siteAddress
+        });
+        console.log('Community and Company fields:', {
+          communityName: contractData.communityName,
+          companyName: contractData.companyName,
+          locationName: contractData.locationName,
+          projectType: contractData.projectType,
+          projectName: contractData.projectName
+        });
+        
+        // Generate the contract pages
+        generateContractPages();
+      } catch (error) {
+        console.error('Error loading contract:', error);
+        document.getElementById('print-preview-container').innerHTML = 
+          '<div class="page"><div class="page-content"><div class="text-center">Error loading contract data. Please try again.</div></div></div>';
+      }
+    }
+    
+    // Parse address string into components
+    function parseAddress(addressStr) {
+      if (!addressStr) return null;
+      
+      // Remove country if present (USA, US, United States)
+      addressStr = addressStr.replace(/,?\s*(USA|US|United States)$/i, '').trim();
+      
+      // Try to parse structured format: "123 Main St, Fort Lauderdale, FL 33301"
+      let match = addressStr.match(/^(.+?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
+      if (match) {
+        return {
+          street: match[1].trim(),
+          city: match[2].trim(),
+          state: match[3].trim(),
+          zip: match[4].trim()
+        };
+      }
+      
+      // Try format without comma before state: "123 Main St, Fort Lauderdale FL 33301"
+      match = addressStr.match(/^(.+?),\s*([^,]+)\s+([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
+      if (match) {
+        return {
+          street: match[1].trim(),
+          city: match[2].trim(),
+          state: match[3].trim(),
+          zip: match[4].trim()
+        };
+      }
+      
+      // Try to parse less structured format
+      const parts = addressStr.split(',').map(p => p.trim());
+      if (parts.length >= 2) {
+        // Last part might be "State ZIP"
+        const lastPart = parts[parts.length - 1];
+        const stateZipMatch = lastPart.match(/^([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
+        if (stateZipMatch) {
+          return {
+            street: parts[0],
+            city: parts.slice(1, -1).join(', ') || parts[0],
+            state: stateZipMatch[1],
+            zip: stateZipMatch[2]
+          };
+        }
+      }
+      
+      // Return null if can't parse
+      return null;
+    }
+    
+    // Generate contract pages
+    function generateContractPages() {
+      const container = document.getElementById('print-preview-container');
+      if (!container) {
+        console.error('Preview container not found');
+        return;
+      }
+      
+      // Generate page 1
+      const page1Content = `
+        <div class="page">
+          <!-- Watermark -->
+          <div class="page-watermark">
+            <div class="watermark-text">HARTZELL</div>
+          </div>
+          
+          <div class="page-content">
+            <!-- Header -->
+            <div class="contract-header">
+              <div class="header-content">
+                <div class="logo-section">
+                  <img src="../img/hatzell_contract_top_left_logo.png" alt="Hartzell Painting" 
+                       style="max-width: 310px; max-height: 99px; height: auto;"
+                       onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend', '<h2 style=\'font-size: 35px; font-weight: bold; color: #0066cc; margin: 0;\'>Hartzell Painting</h2>');">
+                </div>
+                <div class="contact-section">
+                  <div class="contact-numbers"><a href="tel:954-957-0761" style="color: #00B4D8; text-decoration: none;">O: 954-957-0761</a>&nbsp;&nbsp;&nbsp;<a href="tel:954-957-9768" style="color: #00B4D8; text-decoration: none;">F: 954-957-9768</a></div>
+                  <div class="company-info">
+                    <div style="font-weight: bold;">Hartzell Painting</div>
+                    <div>3195 N Powerline Rd., Suite 101</div>
+                    <div>Pompano Beach, FL 33069</div>
+                  </div>
+                </div>
+              </div>
+              <div class="dotted-separator" style="margin-top: 44px; height: 15px;">
+                <img src="../img/bluedottedline.svg" alt="Separator" style="transform: scale(1.15); opacity: 0.7;"
+                     onerror="this.style.display='none'; this.parentElement.style.borderBottom='2px dotted rgba(0, 180, 216, 0.7)';">
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="document-date">${formatDate(new Date())}</div>
+
+            <!-- Title -->
+            <h2 class="document-title">${generateContractTitle()}</h2>
+
+            <!-- Client Information -->
+            <div class="client-info">
+              ${generateClientInfo()}
+            </div>
+
+            <!-- Scope of Work Summary -->
+            <div class="content-section">
+              <div class="section-title">SCOPE OF WORK IN SUMMARY</div>
+              <div class="section-content">
+                ${generateScopeSummary()}
+              </div>
+            </div>
+
+            <!-- Scope of Work Details -->
+            <div class="content-section">
+              <div class="section-title">SCOPE OF WORK IN DETAIL</div>
+              <div class="section-content">
+                ${generateScopeDetails()}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Page number -->
+          <div class="page-number">Page 1 of 3</div>
+          
+          <!-- Footer for first page only -->
+          <div class="page-footer">
+            <div class="footer-content">
+              <div class="footer-column">
+                <div class="footer-county">BROWARD</div>
+                <div class="footer-license">89-5201-P</div>
+              </div>
+              <div class="footer-column">
+                <div class="footer-county">PALM BEACH</div>
+                <div class="footer-license">U-16217</div>
+              </div>
+              <div class="footer-column">
+                <div class="footer-cgc">CGC 1517138</div>
+                <div class="footer-website"><a href="https://www.myhartzell.com" target="_blank"><img src="../img/www_myhartzell_com.png" alt="www.MYHARTZELL.com" style="height: 23px; width: auto; transform: translateY(-4px) scaleX(1.24); display: inline-block;"></a></div>
+              </div>
+              <div class="footer-column">
+                <div class="footer-county">MIAMI-DADE</div>
+                <div class="footer-license">1160001</div>
+              </div>
+              <div class="footer-column">
+                <div class="footer-county">MARTIN</div>
+                <div class="footer-license">SP02651</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Generate page 2
+      const page2Content = `
+        <div class="page">
+          <!-- Watermark -->
+          <div class="page-watermark">
+            <div class="watermark-text">HARTZELL</div>
+          </div>
+          
+          <div class="page-content">
+            <!-- Page Header -->
+            <div class="page-header">
+              <div>${contractData.clientName || 'N/A'}</div>
+              <div>${generateContractTitle()}</div>
+              <div>06.12.2025</div>
+              <div>Page 2 of 3</div>
+            </div>
+            
+            <!-- Materials Section -->
+            <div class="content-section">
+              <div class="section-title">MATERIALS & PRODUCTS</div>
+              <div class="section-content">
+                ${generateMaterialsSection()}
+              </div>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="content-section">
+              <div class="section-title">TERMS & CONDITIONS</div>
+              <div class="section-content">
+                ${generateTermsSection()}
+              </div>
+            </div>
+
+            <!-- Contract Value -->
+            <div class="content-section">
+              <div class="section-title">CONTRACT VALUE</div>
+              <div class="section-content">
+                ${generatePricingSection()}
+              </div>
+            </div>
+
+            <!-- Payment Terms -->
+            <div class="content-section">
+              <div class="section-title">PAYMENT TERMS</div>
+              <div class="section-content">
+                ${generatePaymentTerms()}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Generate page 3
+      const page3Content = `
+        <div class="page">
+          <!-- Watermark -->
+          <div class="page-watermark">
+            <div class="watermark-text">HARTZELL</div>
+          </div>
+          
+          <div class="page-content">
+            <!-- Page Header -->
+            <div class="page-header">
+              <div>${contractData.clientName || 'N/A'}</div>
+              <div>${generateContractTitle()}</div>
+              <div>06.12.2025</div>
+              <div>Page 3 of 3</div>
+            </div>
+            
+            <!-- Additional Terms -->
+            <div class="content-section">
+              <div class="section-title">ADDITIONAL TERMS</div>
+              <div class="section-content">
+                <p><strong>Warranty:</strong> Hartzell Painting warrants its workmanship for a period of ${contractData.warrantyPeriod || '2'} year(s) from the date of completion.</p>
+                <p><strong>Change Orders:</strong> Any changes to the scope of work must be approved in writing before implementation. Additional charges may apply.</p>
+                <p><strong>Insurance:</strong> Hartzell Painting maintains comprehensive liability insurance and workers' compensation coverage.</p>
+              </div>
+            </div>
+
+            <!-- Acceptance -->
+            <div class="content-section">
+              <div class="section-title">ACCEPTANCE</div>
+              <div class="section-content">
+                <p>This proposal is subject to acceptance within thirty (30) days and is void thereafter at the option of Hartzell Painting.</p>
+                <p>By signing below, both parties agree to the terms and conditions outlined in this contract.</p>
+              </div>
+            </div>
+
+            <!-- Signatures -->
+            <div class="signature-section">
+              <div class="section-title">AUTHORIZATION</div>
+              <div class="signature-grid">
+                <div class="signature-block">
+                  <div class="signature-line" id="client-signature-line" style="position: relative; cursor: pointer; min-height: 50px; overflow: hidden;" onclick="showSignatureModal()">
+                    <canvas id="client-signature-canvas" style="position: absolute; top: 0; left: 0; width: calc(100% - 50px); height: 100%; display: none;"></canvas>
+                    <span id="sign-here-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #999; font-size: 12pt; pointer-events: none; user-select: none;">
+                      <i class="fas fa-pen" style="margin-right: 5px;"></i>Click here to sign
+                    </span>
+                  </div>
+                  <div class="signature-label">Client Signature / Date</div>
+                  <div style="margin-top: 20px;">
+                    <div class="signature-line" style="display: flex; align-items: flex-end; justify-content: flex-start; padding-bottom: 5px;">
+                      <span id="client-print-name" style="font-size: 14pt; padding-left: 10px;">${contractData.clientName || ''}</span>
+                    </div>
+                    <div class="signature-label">Print Name</div>
+                  </div>
+                </div>
+                <div class="signature-block">
+                  <div class="signature-line"></div>
+                  <div class="signature-label">Hartzell Representative / Date</div>
+                  <div style="margin-top: 20px;">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Print Name</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Combine all pages
+      container.innerHTML = page1Content + page2Content + page3Content;
+      
+      // Initialize e-signature if client name is available
+      if (contractData.clientName) {
+        const printNameElement = document.getElementById('client-print-name');
+        if (printNameElement) {
+          printNameElement.textContent = contractData.clientName;
+        }
+      }
+      
+      // Debug - check if signature elements are present
+      console.log('Signature elements check:', {
+        signatureLine: document.getElementById('client-signature-line'),
+        signCanvas: document.getElementById('client-signature-canvas'),
+        signText: document.getElementById('sign-here-text'),
+        printName: document.getElementById('client-print-name')
+      });
+    }
+    
+    // Generate client info - only show fields with values
+    function generateClientInfo() {
+      let html = '';
+      
+      // Define all possible fields based on project type - in display order
+      const fieldMappings = {
+        'Client Name': contractData.clientName || contractData.client_name,
+        'Company': contractData.companyName || contractData.company_name || contractData.company,
+        'Community Name': contractData.communityName || contractData.community_name || contractData.community,
+        'Project Name': contractData.projectName || contractData.project_name,
+        'Location Name': contractData.locationName || contractData.location_name || contractData.location,
+        'Building Name': contractData.buildingName || contractData.building_name,
+        'Unit Number': contractData.unitNumber || contractData.unit_number,
+        'Floor': contractData.floor,
+        'Property Address': getPropertyAddress(),
+        'Phone': contractData.clientPhone || contractData.client_phone || contractData.phone,
+        'Email': contractData.clientEmail || contractData.client_email || contractData.email,
+        'Property Manager': contractData.propertyManager || contractData.property_manager,
+        'Project Manager': contractData.projectManager || contractData.project_manager,
+        'Site Contact': contractData.siteContact || contractData.site_contact,
+        'Billing Contact': contractData.billingContact || contractData.billing_contact,
+        'Government Jurisdiction': contractData.governmentJurisdiction || contractData.government_jurisdiction,
+        'Department': contractData.department,
+        'Square Footage': contractData.squareFootage || contractData.square_footage,
+        'Access Instructions': contractData.accessInstructions || contractData.access_instructions,
+        'Special Requirements': contractData.specialRequirements || contractData.special_requirements
+      };
+      
+      // Only add fields that have values
+      for (const [label, value] of Object.entries(fieldMappings)) {
+        if (value && value.trim() !== '') {
+          let displayValue = value;
+          
+          // Make phone numbers clickable
+          if (label === 'Phone' && value.match(/[\d\s\-\(\)]+/)) {
+            const cleanPhone = value.replace(/\D/g, '');
+            displayValue = `<a href="tel:${cleanPhone}" style="color: inherit; text-decoration: none;">${value}</a>`;
+          }
+          
+          // Make email addresses clickable
+          if (label === 'Email' && value.includes('@')) {
+            displayValue = `<a href="mailto:${value}" style="color: inherit; text-decoration: none;">${value}</a>`;
+          }
+          
+          html += `
+            <div class="client-info-row">
+              <span class="client-info-label">${label}:</span>
+              <span class="client-info-value">${displayValue}</span>
+            </div>
+          `;
+        }
+      }
+      
+      // If no fields have values, show a default message
+      if (html === '') {
+        html = '<div class="client-info-row"><span class="client-info-value">No client information provided</span></div>';
+      }
+      
+      return html;
+    }
+    
+    // Format full address from components
+    function formatFullAddress(street, city, state, zip) {
+      // If street contains the full address already
+      if (street && street.includes(',')) {
+        // Address might already be formatted, remove country if present
+        const parts = street.split(',').map(p => p.trim());
+        // Remove USA or any country (typically last part)
+        if (parts[parts.length - 1].match(/^(USA|US|United States)$/i)) {
+          parts.pop();
+        }
+        return parts.join(', ');
+      }
+      
+      // Check if we have address components in contractData
+      if (!city && !state && !zip) {
+        // Try to get from alternative field names
+        city = contractData.city || contractData.propertyCity || '';
+        state = contractData.state || contractData.propertyState || '';
+        zip = contractData.zip || contractData.propertyZip || contractData.zipCode || contractData.propertyZipCode || '';
+      }
+      
+      // Build address from components
+      const addressParts = [];
+      if (street) addressParts.push(street);
+      if (city) addressParts.push(city);
+      if (state && zip) {
+        addressParts.push(`${state} ${zip}`);
+      } else if (state) {
+        addressParts.push(state);
+      } else if (zip) {
+        addressParts.push(zip);
+      }
+      
+      // If we only have street, try to parse it as a full address
+      if (addressParts.length === 1 && street) {
+        // Check if this might be a partial address that needs parsing
+        const parsed = parseAddress(street);
+        if (parsed) {
+          return formatFullAddress(parsed.street, parsed.city, parsed.state, parsed.zip);
+        }
+      }
+      
+      return addressParts.length > 0 ? addressParts.join(', ') : '';
+    }
+    
+    // Get property address with all possible formats
+    function getPropertyAddress() {
+      // First check if we have a siteAddress object
+      if (contractData.siteAddress && typeof contractData.siteAddress === 'object') {
+        const addr = contractData.siteAddress;
+        return formatFullAddress(addr.street, addr.city, addr.state, addr.zip);
+      }
+      
+      // Then check if we have clientAddress as a string
+      if (contractData.clientAddress && typeof contractData.clientAddress === 'string') {
+        // Parse if it's a full address string
+        const parsed = parseAddress(contractData.clientAddress);
+        if (parsed) {
+          return formatFullAddress(parsed.street, parsed.city, parsed.state, parsed.zip);
+        }
+        return contractData.clientAddress;
+      }
+      
+      // Try to use formatFullAddress with separate components
+      const formatted = formatFullAddress(
+        contractData.propertyAddress,
+        contractData.propertyCity || contractData.city,
+        contractData.propertyState || contractData.state,
+        contractData.propertyZip || contractData.zip || contractData.zipCode || contractData.propertyZipCode
+      );
+      
+      // If we got a good result, return it
+      if (formatted && formatted !== contractData.propertyAddress) {
+        return formatted;
+      }
+      
+      // Otherwise, return whatever address we have
+      return contractData.propertyAddress || contractData.address || '';
+    }
+    
+    // Get job site address with all possible formats (currently not used)
+    /*
+    function getJobSiteAddress() {
+      const formatted = formatFullAddress(
+        contractData.jobSiteAddress,
+        contractData.jobSiteCity,
+        contractData.jobSiteState,
+        contractData.jobSiteZip
+      );
+      
+      if (formatted && formatted !== contractData.jobSiteAddress) {
+        return formatted;
+      }
+      
+      return contractData.jobSiteAddress || '';
+    }
+    */
+    
+    // Generate contract title based on service types
+    function generateContractTitle() {
+      const serviceTypes = contractData.serviceTypes || [];
+      const hasAbrasive = serviceTypes.includes('abrasive');
+      const hasPainting = serviceTypes.includes('painting');
+      const scope = contractData.scope || [];
+      const hasInterior = scope.includes('interior');
+      const hasExterior = scope.includes('exterior');
+      
+      let title = '';
+      
+      // Handle abrasive cleaning methods
+      if (hasAbrasive) {
+        const abrasiveMethods = contractData.abrasiveMethods || [];
+        if (abrasiveMethods.includes('pressure')) {
+          title = 'PRESSURE CLEANING';
+        } else if (abrasiveMethods.length > 0) {
+          title = 'ABRASIVE CLEANING';
+        }
+      }
+      
+      // Add painting if selected
+      if (hasPainting) {
+        if (title) title += ' AND ';
+        title += 'PAINTING';
+        
+        // Add scope information
+        if (hasInterior && hasExterior) {
+          title += ' (INTERIOR/EXTERIOR)';
+        } else if (hasInterior) {
+          title += ' (INTERIOR)';
+        } else if (hasExterior) {
+          title += ' (EXTERIOR)';
+        }
+      }
+      
+      // Default to PAINTING CONTRACT if no service types are specified
+      if (!title) {
+        title = 'PAINTING';
+      }
+      
+      title += ' ' + (contractData.documentType || 'CONTRACT');
+      return title;
+    }
+    
+    // Generate scope summary
+    function generateScopeSummary() {
+      if (!contractData || !contractData.surfaces || contractData.surfaces.length === 0) {
+        return 'Complete painting and surface treatment work as specified in detail below.';
+      }
+      
+      // Collect service types
+      const serviceTypes = new Set();
+      const surfacesByType = {};
+      let totalArea = 0;
+      
+      contractData.surfaces.forEach(surface => {
+        const type = surface.serviceType || surface.type || 'painting';
+        serviceTypes.add(type);
+        
+        if (!surfacesByType[type]) {
+          surfacesByType[type] = [];
+        }
+        surfacesByType[type].push(surface.name || 'Area');
+        
+        // Calculate total area
+        if (surface.measurements) {
+          surface.measurements.forEach(m => {
+            totalArea += m.calculatedEntryArea || 0;
+          });
+        }
+      });
+      
+      // Build the summary
+      let summary = '';
+      const serviceArray = Array.from(serviceTypes);
+      
+      if (serviceArray.includes('painting') || serviceArray.includes('interior') || serviceArray.includes('exterior')) {
+        summary = 'Professional painting services';
+      }
+      
+      if (serviceArray.includes('pressure') || serviceArray.includes('pressureWashing')) {
+        summary += summary ? ' and pressure cleaning' : 'Pressure cleaning services';
+      }
+      
+      if (serviceArray.includes('sandblasting')) {
+        summary += summary ? ' and sandblasting' : 'Sandblasting services';
+      }
+      
+      if (serviceArray.includes('abrasive')) {
+        summary += summary ? ' and abrasive cleaning' : 'Abrasive cleaning services';
+      }
+      
+      // Add area count
+      const uniqueAreas = new Set();
+      contractData.surfaces.forEach(s => {
+        if (s.name) uniqueAreas.add(s.name);
+      });
+      
+      summary += ` for ${uniqueAreas.size} designated area${uniqueAreas.size > 1 ? 's' : ''}`;
+      
+      // Add total square footage if available
+      if (totalArea > 0) {
+        summary += ` totaling approximately ${totalArea.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} square feet`;
+      }
+      
+      summary += ', including all necessary surface preparation, materials application, and final cleanup.';
+      
+      return summary;
+    }
+    
+    // Generate scope details
+    function generateScopeDetails() {
+      let html = '<ol style="margin-left: 20px;">';
+      
+      // Preparation
+      if (contractData.preparationSteps && contractData.preparationSteps.length > 0) {
+        html += '<li><strong>Surface Preparation:</strong><ul style="margin-top: 5px;">';
+        contractData.preparationSteps.forEach(step => {
+          const formatted = step.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          html += `<li>${formatted}</li>`;
+        });
+        html += '</ul></li>';
+      }
+      
+      // Surfaces
+      if (contractData.surfaces && contractData.surfaces.length > 0) {
+        html += '<li style="margin-top: 10px;"><strong>Areas to be Serviced:</strong><ul style="margin-top: 5px;">';
+        
+        // Group surfaces by type for better organization
+        const surfaceGroups = {};
+        contractData.surfaces.forEach(surface => {
+          const type = surface.serviceType || surface.type || 'General';
+          if (!surfaceGroups[type]) {
+            surfaceGroups[type] = [];
+          }
+          surfaceGroups[type].push(surface);
+        });
+        
+        // Display grouped surfaces
+        Object.keys(surfaceGroups).forEach(type => {
+          const formattedType = type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, ' $1').trim();
+          html += `<li style="margin-bottom: 8px;"><em>${formattedType}:</em><ul style="margin-top: 3px;">`;
+          
+          surfaceGroups[type].forEach(surface => {
+            let text = surface.name || 'Area';
+            if (surface.measurements && surface.measurements.length > 0) {
+              let totalArea = 0;
+              surface.measurements.forEach(m => {
+                totalArea += m.calculatedEntryArea || 0;
+              });
+              if (totalArea > 0) {
+                text += ` (${totalArea.toFixed(0)} sq ft)`;
+              }
+            }
+            html += `<li>${text}</li>`;
+          });
+          
+          html += '</ul></li>';
+        });
+        
+        html += '</ul></li>';
+      }
+      
+      // Cleanup
+      html += '<li style="margin-top: 10px;"><strong>Final Cleanup:</strong> Complete cleanup of all work areas and proper disposal of debris.</li>';
+      
+      html += '</ol>';
+      return html;
+    }
+    
+    // Generate materials section
+    function generateMaterialsSection() {
+      let html = '<ul>';
+      
+      if (contractData.materials && contractData.materials.length > 0) {
+        contractData.materials.forEach(material => {
+          // Better formatting for paint products
+          let text = '';
+          
+          // Brand name first (if available)
+          if (material.brand) {
+            text = `<strong>${material.brand}</strong>`;
+          }
+          
+          // Product name
+          if (material.name || material.productName) {
+            if (text) text += ' - ';
+            text += material.name || material.productName;
+          } else if (material.selectedProduct && material.selectedProduct.name) {
+            if (text) text += ' - ';
+            text += material.selectedProduct.name;
+          }
+          
+          // Finish type
+          if (material.finish) {
+            text += ` (${material.finish})`;
+          }
+          
+          // Color information
+          if (material.colorStatus === 'selected' && material.colors) {
+            text += ` - Colors: ${material.colors}`;
+          } else if (material.colorStatus === 'tbd') {
+            text += ' - Colors: To Be Determined';
+          } else if (material.colorStatus === 'client-provided') {
+            text += ' - Colors: Client to Provide';
+          }
+          
+          // If we still don't have text, use a default
+          if (!text) {
+            text = 'Premium quality paint products';
+          }
+          
+          html += `<li>${text}</li>`;
+        });
+      } else if (contractData.paintSelections && contractData.paintSelections.length > 0) {
+        // Try paintSelections array as fallback
+        contractData.paintSelections.forEach(selection => {
+          let text = '';
+          
+          if (selection.brand) {
+            text = `<strong>${selection.brand}</strong>`;
+          }
+          
+          if (selection.selectedProduct && selection.selectedProduct.name) {
+            if (text) text += ' - ';
+            text += selection.selectedProduct.name;
+          }
+          
+          if (selection.finish) {
+            text += ` (${selection.finish})`;
+          }
+          
+          if (!text) {
+            text = 'Premium quality paint products';
+          }
+          
+          html += `<li>${text}</li>`;
+        });
+      } else {
+        html += '<li>Premium quality paint products as specified by manufacturer</li>';
+      }
+      
+      html += '</ul>';
+      
+      // Material supply
+      const supplyText = {
+        'contractor': 'All materials to be supplied by Hartzell Painting',
+        'owner': 'All materials to be supplied by owner',
+        'mixed': 'Material supply as specified'
+      };
+      html += `<p style="margin-top: 10px;"><strong>${supplyText[contractData.materialSupply] || supplyText.contractor}</strong></p>`;
+      
+      return html;
+    }
+    
+    // Generate terms section
+    function generateTermsSection() {
+      return `
+        <p><strong>Start Date:</strong> ${formatDate(contractData.startDate)}</p>
+        <p><strong>Estimated Duration:</strong> ${contractData.duration || 'To be determined'}</p>
+        <p><strong>Valid Until:</strong> ${formatDate(contractData.validUntil)}</p>
+        <p><strong>Working Hours:</strong> Monday-Friday 8:00 AM - 5:00 PM</p>
+      `;
+    }
+    
+    // Generate pricing section
+    function generatePricingSection() {
+      const pricing = contractData.pricing || {};
+      let html = '<table style="width: 100%; border-collapse: collapse;">';
+      
+      html += `
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd;">Labor & Materials</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(pricing.basePrice || 0)}</td>
+        </tr>
+      `;
+      
+      if (pricing.materialsPrice && pricing.materialsPrice > 0) {
+        html += `
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">Additional Materials</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(pricing.materialsPrice)}</td>
+          </tr>
+        `;
+      }
+      
+      if (pricing.discount && pricing.discount > 0) {
+        html += `
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">Discount</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">-${formatCurrency(pricing.discount)}</td>
+          </tr>
+        `;
+      }
+      
+      html += `
+        <tr>
+          <td style="padding: 12px; font-weight: bold; font-size: 16pt;">TOTAL CONTRACT VALUE</td>
+          <td style="padding: 12px; font-weight: bold; font-size: 16pt; text-align: right;">${formatCurrency(pricing.total || 0)}</td>
+        </tr>
+      `;
+      
+      html += '</table>';
+      return html;
+    }
+    
+    // Generate payment terms
+    function generatePaymentTerms() {
+      const schedules = {
+        '50-50': '50% deposit upon signing, 50% upon completion',
+        'thirds': '1/3 upon signing, 1/3 at midpoint, 1/3 upon completion',
+        'net-30': 'Payment due within 30 days of completion'
+      };
+      
+      const schedule = schedules[contractData.paymentSchedule] || '20% deposit upon signing, balance due upon completion';
+      
+      return `
+        <p><strong>${schedule}</strong></p>
+        <p>Please note that a 3.5% convenience fee will be applied to all payments made using a credit card.</p>
+      `;
+    }
+    
+    // Get sample data
+    function getSampleData() {
+      return {
+        documentType: 'CONTRACT',
+        documentNumber: 'CON-2025-001',
+        projectType: 'residential',
+        projectName: 'Las Verdes Painting Project',
+        clientName: 'John Smith',
+        companyName: 'ABC Corporation',
+        communityName: 'Las Verdes Community',
+        propertyAddress: '123 Main Street',
+        propertyCity: 'Fort Lauderdale',
+        propertyState: 'FL',
+        propertyZip: '33301',
+        clientPhone: '(954) 555-1234',
+        clientEmail: 'john.smith@email.com',
+        serviceTypes: ['painting'],
+        scope: ['interior', 'exterior'],
+        surfaces: [
+          { type: 'exterior', name: 'Exterior Walls', area: 2500 },
+          { type: 'interior', name: 'Living Room', area: 400 },
+          { type: 'interior', name: 'Bedrooms (3)', area: 600 }
+        ],
+        preparationSteps: ['pressure-cleaning', 'scraping', 'priming'],
+        materials: [
+          { name: 'Sherwin Williams Duration', type: 'Paint', finish: 'Satin', quantity: 10, unit: 'gallons' },
+          { name: 'Kilz Premium Primer', type: 'Primer', quantity: 5, unit: 'gallons' }
+        ],
+        materialSupply: 'contractor',
+        startDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        duration: '5-7 business days',
+        validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        warrantyPeriod: '2',
+        paymentSchedule: '50-50',
+        pricing: {
+          basePrice: 8500,
+          materialsPrice: 1500,
+          discount: 500,
+          total: 9500
+        }
+      };
+    }
+    
+    // Format date
+    function formatDate(dateString) {
+      if (!dateString) return 'To be determined';
+      const date = new Date(dateString);
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                     'July', 'August', 'September', 'October', 'November', 'December'];
+      return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    }
+    
+    // Format currency
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(amount || 0);
+    }
+    
+    // Action functions
+    function editContract() {
+      window.location.href = 'contract.html';
+    }
+    
+    function printContract() {
+      window.print();
+    }
+    
+    function exportPDF() {
+      alert('PDF export functionality will be implemented with jsPDF.');
+    }
+    
+    function emailContract() {
+      const subject = `Painting Contract - ${contractData?.documentNumber || 'Draft'}`;
+      const body = `Please find attached the painting contract for your review.`;
+      window.location.href = `mailto:${contractData?.clientEmail || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+    
+    function finalizeContract() {
+      // Check if contract has been signed
+      const signatureCanvas = document.getElementById('client-signature-canvas');
+      if (!signatureCanvas || signatureCanvas.style.display === 'none') {
+        alert('Please sign the contract before finalizing.');
+        showSignatureModal();
+        return;
+      }
+      
+      if (confirm('Are you sure you want to finalize this contract?')) {
+        alert('Contract finalized successfully!');
+        window.location.href = '../index.html';
+      }
+    }
+    
+    // E-Signature functionality
+    let isDrawing = false;
+    let signatureData = null;
+    
+    function showSignatureModal() {
+      const modal = document.getElementById('signature-modal');
+      if (!modal) {
+        createSignatureModal();
+      }
+      document.getElementById('signature-modal').style.display = 'block';
+      initializeSignatureCanvas();
+    }
+    
+    function createSignatureModal() {
+      const modalHTML = `
+        <div id="signature-modal" class="signature-modal">
+          <div class="signature-modal-content">
+            <h3 style="margin-bottom: 10px;">Please Sign Below</h3>
+            <p style="margin-bottom: 15px; color: #666; font-size: 12pt;">Draw your signature across the full width of the box</p>
+            <canvas id="modal-signature-canvas" class="signature-canvas"></canvas>
+            <div class="signature-date">Date: ${formatDate(new Date())}</div>
+            <div class="signature-controls">
+              <button class="btn btn-secondary" onclick="clearSignature()">
+                <i class="fas fa-eraser"></i> Clear
+              </button>
+              <button class="btn btn-secondary" onclick="closeSignatureModal()">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+              <button class="btn btn-primary" onclick="saveSignature()">
+                <i class="fas fa-check"></i> Accept Signature
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    function initializeSignatureCanvas() {
+      const canvas = document.getElementById('modal-signature-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas size - make it wider to encourage horizontal signatures
+      canvas.width = canvas.offsetWidth;
+      canvas.height = 150; // Reduced height from 200 to 150
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 3; // Increased from 2 to 3 for thicker lines
+      ctx.strokeStyle = '#000';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      // Mouse events
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      
+      // Touch events
+      canvas.addEventListener('touchstart', handleTouch);
+      canvas.addEventListener('touchmove', handleTouch);
+      canvas.addEventListener('touchend', stopDrawing);
+    }
+    
+    function startDrawing(e) {
+      isDrawing = true;
+      const canvas = document.getElementById('modal-signature-canvas');
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      
+      // Ensure line width is set
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#000';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+    
+    function draw(e) {
+      if (!isDrawing) return;
+      const canvas = document.getElementById('modal-signature-canvas');
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+    }
+    
+    function handleTouch(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                      e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      e.target.dispatchEvent(mouseEvent);
+    }
+    
+    function stopDrawing() {
+      isDrawing = false;
+    }
+    
+    function clearSignature() {
+      const canvas = document.getElementById('modal-signature-canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    function closeSignatureModal() {
+      document.getElementById('signature-modal').style.display = 'none';
+    }
+    
+    function saveSignature() {
+      const modalCanvas = document.getElementById('modal-signature-canvas');
+      const displayCanvas = document.getElementById('client-signature-canvas');
+      const signatureLine = document.getElementById('client-signature-line');
+      
+      // Ensure canvas is properly sized before drawing
+      const containerWidth = signatureLine.offsetWidth;
+      displayCanvas.width = containerWidth;
+      displayCanvas.height = 50;
+      displayCanvas.style.display = 'block';
+      displayCanvas.style.width = '100%';
+      displayCanvas.style.height = '100%';
+      
+      const ctx = displayCanvas.getContext('2d');
+      
+      // Clear the canvas first
+      ctx.clearRect(0, 0, displayCanvas.width, displayCanvas.height);
+      
+      // Calculate proper scaling to fit signature without overlapping date
+      // Reserve 50px on the right for the date (matching the canvas width)
+      const availableWidth = displayCanvas.width - 50;
+      const maxHeight = displayCanvas.height - 10;
+      
+      // Calculate scale to fit signature while preserving aspect ratio
+      const scaleX = availableWidth / modalCanvas.width;
+      const scaleY = maxHeight / modalCanvas.height;
+      const scale = Math.min(scaleX, scaleY) * 0.95; // Use 95% to ensure slight padding
+      
+      // Calculate positioning to start signature further right
+      const scaledWidth = modalCanvas.width * scale;
+      const scaledHeight = modalCanvas.height * scale;
+      const xOffset = 10; // Start 10px from left
+      const yOffset = (displayCanvas.height - scaledHeight) / 2;
+      
+      // Draw the signature with natural aspect ratio
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.translate(xOffset, yOffset);
+      ctx.scale(scale, scale);
+      ctx.drawImage(modalCanvas, 0, 0);
+      ctx.restore();
+      
+      // Debug info
+      console.log('Signature rendering:', {
+        canvasWidth: displayCanvas.width,
+        availableWidth: availableWidth,
+        scale: scale,
+        scaledWidth: scaledWidth,
+        scaledHeight: scaledHeight
+      });
+      
+      // Hide the "Click here to sign" text
+      const signText = document.getElementById('sign-here-text');
+      if (signText) {
+        signText.style.display = 'none';
+      }
+      
+      // Add date next to signature (only if not already there)
+      let dateSpan = signatureLine.querySelector('.signature-date-display');
+      if (!dateSpan) {
+        dateSpan = document.createElement('span');
+        dateSpan.className = 'signature-date-display';
+        dateSpan.style.cssText = 'position: absolute; right: 5px; top: 50%; transform: translateY(-50%); font-size: 10pt; color: #666; background-color: white; padding: 2px 5px; z-index: 10; white-space: nowrap; border-left: 2px solid #f0f0f0; margin-left: 5px;';
+        dateSpan.textContent = formatDate(new Date());
+        signatureLine.appendChild(dateSpan);
+      } else {
+        // Update date if it already exists
+        dateSpan.textContent = formatDate(new Date());
+      }
+      
+      // Store signature data
+      signatureData = modalCanvas.toDataURL();
+      
+      // Log for debugging
+      console.log('Signature saved:', {
+        canvasWidth: displayCanvas.width,
+        canvasHeight: displayCanvas.height,
+        scale: scale,
+        dateAdded: true
+      });
+      
+      closeSignatureModal();
+    }
+  </script>
+  
+  <!-- Emergency inline fix for contract preview -->
+  <script>
+  setTimeout(function() {
+    if (window.contractData) {
+      const allDivs = document.querySelectorAll('div');
+      allDivs.forEach(div => {
+        if (div.textContent === 'Service areas to be determined' && div.children.length === 0) {
+          const parent = div.parentElement;
+          const grandParent = parent?.parentElement;
+          
+          if (grandParent && grandParent.textContent.includes('Interior Painting')) {
+            const interior = window.contractData.paintSelections?.find(p => p.type === 'interior');
+            if (interior?.surfaces?.length > 0) {
+              parent.innerHTML = interior.surfaces.map(sid => {
+                const surf = window.contractData.surfaces?.find(s => s.id === sid);
+                if (surf) {
+                  let area = 0;
+                  surf.measurements?.forEach(m => area += m.calculatedEntryArea || 0);
+                  return surf.name + ' - ' + area.toFixed(0) + ' sq ft';
+                }
+                return '';
+              }).filter(Boolean).join('<br>');
+            } else {
+              grandParent.style.display = 'none';
+            }
+          } else if (grandParent && grandParent.textContent.includes('Exterior Painting')) {
+            const exterior = window.contractData.paintSelections?.find(p => p.type === 'exterior');
+            if (exterior?.surfaces?.length > 0) {
+              parent.innerHTML = exterior.surfaces.map(sid => {
+                const surf = window.contractData.surfaces?.find(s => s.id === sid);
+                if (surf) {
+                  let area = 0;
+                  surf.measurements?.forEach(m => area += m.calculatedEntryArea || 0);
+                  return surf.name + ' - ' + area.toFixed(0) + ' sq ft';
+                }
+                return '';
+              }).filter(Boolean).join('<br>');
+            } else {
+              grandParent.style.display = 'none';
+            }
+          } else if (grandParent) {
+            // Hide other unselected services
+            const text = grandParent.textContent;
+            let hide = true;
+            
+            if (text.includes('Epoxy Floor') && window.contractData.concreteCoatingTypes?.includes('epoxy_floors')) hide = false;
+            else if (text.includes('Concrete Sealing') && window.contractData.concreteCoatingTypes?.includes('sealing')) hide = false;
+            else if (text.includes('Concrete Polishing') && window.contractData.concreteCoatingTypes?.includes('polishing')) hide = false;
+            else if (text.includes('Wood Staining') && window.contractData.woodCoatingTypes?.includes('stains')) hide = false;
+            else if (text.includes('Wood Sealing') && window.contractData.woodCoatingTypes?.includes('sealers')) hide = false;
+            else if (text.includes('Pressure Cleaning') && window.contractData.abrasiveMethods?.includes('pressure')) hide = false;
+            
+            if (hide) grandParent.style.display = 'none';
+          }
+        }
+      });
+    }
+  }, 3000);
+  </script>
+</body>
+</html>

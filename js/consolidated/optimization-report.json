@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-07-05T09:11:59.782Z",
+  "files": {
+    "js/consolidated/surface-enhancements.js": {
+      "originalSize": 64865,
+      "optimizedSize": 61499,
+      "sizeReduction": "5.19%",
+      "consoleStatementsRemoved": 42,
+      "duplicatePatterns": [],
+      "optimizedPath": "C:\\Users\\Agent\\Documents\\Projects\\Clients\\Hartzell\\paint-estimator\\js\\consolidated\\surface-enhancements.optimized.js"
+    },
+    "js/consolidated/paint-surfaces-combined.js": {
+      "originalSize": 120582,
+      "optimizedSize": 119136,
+      "sizeReduction": "1.20%",
+      "consoleStatementsRemoved": 17,
+      "duplicatePatterns": [],
+      "optimizedPath": "C:\\Users\\Agent\\Documents\\Projects\\Clients\\Hartzell\\paint-estimator\\js\\consolidated\\paint-surfaces-combined.optimized.js"
+    }
+  }
+}

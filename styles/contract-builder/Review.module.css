@@ -1,0 +1,675 @@
+/* styles/contract-builder/Review.module.css */
+/* Final review step styles with mobile-first design */
+
+.reviewContainer {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding-bottom: 80px; /* Space for MobileNav */
+}
+
+.header {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.sections {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+.sectionHeader h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.editButton {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.editButton:active {
+  transform: translateY(0);
+}
+
+.sectionContent {
+  padding: 1rem;
+}
+
+/* Info Grid */
+.infoGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.sectionHeader h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.editButton {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.editButton:active {
+  transform: translateY(0);
+}
+
+.sectionContent {
+  padding: 1rem;
+}
+
+/* Info Grid */
+.infoGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+.label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Surfaces List */
+.surfacesList, .preparationList {
+  margin-bottom: 1.5rem;
+}
+
+.surfacesList:last-child, .preparationList:last-child {
+  margin-bottom: 0;
+}
+
+.surfacesList h3, .preparationList h3 {
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.surfaceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.surfaceItem .area {
+  color: var(--text-secondary);
+  font-size: 0.813rem;
+}
+
+.prepList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.prepList li {
+  padding: 0.375rem 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+/* Materials List */
+.materialsList {
+  margin-bottom: 1rem;
+}
+
+.materialItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.materialType {
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.materialName {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.materialFinish {
+  color: var(--text-secondary);
+  font-size: 0.813rem;
+}
+
+.colorInfo {
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Terms Grid */
+.termsGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+.prepList li {
+  padding: 0.375rem 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+/* Materials List */
+.materialsList {
+  margin-bottom: 1rem;
+}
+
+.materialItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.materialType {
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.materialName {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.materialFinish {
+  color: var(--text-secondary);
+  font-size: 0.813rem;
+}
+
+.colorInfo {
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Terms Grid */
+.termsGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.termItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.termItem:last-child {
+  border-bottom: none;
+}
+
+/* Pricing Table */
+.pricingTable {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.pricingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pricingRow:last-child {
+  border-bottom: none;
+}
+
+.totalRow {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  padding-top: 1rem;
+  border-top: 2px solid var(--border-color);
+  margin-top: 0.5rem;
+}
+
+/* Inclusions/Exclusions */
+.inclusionsGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+.inclusionsList h3, .exclusionsList h3 {
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.inclusionsList ul, .exclusionsList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inclusionsList li, .exclusionsList li {
+  padding: 0.375rem 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.noData {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.938rem;
+  font-weight: 600;
+}
+.inclusionsList h3, .exclusionsList h3 {
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.inclusionsList ul, .exclusionsList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inclusionsList li, .exclusionsList li {
+  padding: 0.375rem 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.noData {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;  font-size: 0.938rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.actionButton:active {
+  transform: translateY(0);
+}
+
+.actionButton svg {
+  stroke-width: 2;
+}
+
+/* Signature Section */
+.signaturePrompt {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.signatureButton {
+  padding: 1rem 2rem;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.signatureButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.signatureSection {
+  padding: 1.5rem 1rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.signatureSection h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}  font-size: 0.938rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+.actionButton:active {
+  transform: translateY(0);
+}
+
+.actionButton svg {
+  stroke-width: 2;
+}
+
+/* Signature Section */
+.signaturePrompt {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.signatureButton {
+  padding: 1rem 2rem;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.signatureButton:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+.signatureSection {
+  padding: 1.5rem 1rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.signatureSection h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.signatureGrid {
+  display: grid;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.signatureBlock {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.signatureBlock h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.signatureInput, .dateInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.938rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+.signatureInput:focus, .dateInput:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .section {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .sectionHeader {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  
+  .surfaceItem,
+  .prepList li,
+  .materialItem,
+  .colorInfo,
+  .pricingTable,
+  .inclusionsList li,
+  .exclusionsList li,
+  .signatureBlock {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .infoItem,
+  .termItem,
+  .pricingRow {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+  
+  .totalRow {
+    border-top-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .signatureInput,
+  .dateInput {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .sections {
+    padding: 2rem;
+  }
+  
+  .section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .termsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .inclusionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .signatureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .editButton,
+  .actions,
+  .signaturePrompt {
+    display: none !important;
+  }
+  
+  .section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .reviewContainer {
+    padding-bottom: 0;
+  }
+}

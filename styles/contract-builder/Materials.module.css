@@ -1,0 +1,251 @@
+/* Materials Step - Mobile-First Design */
+.materialsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 768px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+}
+
+/* Section Styling */
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.sectionDescription {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+/* Surface Section */
+.surfaceSection {
+  margin-bottom: 2rem;
+}
+
+.surfaceGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .surfaceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.surfaceCard {
+  background: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.surfaceCard:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.surfaceCard.hasProduct {
+  border-color: var(--success-color);
+  background: var(--success-background);
+}
+
+.surfaceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.surfaceHeader h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.checkmark {
+  font-size: 1.25rem;
+  color: var(--success-color);
+  animation: fadeIn 0.3s ease;
+}
+
+.surfaceDetails {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.selectedProduct {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: var(--background);
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+.selectedProduct strong {
+  color: var(--text-primary);
+}
+
+.selectedProduct span {
+  color: var(--text-secondary);
+}
+
+.selectButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.selectButton:hover {
+  background: var(--primary-hover);
+}
+
+.emptySurfaces {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.goBackButton {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Default Products Section */
+.defaultSection {
+  margin-bottom: 2rem;
+}
+.categoryGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .categoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.categoryCard {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.categoryIcon {
+  font-size: 1.5rem;
+}
+
+.categoryHeader h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.productSelect {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.productSelect:hover,
+.productSelect:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Additional Options */
+.additionalOptions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .surfaceCard {
+    background: var(--dark-card-background);
+    border-color: var(--dark-border-color);
+  }
+  
+  .surfaceCard.hasProduct {
+    background: var(--dark-success-background);
+  }
+  
+  .categoryCard {
+    background: var(--dark-card-background);
+    border-color: var(--dark-border-color);
+  }
+  
+  .selectedProduct {
+    background: var(--dark-background);
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  .materialsContainer {
+    padding: 0.75rem;
+  }
+  
+  .surfaceCard {
+    padding: 1rem;
+  }
+}

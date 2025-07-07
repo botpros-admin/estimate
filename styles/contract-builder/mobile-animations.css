@@ -1,0 +1,149 @@
+/* mobile-animations.css - Animation utility classes */
+
+/* Fade Animations */
+.fade-in {
+  animation: fadeIn var(--duration-base) var(--ease-out) forwards;
+}
+
+.fade-out {
+  animation: fadeOut var(--duration-base) var(--ease-out) forwards;
+}
+
+/* Slide Animations */
+.slide-up {
+  animation: slideUp var(--duration-base) var(--ease-out) forwards;
+}
+
+.slide-down {
+  animation: slideDown var(--duration-base) var(--ease-out) forwards;
+}
+
+/* Scale Animations */
+.scale-in {
+  animation: scaleIn var(--duration-base) var(--ease-spring) forwards;
+}
+
+/* Shake Animation */
+.shake {
+  animation: shake var(--duration-base) var(--ease-in-out);
+}
+
+/* Loading States */
+.skeleton {
+  background: linear-gradient(90deg, 
+    var(--gray-200) 25%, 
+    var(--gray-300) 50%, 
+    var(--gray-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Button Press Effects */
+.btn-press {
+  position: relative;  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.btn-press:active {
+  transform: scale(0.95);
+}
+
+/* Success/Error States */
+.success-pulse {
+  animation: successPulse 0.6s var(--ease-out);
+}
+
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+.error-shake {
+  animation: shake var(--duration-base) var(--ease-in-out);
+  border-color: var(--error) !important;
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all var(--duration-base) var(--ease-out);
+}  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.btn-press:active {
+  transform: scale(0.95);
+}
+
+/* Success/Error States */
+.success-pulse {
+  animation: successPulse 0.6s var(--ease-out);
+}
+
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+.error-shake {
+  animation: shake var(--duration-base) var(--ease-in-out);
+  border-color: var(--error) !important;
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all var(--duration-base) var(--ease-out);
+}

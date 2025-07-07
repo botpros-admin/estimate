@@ -1,0 +1,128 @@
+/* StepContainer.module.css - Mobile-first swipeable container */
+
+.stepContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y; /* Allow vertical scroll but handle horizontal swipes */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.stepContent {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  /* Prevent text selection during swipe */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  /* Swipe animation support */
+  transform: translateX(var(--swipe-offset, 0));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Allow text selection for form inputs */
+.stepContent input,
+.stepContent textarea,
+.stepContent select {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Transition state */
+.transitioning {
+  pointer-events: none;
+}
+
+.transitioning .stepContent {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Active swipe state - disable transition for real-time tracking */
+.stepContainer:active .stepContent {
+  transition: none !important;
+}
+
+/* Edge resistance effect */
+.stepContent[data-at-edge="true"] {
+  transform: translateX(calc(var(--swipe-offset, 0) * 0.3));
+}
+
+/* Swipe indicators - mobile only */
+.swipeIndicator {
+  position: absolute;
+  top: 50%;  transform: translateY(-50%);
+  width: 2rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.swipeIndicatorLeft {
+  left: 0.5rem;
+}
+
+.swipeIndicatorRight {
+  right: 0.5rem;
+}
+
+/* Show indicators on touch/hover */
+.stepContainer:hover .swipeIndicator,
+.stepContainer:active .swipeIndicator {
+  opacity: 0.3;
+}
+
+.swipeArrow {
+  font-size: 1.5rem;
+  color: var(--text-secondary, #666);
+  font-weight: 300;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .stepContent {
+    padding: 2rem;
+    max-width: 768px;
+    margin: 0 auto;
+  }
+  
+  /* Hide swipe indicators on desktop by default */
+  .swipeIndicator {
+    display: none;
+  }
+}
+
+/* Accessibility - Show focus indicators */
+.stepContainer:focus-within {
+  outline: 2px solid var(--primary-color, #1976d2);
+  outline-offset: -2px;
+}
+
+/* Performance optimizations */
+.stepContainer * {
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .swipeArrow {
+    color: var(--text-secondary-dark, #aaa);
+  }
+}

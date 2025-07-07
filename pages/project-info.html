@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Details - Paint Pro Estimator</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  
+  <!-- Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+  
+  <!-- Cross-Browser Compatibility - Ensures consistent rendering across browsers -->
+  <link rel="stylesheet" href="../css/cross-browser-compatibility.css">
+  <link rel="stylesheet" href="../css/icon-overrides.css">
+  
+  <style>
+    /* Scope Selection Styles */
+    .scope-selection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    
+    .scope-option {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .scope-checkbox {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .scope-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      background-color: white;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      color: #374151;
+    }
+    
+    .scope-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      transition: color 0.2s ease;
+    }
+    
+    .scope-checkbox:checked + .scope-label {
+      background-color: #eff6ff;
+      border-color: #3b82f6;
+      color: #1e40af;
+    }
+    
+    .scope-checkbox:checked + .scope-label .scope-icon {
+      color: #3b82f6;
+    }
+    
+    .scope-label:hover {
+      border-color: #3b82f6;
+      background-color: #f0f9ff;
+    }
+    
+    /* Disabled state for scope checkboxes */
+    .scope-checkbox:disabled + .scope-label {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #f3f4f6;
+    }
+    
+    .scope-checkbox:disabled + .scope-label:hover {
+      border-color: #e5e7eb;
+      background-color: #f3f4f6;
+    }
+    
+    .scope-option[style*="pointer-events: none"] {
+      cursor: not-allowed;
+    }
+    
+    /* Error states */
+    .input-field.error {
+      border-color: #ef4444;
+      background-color: #fef2f2;
+    }
+    
+    .field-error {
+      color: #dc2626;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    
+    /* Google Places Autocomplete Styling */
+    .pac-container {
+      font-family: inherit;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      margin-top: 0.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      background-color: white;
+      z-index: 9999;  /* Ensure dropdown appears above other elements */
+    }
+    
+    .pac-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f3f4f6;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: #374151;
+      transition: background-color 0.2s ease;
+      line-height: 1.5;  /* Better line height for readability */
+    }
+    
+    .pac-item:hover {
+      background-color: #f0f9ff;
+    }
+    
+    .pac-item-selected {
+      background-color: #eff6ff;
+    }
+    
+    .pac-matched {
+      font-weight: 600;
+      color: #1e40af;
+    }
+    
+    .pac-icon {
+      display: none;
+    }
+    
+    .pac-item-query {
+      font-size: 0.875rem;
+      color: #374151;
+      margin-right: 0.25rem;
+    }
+    
+    /* Show secondary text for better address visibility */
+    .pac-secondary-text {
+      color: #6b7280;
+      font-size: 0.8125rem;
+    }
+    
+    /* Only hide explicit country text like ", USA" */
+    .pac-item span:last-child:contains("USA") {
+      display: none !important;
+    }
+    
+    .pac-logo::after {
+      content: "";
+      padding: 0.5rem 1rem;
+      display: block;
+      font-size: 0.75rem;
+      color: #6b7280;
+      background-color: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+    }
+    /* Contact Widget Button Styles - Match surfaces page style */
+    .add-contact-btn,
+    .remove-contact-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      padding: 0.25rem;
+      transition: all 0.2s ease;
+      margin-left: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+    }
+    
+    .add-contact-btn {
+      color: #64748b; /* Changed from green to neutral gray */
+    }
+    
+    .remove-contact-btn {
+      color: #ef4444; /* Red color for remove */
+    }
+    
+    .add-contact-btn:hover,
+    .remove-contact-btn:hover {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .add-contact-btn:focus,
+    .remove-contact-btn:focus {
+      outline: none;
+      opacity: 1;
+    }
+    
+    .add-contact-btn svg,
+    .remove-contact-btn svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    
+    /* Fix contact and company icon containers */
+    .crm-entity-widget-img-box {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f4f6;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      position: relative;
+    }
+    
+    /* Ensure contact fields are properly aligned */
+    .crm-entity-widget-content-search-row {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      flex-wrap: wrap !important;
+    }
+    
+    .crm-entity-phone-field,
+    .crm-entity-email-field {
+      flex: 1 !important;
+      min-width: 150px !important;
+    }
+    
+    .crm-entity-widget-content-search-box {
+      flex: 2 !important;
+      min-width: 200px !important;
+    }
+    /* Additional button styling for better visibility */
+    .add-contact-btn:active,
+    .remove-contact-btn:active {
+      transform: scale(0.95);
+    }
+    
+    /* Ensure buttons are always visible */
+    button.add-contact-btn,
+    button.remove-contact-btn {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+  </style>
+  
+  <!-- Multi-Select CSS -->
+  <link rel="stylesheet" href="../css/multi-select.css">
+  
+  <!-- Load error handler first -->
+  <script src="../js/services/errorHandler.js"></script>
+  <!-- Enhanced error capture -->
+  <script src="../js/error-capture.js"></script>
+  <!-- Enhanced error debugging -->
+  <script src="../js/error-debug-enhanced.js"></script>
+  <!-- Load formState.js first -->
+  <script src="../js/formState.js"></script>
+  <script src="../js/utils/localStorage.js"></script>
+  <script src="../js/form-validator.js"></script>
+</head>
+<body>
+  <!-- Application Header -->
+  <header class="app-header" id="app-header">
+    <!-- Single header element with ID app-header for consistent targeting -->
+  </header>
+  
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-info">
+      <div id="progress-step" class="progress-step">Step 1 of 3</div>
+      <div id="progress-percentage" class="progress-percentage">33% Complete</div>
+    </div>
+    <div class="progress-bar">
+      <div id="progress-fill" class="progress-fill" style="width: 33%;"></div>
+    </div>
+  </div>
+  
+  <!-- Main Form Container -->
+  <main class="main-container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2 class="form-title">Project Details</h2>
+      </div>
+      <div id="form-content" class="form-content">
+        <div class="form-group">
+          <label class="form-label">
+            Site Address <span class="required-indicator">*</span>
+          </label>
+          <!-- Google Maps Autocomplete Address Field -->
+          <div class="address-autocomplete">
+            <input type="text" 
+                  id="address-autocomplete"
+                  class="input-field" 
+                  placeholder="Start typing address (e.g., 123 Main Street)..."
+                  autocomplete="off">
+            <div id="address-placeholder" class="text-xs text-gray-500 mt-1">
+              <strong>Tip:</strong> Enter street number and name (e.g., "123 Main Street") then select from dropdown
+            </div>
+          </div>
+          
+          <!-- Hidden fields to store parsed address components -->
+          <input type="hidden" id="street-address">
+          <input type="hidden" id="city">
+          <input type="hidden" id="state">
+          <input type="hidden" id="zip-code">
+        </div>
+        
+        <div class="contact-widget">
+          <div class="contact-header">
+            <div class="contact-title">Contact Information</div>
+          </div>
+          <div id="contacts-container"></div>
+        </div>
+        
+        <!-- Project Type Selection -->
+        <div class="form-group">
+          <label class="form-label">
+            Project Type <span class="required-indicator">*</span>
+          </label>
+          <select id="project-type" class="input-field">
+            <option value="">Select Project Type</option>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+            <option value="community">Community</option>
+            <option value="public-sector">Public Sector</option>
+          </select>
+          <div class="text-xs text-gray-500 mt-1">Select the type of project to see relevant fields</div>
+        </div>
+        
+        <div id="project-specific-fields"></div>
+        
+        <!-- Service Type Selection -->
+        <div class="form-group">
+          <label class="form-label">
+            Service Type <span class="required-indicator">*</span>
+          </label>
+          <div id="service-type-container">
+            <div id="service-type-multiselect" 
+                 data-multi-select="true"
+                 data-name="serviceTypes[]"
+                 data-placeholder="Select service types..."
+                 data-items='[{"NAME":"Surface Coating","VALUE":"surface_coating"},{"NAME":"Abrasive Cleaning","VALUE":"abrasive"}]'
+                 data-value='[]'>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Surface Coating Method (hidden by default) -->
+        <div id="surface-coating-options" class="form-group" style="display: none;">
+          <label class="form-label">
+            Surface Coating Method <span class="required-indicator">*</span>
+          </label>
+          <div id="surface-coating-method-container">
+            <div id="surface-coating-method-multiselect"
+                 data-multi-select="true"
+                 data-name="surfaceCoatingMethods[]"
+                 data-placeholder="Select coating methods..."
+                 data-items='[{"NAME":"Painting","VALUE":"painting"},{"NAME":"Concrete Coating","VALUE":"concrete"},{"NAME":"Wood Treatment","VALUE":"wood"}]'
+                 data-value='[]'>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Concrete Coating Options (hidden by default) -->
+        <div id="concrete-coating-options" class="form-group" style="display: none;">
+          <label class="form-label">
+            Concrete Coating Service(s) <span class="required-indicator">*</span>
+          </label>
+          <div id="concrete-coating-container">
+            <div id="concrete-coating-multiselect"
+                 data-multi-select="true"
+                 data-name="concreteCoatingTypes[]"
+                 data-placeholder="Select concrete coating services..."
+                 data-items='[{"NAME":"Epoxy Floors","VALUE":"epoxy_floors"},{"NAME":"Sealing","VALUE":"sealing"},{"NAME":"Decorative Overlays","VALUE":"decorative_overlays"},{"NAME":"Dye & Colorants","VALUE":"dye_colorants"},{"NAME":"Polishing","VALUE":"polishing"}]'
+                 data-value='[]'>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Wood Treatment Options (hidden by default) -->
+        <div id="wood-coating-options" class="form-group" style="display: none;">
+          <label class="form-label">
+            Wood Treatment Service(s) <span class="required-indicator">*</span>
+          </label>
+          <div id="wood-coating-container">
+            <div id="wood-coating-multiselect"
+                 data-multi-select="true"
+                 data-name="woodCoatingTypes[]"
+                 data-placeholder="Select wood treatment services..."
+                 data-items='[{"NAME":"Stains","VALUE":"stains"},{"NAME":"Sealers","VALUE":"sealers"},{"NAME":"Protective Clearcoat","VALUE":"protective_clearcoat"}]'
+                 data-value='[]'>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Abrasive Cleaning Options (hidden by default) -->
+        <div id="abrasive-options" class="form-group" style="display: none;">
+          <label class="form-label">
+            Abrasive Cleaning Method <span class="required-indicator">*</span>
+          </label>
+          <div id="abrasive-method-container">
+            <div id="abrasive-method-multiselect"
+                 data-multi-select="true"
+                 data-name="abrasiveMethods[]"
+                 data-placeholder="Select methods..."
+                 data-items='[{"NAME":"Sandblasting","VALUE":"sandblasting"},{"NAME":"Pressure Cleaning","VALUE":"pressure"},{"NAME":"Chemical Stripping","VALUE":"chemical"},{"NAME":"Grinding","VALUE":"grinding"}]'
+                 data-value='[]'>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interior/Exterior Selection -->
+        <div class="form-group" id="painting-scope-section" style="display: none;">
+          <label class="form-label">
+            Painting Scope <span class="required-indicator">*</span>
+          </label>
+          <div class="text-xs text-gray-500 mb-2">Select all that apply for painting services</div>
+          <div class="scope-selection-grid">
+            <label class="scope-option">
+              <input type="checkbox" 
+                     id="scope-interior" 
+                     value="interior"
+                     onchange="updateScope('interior')"
+                     class="scope-checkbox">
+              <div class="scope-label">
+                <svg class="scope-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span>Interior</span>
+              </div>
+            </label>
+            <label class="scope-option">
+              <input type="checkbox" 
+                     id="scope-exterior" 
+                     value="exterior"
+                     onchange="updateScope('exterior')"
+                     class="scope-checkbox">
+              <div class="scope-label">
+                <svg class="scope-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm3 5a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 3a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+                <span>Exterior</span>
+              </div>
+            </label>
+          </div>
+          <div id="scope-error" class="text-red-600 text-sm mt-2" style="display: none;">
+            Please select at least one scope (Interior or Exterior)
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navigation Buttons -->
+    <div class="form-navigation">
+      <button id="prev-button" class="btn btn-secondary">Previous</button>
+      <button id="next-button" class="btn btn-primary">Next</button>
+    </div>
+  </main>
+  
+  <!-- Application Scripts -->
+  <script>
+    // Helper function to format phone numbers
+    function formatPhoneNumber(value) {
+      // Remove all non-digits
+      let digits = value.replace(/\D/g, '');
+      
+      // Format the number as XXX-XXX-XXXX
+      if (digits.length > 0) {
+        if (digits.length <= 3) {
+          return digits;
+        } else if (digits.length <= 6) {
+          return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+        } else if (digits.length <= 10) {
+          return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+        } else {
+          // Limit to 10 digits
+          digits = digits.slice(0, 10);
+          return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+        }
+      }
+      return '';
+    }
+    
+    // Make initAutocomplete globally accessible for Google Maps callback
+    window.initAutocomplete = function() {
+      const addressInput = document.getElementById('address-autocomplete');
+      if (!addressInput || !window.google || !window.google.maps) {
+        console.log('Waiting for page to load...');
+        setTimeout(window.initAutocomplete, 100);
+        return;
+      }
+      
+      console.log('Initializing Google Places Autocomplete...');
+      
+      // Set the input value from saved data if available
+      if (formState.data.siteAddress.street) {
+        let fullAddress = formState.data.siteAddress.street;
+        if (formState.data.siteAddress.city) {
+          fullAddress += `, ${formState.data.siteAddress.city}`;
+        }
+        if (formState.data.siteAddress.state) {
+          fullAddress += `, ${formState.data.siteAddress.state}`;
+        }
+        if (formState.data.siteAddress.zip) {
+          fullAddress += ` ${formState.data.siteAddress.zip}`;
+        }
+        addressInput.value = fullAddress;
+      }
+      
+      // Create autocomplete instance
+      const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        types: ['geocode', 'establishment'],  // Changed from just 'address' to include more result types
+        componentRestrictions: { country: 'us' },
+        fields: ['address_components', 'geometry', 'formatted_address', 'name']  // Explicitly request fields we need
+      });
+      
+      // Handle place selection
+      autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        
+        if (!place.geometry) {
+          console.error('No details available for selected place');
+          return;
+        }
+        
+        // Try to use formatted_address first if available
+        if (place.formatted_address) {
+          addressInput.value = place.formatted_address;
+        }
+        
+        // Parse address components
+        let streetNumber = '';
+        let streetName = '';
+        let city = '';
+        let state = '';
+        let zipCode = '';
+        
+        if (place.address_components) {
+          for (const component of place.address_components) {
+            const types = component.types;
+            
+            if (types.includes('street_number')) {
+              streetNumber = component.short_name;
+            } else if (types.includes('route')) {
+              streetName = component.long_name;
+            } else if (types.includes('locality')) {
+              city = component.long_name;
+            } else if (types.includes('administrative_area_level_1')) {
+              state = component.short_name;
+            } else if (types.includes('postal_code')) {
+              zipCode = component.short_name;
+            }
+          }
+        }
+        
+        // Combine street number and name
+        const streetAddress = streetNumber ? `${streetNumber} ${streetName}` : streetName;
+        
+        // If we have a place name but no street address (like a business), use the name
+        if (!streetAddress && place.name && place.name !== place.formatted_address) {
+          const streetInput = document.getElementById('street-address');
+          if (streetInput) streetInput.value = place.name;
+        } else {
+          const streetInput = document.getElementById('street-address');
+          if (streetInput) streetInput.value = streetAddress;
+        }
+        
+        // Update other fields
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const zipInput = document.getElementById('zip-code');
+        
+        if (cityInput) cityInput.value = city;
+        if (stateInput) stateInput.value = state;
+        if (zipInput) zipInput.value = zipCode;
+        
+        // Update formState if available
+        if (typeof updateFormField === 'function') {
+          updateFormField('siteAddress.street', streetAddress);
+          updateFormField('siteAddress.city', city);
+          updateFormField('siteAddress.state', state);
+          updateFormField('siteAddress.zip', zipCode);
+        }
+        
+        // Update address display in header
+        const addressDisplay = document.getElementById('address-display');
+        if (addressDisplay && streetAddress) {
+          let addressText = streetAddress;
+          if (city) {
+            addressText += `, ${city}`;
+          }
+          addressDisplay.textContent = addressText;
+        }
+        
+        // Hide placeholder
+        const placeholder = document.getElementById('address-placeholder');
+        if (placeholder) {
+          placeholder.style.display = 'none';
+        }
+        
+        // Clear validation errors
+        // Commented out - validateField method doesn't exist
+        // if (typeof FormValidator !== 'undefined' && FormValidator.validateField) {
+        //   FormValidator.validateField('zip-code');
+        // }
+      });
+      
+      console.log('Autocomplete initialized successfully');
+    };
+    
+    // Helper function to update nested fields in formState
+    function updateFormField(fieldPath, value) {
+      const parts = fieldPath.split('.');
+      let current = formState.data;
+      
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!current[parts[i]]) {
+          current[parts[i]] = {};
+        }
+        current = current[parts[i]];
+      }
+      
+      current[parts[parts.length - 1]] = value;
+      formState.saveState();
+    }
+    
+    // Toggle Interior/Exterior scope
+    function toggleScope(scope) {
+      console.log('toggleScope called with:', scope);
+    }
+    
+    // Update scope based on checkbox change
+    function updateScope(scope) {
+      if (!formState.data.projectScope) {
+        formState.data.projectScope = {
+          interior: false,
+          exterior: false
+        };
+      }
+      
+      // Check if trying to select interior with abrasive-only
+      if (scope === 'interior') {
+        const serviceTypes = formState.data.serviceTypes || [];
+        const isAbrasiveOnly = serviceTypes.length === 1 && serviceTypes[0] === 'abrasive';
+        
+        if (isAbrasiveOnly) {
+          // Prevent interior selection for abrasive-only
+          const checkbox = document.getElementById(`scope-${scope}`);
+          checkbox.checked = false;
+          
+          // Show warning message
+          const scopeError = document.getElementById('scope-error');
+          if (scopeError) {
+            scopeError.textContent = 'Interior is not available for abrasive cleaning services';
+            scopeError.style.display = 'block';
+            scopeError.style.color = '#dc2626';
+            
+            // Hide error after 3 seconds
+            setTimeout(() => {
+              scopeError.style.display = 'none';
+            }, 3000);
+          }
+          return;
+        }
+      }
+      
+      // Update based on checkbox state
+      const checkbox = document.getElementById(`scope-${scope}`);
+      formState.data.projectScope[scope] = checkbox.checked;
+      formState.saveState();
+      
+      // Hide error if at least one is selected
+      if (formState.data.projectScope.interior || formState.data.projectScope.exterior) {
+        const scopeError = document.getElementById('scope-error');
+        if (scopeError) {
+          scopeError.style.display = 'none';
+        }
+      }
+    }
+    
+    // Update scope checkboxes based on saved state
+    function updateScopeButtons() {
+      const interiorCheckbox = document.getElementById('scope-interior');
+      const exteriorCheckbox = document.getElementById('scope-exterior');
+      
+      if (interiorCheckbox && formState.data.projectScope?.interior) {
+        interiorCheckbox.checked = true;
+      }
+      
+      if (exteriorCheckbox && formState.data.projectScope?.exterior) {
+        exteriorCheckbox.checked = true;
+      }
+    }
+    
+    // Handle service type change for multi-select
+    function handleServiceTypeChange(selectedValues) {
+      const abrasiveOptions = document.getElementById('abrasive-options');
+      const surfaceCoatingOptions = document.getElementById('surface-coating-options');
+      const paintingScopeSection = document.getElementById('painting-scope-section');
+      const concreteCoatingOptions = document.getElementById('concrete-coating-options');
+      const woodCoatingOptions = document.getElementById('wood-coating-options');
+      
+      // Ensure selectedValues is an array
+      const values = Array.isArray(selectedValues) ? selectedValues : [];
+      
+      // Handle Abrasive Cleaning
+      if (values.includes('abrasive')) {
+        abrasiveOptions.style.display = 'block';
+      } else {
+        abrasiveOptions.style.display = 'none';
+        // Clear abrasive method if switching away
+        if (window.abrasiveMethodMultiSelect) {
+          window.abrasiveMethodMultiSelect.setValue([]);
+        }
+        formState.data.abrasiveMethods = [];
+      }
+      
+      // Handle Surface Coating
+      if (values.includes('surface_coating')) {
+        surfaceCoatingOptions.style.display = 'block';
+      } else {
+        surfaceCoatingOptions.style.display = 'none';
+        // Hide all surface coating sub-options
+        paintingScopeSection.style.display = 'none';
+        concreteCoatingOptions.style.display = 'none';
+        woodCoatingOptions.style.display = 'none';
+        
+        // Clear surface coating methods if switching away
+        if (window.surfaceCoatingMethodMultiSelect) {
+          window.surfaceCoatingMethodMultiSelect.setValue([]);
+        }
+        formState.data.surfaceCoatingMethods = [];
+        formState.data.concreteCoatingTypes = [];
+        formState.data.woodCoatingTypes = [];
+        formState.data.projectScope = { interior: false, exterior: false };
+      }
+      
+      // Update formState with array of service types
+      formState.data.serviceTypes = values;
+      
+      // Keep backward compatibility with single serviceType
+      formState.data.serviceType = values.length > 0 ? values[0] : '';
+      
+      // Handle backward compatibility - if old "painting" value exists, convert to "surface_coating"
+      if (formState.data.serviceTypes.includes('painting')) {
+        const index = formState.data.serviceTypes.indexOf('painting');
+        formState.data.serviceTypes[index] = 'surface_coating';
+        // Also set surface coating method to painting for backward compatibility
+        if (!formState.data.surfaceCoatingMethods || formState.data.surfaceCoatingMethods.length === 0) {
+          formState.data.surfaceCoatingMethods = ['painting'];
+        }
+      }
+      
+      formState.updateTotalSteps(); // Update totalSteps based on service type
+      formState.saveState();
+      
+      // Update step counter display
+      document.getElementById('progress-step').textContent = `Step ${formState.currentStep} of ${formState.totalSteps}`;
+    }
+    
+    // Handle surface coating method change
+    function handleSurfaceCoatingMethodChange(selectedValues) {
+      const paintingScopeSection = document.getElementById('painting-scope-section');
+      const concreteCoatingOptions = document.getElementById('concrete-coating-options');
+      const woodCoatingOptions = document.getElementById('wood-coating-options');
+      
+      // Ensure selectedValues is an array
+      const values = Array.isArray(selectedValues) ? selectedValues : [];
+      
+      // Show/hide painting scope based on whether painting is selected
+      if (values.includes('painting')) {
+        paintingScopeSection.style.display = 'block';
+      } else {
+        paintingScopeSection.style.display = 'none';
+        // Clear painting scope
+        formState.data.projectScope = { interior: false, exterior: false };
+        const interiorCheckbox = document.getElementById('scope-interior');
+        const exteriorCheckbox = document.getElementById('scope-exterior');
+        if (interiorCheckbox) interiorCheckbox.checked = false;
+        if (exteriorCheckbox) exteriorCheckbox.checked = false;
+      }
+      
+      // Show/hide concrete coating options
+      if (values.includes('concrete')) {
+        concreteCoatingOptions.style.display = 'block';
+      } else {
+        concreteCoatingOptions.style.display = 'none';
+        if (window.concreteCoatingMultiSelect) {
+          window.concreteCoatingMultiSelect.setValue([]);
+        }
+        formState.data.concreteCoatingTypes = [];
+      }
+      
+      // Show/hide wood treatment options
+      if (values.includes('wood')) {
+        woodCoatingOptions.style.display = 'block';
+      } else {
+        woodCoatingOptions.style.display = 'none';
+        if (window.woodCoatingMultiSelect) {
+          window.woodCoatingMultiSelect.setValue([]);
+        }
+        formState.data.woodCoatingTypes = [];
+      }
+      
+      // Update formState
+      formState.data.surfaceCoatingMethods = values;
+      formState.saveState();
+    }
+
+    // DOM Manipulation Functions
+    function renderHeader() {
+      const addressDisplay = document.getElementById('address-display');
+      if (addressDisplay && formState.data.siteAddress.street) {
+        let addressText = formState.data.siteAddress.street;
+        if (formState.data.siteAddress.city) {
+          addressText += `, ${formState.data.siteAddress.city}`;
+        }
+        addressDisplay.textContent = addressText;
+      }
+    }
+
+    function renderContacts() {
+      const contactsContainer = document.getElementById('contacts-container');
+      if (!contactsContainer) return;
+      
+      contactsContainer.innerHTML = '';
+      
+      // Create CRM-style widget container
+      const crmEntityWidget = document.createElement('div');
+      crmEntityWidget.className = 'crm-entity-widget-content-block-field-container-inner';
+      
+      formState.data.contacts.forEach((contact, index) => {
+        const innerRow = document.createElement('div');
+        innerRow.className = 'crm-entity-widget-content-inner-row';
+        
+        // Title Section
+        const blockTitle = document.createElement('div');
+        blockTitle.className = 'crm-entity-widget-content-block-title';
+        
+        const titleText = document.createElement('span');
+        titleText.className = 'crm-entity-widget-content-block-title-text';
+        titleText.textContent = index === 0 ? 'Contact' : `Contact ${index + 1}`;
+        
+        blockTitle.appendChild(titleText);
+        innerRow.appendChild(blockTitle);
+        
+        // Search Row (Contact Entry Fields)
+        const searchRow = document.createElement('div');
+        searchRow.className = 'crm-entity-widget-content-search-row';
+        
+        const searchInner = document.createElement('div');
+        searchInner.className = 'crm-entity-widget-content-search-inner';
+        
+        const searchBox = document.createElement('div');
+        searchBox.className = 'crm-entity-widget-content-search-box';
+        
+        // Contact Icon
+        const imgBox = document.createElement('div');
+        imgBox.className = 'crm-entity-widget-img-box crm-entity-widget-img-contact';
+        
+        // Contact Input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Contact name, phone or email';
+        input.className = 'crm-entity-widget-content-input crm-entity-widget-content-search-input';
+        input.autocomplete = 'nope';
+        input.value = contact.name;
+        input.addEventListener('input', e => formState.updateContact(index, 'name', e.target.value));
+        
+        // Badge, Edit, Select Buttons
+        const badge = document.createElement('div');
+        badge.className = 'crm-entity-widget-badge';
+        
+        const btnEdit = document.createElement('div');
+        btnEdit.className = 'crm-entity-widget-btn-edit';
+        
+        const btnSelect = document.createElement('div');
+        btnSelect.className = 'crm-entity-widget-btn-select';
+        btnSelect.title = 'Select another contact';
+        
+        // Loader
+        const loader = document.createElement('div');
+        loader.className = 'ui-ctl-after ui-ctl-icon-loader';
+        loader.style.display = 'none';
+        
+        // Close Button
+        const btnClose = document.createElement('div');
+        btnClose.className = 'crm-entity-widget-btn-close';
+        btnClose.style.display = 'none';
+        
+        // Add phone field
+        const phoneField = document.createElement('div');
+        phoneField.className = 'crm-entity-phone-field';
+        const phoneInput = document.createElement('input');
+        phoneInput.type = 'text';
+        phoneInput.placeholder = 'Phone Number';
+        phoneInput.className = 'crm-entity-widget-content-input';
+        phoneInput.value = formatPhoneNumber(contact.phone || ''); // Format existing phone number
+        
+        // Add phone formatting
+        phoneInput.addEventListener('input', e => {
+          // Get cursor position before formatting
+          const cursorPos = e.target.selectionStart;
+          const oldLength = e.target.value.length;
+          
+          // Format the phone number
+          const formatted = formatPhoneNumber(e.target.value);
+          e.target.value = formatted;
+          
+          // Adjust cursor position after formatting
+          const newLength = formatted.length;
+          const diff = newLength - oldLength;
+          if (diff > 0 && cursorPos === oldLength) {
+            // If we added characters and cursor was at end, keep it at end
+            e.target.setSelectionRange(newLength, newLength);
+          }
+          
+          // Save the formatted number to formState
+          formState.updateContact(index, 'phone', formatted);
+        });
+        
+        // Handle backspace better
+        phoneInput.addEventListener('keydown', e => {
+          if (e.key === 'Backspace' || e.key === 'Delete') {
+            const cursorPos = e.target.selectionStart;
+            const value = e.target.value;
+            
+            // If cursor is right after a dash, move it back
+            if ((cursorPos === 4 && value[3] === '-') ||
+                (cursorPos === 8 && value[7] === '-')) {
+              e.preventDefault();
+              e.target.setSelectionRange(cursorPos - 1, cursorPos - 1);
+            }
+          }
+        });
+        
+        phoneField.appendChild(phoneInput);
+        
+        // Add email field
+        const emailField = document.createElement('div');
+        emailField.className = 'crm-entity-email-field';
+        const emailInput = document.createElement('input');
+        emailInput.type = 'email';
+        emailInput.placeholder = 'Email Address';
+        emailInput.className = 'crm-entity-widget-content-input';
+        emailInput.value = contact.email;
+        emailInput.addEventListener('input', e => formState.updateContact(index, 'email', e.target.value));
+        emailField.appendChild(emailInput);
+        
+        // Append all elements
+        searchBox.appendChild(imgBox);
+        searchBox.appendChild(input);
+        searchBox.appendChild(badge);
+        searchBox.appendChild(btnEdit);
+        searchBox.appendChild(btnSelect);
+        searchBox.appendChild(loader);
+        
+        searchInner.appendChild(searchBox);
+        searchInner.appendChild(btnClose);
+        
+        searchRow.appendChild(searchInner);
+        searchRow.appendChild(phoneField);
+        searchRow.appendChild(emailField);
+        
+        // Add icon button (plus icon) if this is the first contact
+        if (index === 0) {
+          const addBtn = document.createElement('button');
+          addBtn.className = 'add-contact-btn';
+          addBtn.title = 'Add another contact';
+          // Use inline SVG for reliability and consistent appearance
+          addBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M10 6v8M6 10h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+          addBtn.setAttribute('aria-label', 'Add another contact');
+          addBtn.setAttribute('title', 'Add another contact');
+          addBtn.style.cssText = 'cursor: pointer !important;'; // Ensure cursor shows as pointer
+          addBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Add button clicked'); // Debug log
+            if (typeof formState === 'undefined') {
+              console.error('formState is not defined');
+              return;
+            }
+            formState.addContact();
+            renderContacts(); // Re-render contacts after adding
+          });
+          searchRow.appendChild(addBtn);
+        } else {
+          // Add remove button for additional contacts - styled like surfaces page
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-contact-btn';
+          removeBtn.title = 'Remove this contact';
+          // Use inline SVG for reliability and consistent appearance
+          removeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2" fill="none"/><path d="M7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+          removeBtn.setAttribute('aria-label', 'Remove this contact');
+          removeBtn.setAttribute('title', 'Remove this contact');
+          removeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            formState.removeContact(index);
+            renderContacts(); // Re-render contacts after removing
+          });
+          searchRow.appendChild(removeBtn);
+        }
+        
+        innerRow.appendChild(searchRow);
+        
+        // Append to container
+        crmEntityWidget.appendChild(innerRow);
+      });
+      
+      // Add company section
+      const companyRow = document.createElement('div');
+      companyRow.className = 'crm-entity-widget-content-inner-row';
+      
+      const companyTitle = document.createElement('div');
+      companyTitle.className = 'crm-entity-widget-content-block-title';
+      
+      const companyTitleText = document.createElement('span');
+      companyTitleText.className = 'crm-entity-widget-content-block-title-text';
+      companyTitleText.textContent = 'Company';
+      
+      companyTitle.appendChild(companyTitleText);
+      companyRow.appendChild(companyTitle);
+      
+      const companySearchRow = document.createElement('div');
+      companySearchRow.className = 'crm-entity-widget-content-search-row';
+      
+      const companySearchInner = document.createElement('div');
+      companySearchInner.className = 'crm-entity-widget-content-search-inner';
+      
+      const companySearchBox = document.createElement('div');
+      companySearchBox.className = 'crm-entity-widget-content-search-box';
+      
+      const companyImgBox = document.createElement('div');
+      companyImgBox.className = 'crm-entity-widget-img-box crm-entity-widget-img-company';
+      
+      const companyInput = document.createElement('input');
+      companyInput.type = 'text';
+      companyInput.placeholder = 'Enter name of company to be billed';
+      companyInput.className = 'crm-entity-widget-content-input crm-entity-widget-content-search-input';
+      companyInput.autocomplete = 'nope';
+      companyInput.value = formState.data.companyData ? formState.data.companyData.name || '' : '';
+      companyInput.addEventListener('input', e => {
+        if (!formState.data.companyData) {
+          formState.data.companyData = { name: e.target.value };
+        } else {
+          formState.data.companyData.name = e.target.value;
+        }
+        formState.saveState();
+      });
+      
+      const companyBadge = document.createElement('div');
+      companyBadge.className = 'crm-entity-widget-badge';
+      
+      const companyBtnEdit = document.createElement('div');
+      companyBtnEdit.className = 'crm-entity-widget-btn-edit';
+      
+      const companyBtnSelect = document.createElement('div');
+      companyBtnSelect.className = 'crm-entity-widget-btn-select';
+      companyBtnSelect.title = 'Select another company';
+      
+      const companyLoader = document.createElement('div');
+      companyLoader.className = 'ui-ctl-after ui-ctl-icon-loader';
+      companyLoader.style.display = 'none';
+      
+      const companyBtnClose = document.createElement('div');
+      companyBtnClose.className = 'crm-entity-widget-btn-close';
+      companyBtnClose.style.display = 'none';
+      
+      // Append all company elements
+      companySearchBox.appendChild(companyImgBox);
+      companySearchBox.appendChild(companyInput);
+      companySearchBox.appendChild(companyBadge);
+      companySearchBox.appendChild(companyBtnEdit);
+      companySearchBox.appendChild(companyBtnSelect);
+      companySearchBox.appendChild(companyLoader);
+      
+      companySearchInner.appendChild(companySearchBox);
+      companySearchInner.appendChild(companyBtnClose);
+      
+      companySearchRow.appendChild(companySearchInner);
+      
+      companyRow.appendChild(companySearchRow);
+      
+      // Add the company row
+      crmEntityWidget.appendChild(companyRow);
+      
+      // Add the entire CRM widget to the container
+      contactsContainer.appendChild(crmEntityWidget);
+    }
+
+    function renderProjectSpecificFields() {
+      const container = document.getElementById('project-specific-fields');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      const projectType = formState.data.projectType || formState.data.project_type;
+      if (!projectType) return;
+      
+      let fieldsHTML = '';
+      
+      switch(projectType) {
+        case 'residential':
+          fieldsHTML = `
+            <div class="form-group">
+              <label class="form-label">
+                Community Name <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="community-name"
+                    class="input-field" 
+                    placeholder="e.g. Las Verdes, Sunny Apartments" 
+                    value="${formState.data.communityName || ''}">
+            </div>
+          `;
+          break;
+          
+        case 'commercial':
+          fieldsHTML = `
+            <div class="form-group">
+              <label class="form-label">
+                Location Name <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="location-name"
+                    class="input-field" 
+                    placeholder="e.g. Coral Square, Broward Mall" 
+                    value="${formState.data.locationName || ''}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                Company Name <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="company-name"
+                    class="input-field" 
+                    placeholder="e.g. JC Penney's, XYZ Corp" 
+                    value="${formState.data.companyName || ''}">
+            </div>
+          `;
+          break;
+          
+        case 'community':
+          fieldsHTML = `
+            <div class="form-group">
+              <label class="form-label">
+                Community Name <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="community-name"
+                    class="input-field" 
+                    placeholder="e.g. Las Verdes, Sunny Apartments" 
+                    value="${formState.data.communityName || ''}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                Company Name <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="company-name"
+                    class="input-field" 
+                    placeholder="e.g. Delwood HOA, FirstService Residential" 
+                    value="${formState.data.companyName || ''}">
+            </div>
+          `;
+          break;
+          
+        case 'public-sector':
+          fieldsHTML = `
+            <div class="form-group">
+              <label class="form-label">
+                Government Jurisdiction <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="government-jurisdiction"
+                    class="input-field" 
+                    placeholder="e.g. City of Miami, Broward County" 
+                    value="${formState.data.governmentJurisdiction || ''}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                Government Agency <span class="required-indicator">*</span>
+              </label>
+              <input type="text" 
+                    id="government-agency"
+                    class="input-field" 
+                    placeholder="e.g. Fire Station #26, Parks & Rec" 
+                    value="${formState.data.governmentAgency || ''}">
+            </div>
+          `;
+          break;
+      }
+      
+      container.innerHTML = fieldsHTML;
+      
+      // Add event listeners for specific fields
+      if (projectType === 'residential' || projectType === 'community') {
+        const communityNameInput = document.getElementById('community-name');
+        if (communityNameInput) {
+          communityNameInput.addEventListener('input', function() {
+            formState.data.communityName = this.value;
+            formState.saveState();
+          });
+        }
+      }
+      
+      if (projectType === 'commercial' || projectType === 'community') {
+        const companyNameInput = document.getElementById('company-name');
+        if (companyNameInput) {
+          companyNameInput.addEventListener('input', function() {
+            formState.data.companyName = this.value;
+            formState.saveState();
+          });
+        }
+        
+        if (projectType === 'commercial') {
+          const locationNameInput = document.getElementById('location-name');
+          if (locationNameInput) {
+            locationNameInput.addEventListener('input', function() {
+              formState.data.locationName = this.value;
+              formState.saveState();
+            });
+          }
+        }
+      }
+      
+      if (projectType === 'public-sector') {
+        const governmentJurisdictionInput = document.getElementById('government-jurisdiction');
+        if (governmentJurisdictionInput) {
+          governmentJurisdictionInput.addEventListener('input', function() {
+            formState.data.governmentJurisdiction = this.value;
+            formState.saveState();
+          });
+        }
+        
+        const governmentAgencyInput = document.getElementById('government-agency');
+        if (governmentAgencyInput) {
+          governmentAgencyInput.addEventListener('input', function() {
+            formState.data.governmentAgency = this.value;
+            formState.saveState();
+          });
+        }
+      }
+    }
+
+    function updateFormDisplay() {
+      renderHeader();
+      renderProjectSpecificFields();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ensure formState is available and loaded
+      if (typeof formState === 'undefined') {
+        console.error('formState is not defined. Make sure formState.js is loaded.');
+        return;
+      }
+      
+      // Make sure formState is initialized
+      if (!formState.initialized) {
+        formState.init();
+      }
+      
+      // Set the current step to 1 (Project Details is the first step)
+      formState.currentStep = 1;
+      formState.updateTotalSteps();
+      formState.saveState();
+      
+      // Update progress display
+      const percentage = Math.round((formState.currentStep / formState.totalSteps) * 100);
+      document.getElementById('progress-step').textContent = `Step ${formState.currentStep} of ${formState.totalSteps}`;
+      document.getElementById('progress-percentage').textContent = `${percentage}% Complete`;
+      document.getElementById('progress-fill').style.width = `${percentage}%`;
+      
+      // Initialize project scope if not exists
+      if (!formState.data.projectScope) {
+        formState.data.projectScope = {
+          interior: false,
+          exterior: false
+        };
+      }
+      
+      // Update scope button styles
+      updateScopeButtons();
+      
+      // Initialize service type multi-select
+      const serviceTypeElement = document.getElementById('service-type-multiselect');
+      if (serviceTypeElement) {
+        // Ensure serviceTypes is an array
+        if (!Array.isArray(formState.data.serviceTypes)) {
+          formState.data.serviceTypes = formState.data.serviceTypes || ['surface_coating'];
+        }
+        
+        // Handle backward compatibility - convert "painting" to "surface_coating"
+        if (formState.data.serviceTypes.includes('painting')) {
+          const index = formState.data.serviceTypes.indexOf('painting');
+          formState.data.serviceTypes[index] = 'surface_coating';
+          // Also set surface coating method to painting for backward compatibility
+          if (!formState.data.surfaceCoatingMethods || formState.data.surfaceCoatingMethods.length === 0) {
+            formState.data.surfaceCoatingMethods = ['painting'];
+          }
+        }
+        
+        window.serviceTypeMultiSelect = new MultiSelect(serviceTypeElement, {
+          fieldName: 'serviceTypes[]',
+          value: formState.data.serviceTypes.map(type => ({ 
+            NAME: type === 'surface_coating' ? 'Surface Coating' : 'Abrasive Cleaning', 
+            VALUE: type 
+          })),
+          onChange: handleServiceTypeChange
+        });
+        
+        // Update legacy serviceType for backward compatibility
+        if (formState.data.serviceTypes.length > 0 && !formState.data.serviceType) {
+          formState.data.serviceType = formState.data.serviceTypes[0];
+          formState.saveState();
+        }
+        
+        // Show/hide abrasive options based on saved state
+        if (formState.data.serviceTypes.includes('abrasive')) {
+          document.getElementById('abrasive-options').style.display = 'block';
+        }
+        
+        // Show/hide surface coating options based on saved state
+        if (formState.data.serviceTypes.includes('surface_coating')) {
+          document.getElementById('surface-coating-options').style.display = 'block';
+          
+          // Also trigger surface coating method change to show sub-options
+          if (formState.data.surfaceCoatingMethods && formState.data.surfaceCoatingMethods.length > 0) {
+            handleSurfaceCoatingMethodChange(formState.data.surfaceCoatingMethods);
+          }
+        }
+        
+      }
+      
+      // Initialize surface coating method multi-select
+      const surfaceCoatingMethodElement = document.getElementById('surface-coating-method-multiselect');
+      if (surfaceCoatingMethodElement) {
+        // Ensure surfaceCoatingMethods is an array
+        if (!Array.isArray(formState.data.surfaceCoatingMethods)) {
+          formState.data.surfaceCoatingMethods = formState.data.surfaceCoatingMethods || [];
+        }
+        
+        window.surfaceCoatingMethodMultiSelect = new MultiSelect(surfaceCoatingMethodElement, {
+          fieldName: 'surfaceCoatingMethods[]',
+          value: formState.data.surfaceCoatingMethods.map(method => ({ 
+            NAME: method === 'painting' ? 'Painting' : 
+                  method === 'concrete' ? 'Concrete Coating' : 
+                  method === 'wood' ? 'Wood Treatment' : method, 
+            VALUE: method 
+          })),
+          onChange: handleSurfaceCoatingMethodChange
+        });
+      }
+      
+      // Initialize concrete coating multi-select
+      const concreteCoatingElement = document.getElementById('concrete-coating-multiselect');
+      if (concreteCoatingElement) {
+        // Ensure concreteCoatingTypes is an array
+        if (!Array.isArray(formState.data.concreteCoatingTypes)) {
+          formState.data.concreteCoatingTypes = formState.data.concreteCoatingTypes || [];
+        }
+        
+        window.concreteCoatingMultiSelect = new MultiSelect(concreteCoatingElement, {
+          fieldName: 'concreteCoatingTypes[]',
+          value: formState.data.concreteCoatingTypes.map(type => ({ 
+            NAME: type === 'epoxy_floors' ? 'Epoxy Floors' : 
+                  type === 'sealing' ? 'Sealing' : 
+                  type === 'decorative_overlays' ? 'Decorative Overlays' :
+                  type === 'dye_colorants' ? 'Dye & Colorants' :
+                  type === 'polishing' ? 'Polishing' : type, 
+            VALUE: type 
+          })),
+          onChange: function(selectedValues) {
+            formState.data.concreteCoatingTypes = selectedValues;
+            formState.saveState();
+          }
+        });
+      }
+      
+      // Initialize wood coating multi-select
+      const woodCoatingElement = document.getElementById('wood-coating-multiselect');
+      if (woodCoatingElement) {
+        // Ensure woodCoatingTypes is an array
+        if (!Array.isArray(formState.data.woodCoatingTypes)) {
+          formState.data.woodCoatingTypes = formState.data.woodCoatingTypes || [];
+        }
+        
+        window.woodCoatingMultiSelect = new MultiSelect(woodCoatingElement, {
+          fieldName: 'woodCoatingTypes[]',
+          value: formState.data.woodCoatingTypes.map(type => ({ 
+            NAME: type === 'stains' ? 'Stains' : 
+                  type === 'sealers' ? 'Sealers' : 
+                  type === 'protective_clearcoat' ? 'Protective Clearcoat' : type, 
+            VALUE: type 
+          })),
+          onChange: function(selectedValues) {
+            formState.data.woodCoatingTypes = selectedValues;
+            formState.saveState();
+          }
+        });
+      }
+      
+      // Initialize abrasive method multi-select
+      const abrasiveMethodElement = document.getElementById('abrasive-method-multiselect');
+      if (abrasiveMethodElement) {
+        // Ensure abrasiveMethods is an array
+        if (!Array.isArray(formState.data.abrasiveMethods)) {
+          formState.data.abrasiveMethods = formState.data.abrasiveMethods || [];
+        }
+        
+        window.abrasiveMethodMultiSelect = new MultiSelect(abrasiveMethodElement, {
+          fieldName: 'abrasiveMethods[]',
+          value: formState.data.abrasiveMethods.map(method => ({ 
+            NAME: method === 'sandblasting' ? 'Sandblasting' : 
+                  method === 'pressure' ? 'Pressure Cleaning' : 
+                  method === 'chemical' ? 'Chemical' : method, 
+            VALUE: method 
+          })),
+          onChange: function(selectedValues) {
+            formState.data.abrasiveMethods = selectedValues;
+            // Keep backward compatibility with single abrasiveMethod
+            formState.data.abrasiveMethod = selectedValues.length > 0 ? selectedValues[0] : '';
+            formState.saveState();
+          }
+        });
+      }
+      
+      // Initialize project type selector
+      const projectTypeSelect = document.getElementById('project-type');
+      if (projectTypeSelect) {
+        projectTypeSelect.value = formState.data.projectType || '';
+        projectTypeSelect.addEventListener('change', function() {
+          formState.data.projectType = this.value;
+          formState.data.project_type = this.value; // For compatibility
+          formState.saveState();
+          renderProjectSpecificFields();
+        });
+      }
+      
+      // Initialize form fields with saved data
+      const addressAutocomplete = document.getElementById('address-autocomplete');
+      const streetAddress = document.getElementById('street-address');
+      const city = document.getElementById('city');
+      const state = document.getElementById('state'); // This is now the select element
+      const zip = document.getElementById('zip-code');
+      
+      // Initialize address autocomplete with saved address
+      if (addressAutocomplete && formState.data.siteAddress.street) {
+        // Construct full address for autocomplete field
+        let fullAddress = formState.data.siteAddress.street;
+        if (formState.data.siteAddress.city) {
+          fullAddress += `, ${formState.data.siteAddress.city}`;
+        }
+        if (formState.data.siteAddress.state) {
+          fullAddress += `, ${formState.data.siteAddress.state}`;
+        }
+        if (formState.data.siteAddress.zip) {
+          fullAddress += ` ${formState.data.siteAddress.zip}`;
+        }
+        addressAutocomplete.value = fullAddress;
+      }
+      
+      if (streetAddress) {
+        streetAddress.value = formState.data.siteAddress.street || '';
+        streetAddress.addEventListener('input', function() {
+          updateFormField('siteAddress.street', this.value);
+          
+          // Update address display in header
+          const addressDisplay = document.getElementById('address-display');
+          if (addressDisplay && this.value) {
+            let addressText = this.value;
+            const cityValue = document.getElementById('city')?.value;
+            if (cityValue) {
+              addressText += `, ${cityValue}`;
+            }
+            addressDisplay.textContent = addressText;
+          }
+        });
+      }
+      
+      if (city) {
+        city.value = formState.data.siteAddress.city || '';
+        city.addEventListener('input', function() {
+          updateFormField('siteAddress.city', this.value);
+          
+          // Update address display in header
+          const addressDisplay = document.getElementById('address-display');
+          const streetValue = document.getElementById('street-address')?.value;
+          if (addressDisplay && streetValue) {
+            let addressText = streetValue;
+            if (this.value) {
+              addressText += `, ${this.value}`;
+            }
+            addressDisplay.textContent = addressText;
+          }
+        });
+      }
+      
+      if (state) { // 'state' is the <select> element
+        const savedStateValue = formState.data.siteAddress.state;
+        if (savedStateValue && savedStateValue !== '') {
+          state.value = savedStateValue; // Set select value from formState
+        } else {
+          // If no saved state, dropdown defaults to 'FL' (from HTML 'selected' attribute).
+          // Update formState to reflect this default.
+          // state.value is already 'FL' due to the 'selected' attribute on the FL option in HTML.
+          updateFormField('siteAddress.state', 'FL');
+        }
+
+        state.addEventListener('change', function() { // Event type changed to 'change' for select
+          updateFormField('siteAddress.state', this.value);
+        });
+      }
+      
+      if (zip) {
+        zip.value = formState.data.siteAddress.zip || '';
+        zip.addEventListener('input', function(e) {
+          // Only allow numeric input and limit to 5 digits
+          let value = e.target.value.replace(/\D/g, ''); // Remove all non-digits
+          if (value.length > 5) {
+            value = value.slice(0, 5); // Limit to 5 digits
+          }
+          this.value = value; // Update input field with cleaned value
+          updateFormField('siteAddress.zip', value);
+        });
+      }
+      
+      // Render dynamic content
+      renderContacts();
+      updateFormDisplay();
+      renderProjectSpecificFields(); // Show project-specific fields if type is already selected
+      
+      // Update address display in header after all fields are initialized
+      const addressDisplay = document.getElementById('address-display');
+      if (addressDisplay && formState.data.siteAddress.street) {
+        let addressText = formState.data.siteAddress.street;
+        if (formState.data.siteAddress.city) {
+          addressText += `, ${formState.data.siteAddress.city}`;
+        }
+        addressDisplay.textContent = addressText;
+      }
+      
+      // Setup navigation buttons
+      document.getElementById('prev-button').addEventListener('click', function() {
+        window.location.href = '../index.html';
+      });
+      
+      document.getElementById('next-button').addEventListener('click', function() {
+        // Get the form element
+        const form = document.querySelector('form') || document.querySelector('.form-content');
+        
+        // Clear previous errors
+        if (form && FormValidator.clearAllValidation) {
+          FormValidator.clearAllValidation(form);
+        }
+        
+        // Simple validation for required fields
+        let hasErrors = false;
+        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+        
+        requiredFields.forEach(field => {
+          if (!field.value || field.value.trim() === '') {
+            hasErrors = true;
+            if (FormValidator.showError) {
+              FormValidator.showError(field, 'This field is required');
+            } else {
+              // Fallback if FormValidator methods not available
+              field.classList.add('validation-error');
+              const errorMsg = document.createElement('div');
+              errorMsg.className = 'validation-error-message';
+              errorMsg.textContent = 'This field is required';
+              field.parentNode.appendChild(errorMsg);
+            }
+          }
+        });
+        
+        if (hasErrors) {
+          // Focus on first error field
+          const firstError = document.querySelector('.validation-error');
+          if (firstError) {
+            firstError.focus();
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+        
+        // Validate painting scope (interior/exterior) only if painting is selected
+        const serviceTypes = formState.data.serviceTypes || [];
+        const includesPainting = serviceTypes.includes('painting');
+    
+    if (includesPainting && (!formState.data.projectScope || (!formState.data.projectScope.interior && !formState.data.projectScope.exterior))) {
+      const scopeError = document.getElementById('scope-error');
+      scopeError.textContent = 'Please select at least one painting scope (Interior or Exterior)';
+      scopeError.style.color = '#dc2626';
+      scopeError.style.display = 'block';
+      // Scroll to the scope section
+      document.getElementById('scope-interior').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    
+    // Additional validation: Check if abrasive-only with interior selected (shouldn't happen with new logic but keeping for safety)
+    if (includesPainting) {
+      const isAbrasiveOnly = serviceTypes.length === 1 && serviceTypes[0] === 'abrasive';
+      if (isAbrasiveOnly && formState.data.projectScope.interior) {
+        const scopeError = document.getElementById('scope-error');
+        scopeError.textContent = 'Interior is not available for abrasive cleaning services. Please select only Exterior.';
+        scopeError.style.display = 'block';
+        scopeError.style.color = '#dc2626';
+        
+        // Uncheck interior
+        const interiorCheckbox = document.getElementById('scope-interior');
+        if (interiorCheckbox) {
+          interiorCheckbox.checked = false;
+          formState.data.projectScope.interior = false;
+          formState.saveState();
+        }
+        
+        // Scroll to the scope section
+        document.getElementById('scope-interior').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+        
+        // Allow navigation to next page
+        formState.currentStep = 2; // Surfaces is step 2
+        formState.saveState();
+        // console.log('Project Details: Navigating to surfaces, currentStep:', formState.currentStep); // Suppress
+        
+        // Add delay to ensure state is saved
+        setTimeout(function() {
+          // Navigate to the new combined paint & surfaces page
+          window.location.href = 'surfaces.html';
+        }, 100);
+      });
+    });
+  </script>
+  
+  <!-- Header Component -->
+  <script src="../js/components/header.js"></script>
+  <!-- Multi-Select Component -->
+  <script src="../js/components/multi-select.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Make sure formState is initialized
+      if (typeof formState !== 'undefined' && !formState.data) {
+        formState.loadState();
+      }
+      
+      if (typeof renderHeader === 'function') {
+        renderHeader('Project Details');
+      }
+    });
+  </script>
+  
+  <!-- Comprehensive fix for address error -->
+  <script src="../fixes/address-error-fix.js"></script>
+  
+  <!-- Google Maps API with Places library -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC66JKuuoaQGChmAtnIPEa-wk7rEqiNR_8&libraries=places&callback=initAutocomplete" async defer></script>
+</body>
+</html>

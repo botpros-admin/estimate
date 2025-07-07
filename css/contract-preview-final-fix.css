@@ -1,0 +1,133 @@
+/* Contract Preview Final Fix - Task 014
+   Addresses text formatting and footer bleeding issues */
+
+/* =================================================================
+   CRITICAL FIXES FOR TEXT FORMATTING & FOOTER BLEEDING
+   ================================================================= */
+
+/* 1. Fix text scrunching by ensuring proper spacing */
+.page-container {
+    width: 8.5in !important;
+    min-height: 11in !important;
+    margin: 0 auto 30px auto !important;
+    padding: 0.75in !important;
+    padding-bottom: 200px !important; /* Increased from 150px for footer space */
+    background: white !important;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1) !important;
+    position: relative !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Ensure content doesn't overlap with footer */
+.page-content {
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: calc(11in - 3in) !important; /* Leave 3 inches for footer */
+    padding-bottom: 150px !important; /* Extra padding before footer */
+}
+
+/* 3. Fix footer positioning to prevent bleeding */
+.footer-section {
+    position: absolute !important; /* Changed from fixed */
+    bottom: 0.5in !important;
+    left: 0.75in !important;
+    right: 0.75in !important;
+    width: calc(8.5in - 1.5in) !important;
+    background: white !important;
+    padding: 20px 0 !important;
+    border-top: 1px solid #ccc !important;
+    z-index: 10 !important;
+    page-break-inside: avoid !important;
+}
+
+/* 4. Prevent last section from bleeding into footer */
+.section:last-of-type,
+.section:last-child {
+    margin-bottom: 180px !important; /* Increased spacing */
+    padding-bottom: 20px !important;
+    page-break-after: avoid !important;
+}
+
+/* 5. Fix text formatting issues */
+.section-content,
+.conditions-text,
+.scope-list,
+.section p {
+    line-height: 1.6 !important;
+    text-align: left !important; /* Prevent justify spacing issues */
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+}
+
+/* 6. Ensure proper table formatting */
+.section table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important; /* Prevent table overflow */
+    margin-bottom: 20px !important;
+}
+
+.section table td {
+    padding: 12px !important;
+    vertical-align: top !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+/* 7. Print-specific fixes */
+@media print {
+    .page-container {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always !important;
+    }
+    
+    .page-content {
+        min-height: 8in !important; /* Adjust for print margins */
+    }
+    
+    .footer-section {
+        position: fixed !important;
+        bottom: 0 !important;
+        page-break-inside: avoid !important;
+    }
+    
+    /* Prevent orphaned content */
+    .section {
+        page-break-inside: avoid !important;
+    }
+    
+    /* Ensure footer stays at bottom on print */
+    @page {
+        margin: 0.5in;
+        size: letter portrait;
+    }
+}
+
+/* 8. Override any conflicting styles */
+.page-container > * {
+    position: static !important; /* Remove absolute positioning */
+}
+
+/* 9. Signature section specific fixes */
+.signature-line {
+    margin-top: 30px !important;
+    margin-bottom: 10px !important;
+    position: relative !important;
+}
+
+/* 10. Emergency override for any remaining issues */
+body.contract-preview {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+.page-wrapper {
+    width: 100% !important;
+    max-width: 8.5in !important;
+    margin: 0 auto !important;
+}

@@ -1,0 +1,625 @@
+    /* CRITICAL: Force toggle to exact dimensions */
+    .toggle-switch {
+      width: 50px !important;
+      height: 24px !important;
+      min-height: 24px !important;
+      max-height: 24px !important;
+      display: inline-block !important;
+      position: relative !important;
+      vertical-align: middle !important;
+    }
+    
+    .toggle-slider {
+      height: 24px !important;
+      border-radius: 24px !important;
+    }
+    
+    .toggle-slider:before {
+      height: 18px !important;
+      width: 18px !important;
+    }
+    
+    /* Force override of mobile-enhancements for direct surface card placement */
+    @media all {
+      .paint-card .surface-card {
+        margin: 0 0 1rem 0 !important;
+        width: 100% !important;
+        transform: none !important;
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+      }
+    }
+    
+    /* CSS Custom Properties for consistent sizing */
+    :root {
+      --select-max-width: 100%;
+      --option-max-width: min(90vw, 400px);
+      --select-padding: 0.625rem 0.75rem;
+      --option-padding: 8px 12px;
+    }
+    
+    /* Combined styles for paint and surfaces */
+    .paint-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: visible;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .paint-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Measurement color input styling */
+    .measurement-color-input-container {
+      width: 100%;
+    }
+    
+    .measurement-color-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+    
+    .measurement-color-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .measurement-color-input::placeholder {
+      color: #9ca3af;
+    }
+    
+    /* Paint brand and finish selects */
+    .paint-brand-select, .paint-finish-select {
+      width: 100%;
+      max-width: 100%;
+      padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+      font-size: 0.875rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2714%27%20height%3D%278%27%20viewBox%3D%270%200%2014%208%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27M1%201l6%206%206-6%27%20stroke%3D%27%236b7280%27%20stroke-width%3D%272%27%20fill%3D%27none%27%20fill-rule%3D%27evenodd%27/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 14px 8px;
+    }
+    
+    .paint-products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .paint-product-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .paint-product-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .paint-product-card.selected {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+    
+    /* Surface styles */
+    .surface-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    
+    .surface-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .surface-title-area {
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+    
+    .surface-title-input {
+      width: 100%;
+    }
+    
+    .surface-card-content {
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    
+    /* Measurement block styles */
+    .measurement-block {
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: #f9fafb;
+    }
+    
+    .measurement-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .measurement-input {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      width: 100%;
+    }
+    
+    .measurement-description-input {
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+    
+    /* Toggle Switch Styles */
+    .measurement-input-type-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: #3b82f6;
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
+    .toggle-label-left,
+    .toggle-label-right {
+      font-size: 0.875rem;
+      color: #6b7280;
+      transition: color 0.2s;
+    }
+    
+    .toggle-label-left.active,
+    .toggle-label-right.active {
+      color: #1f2937;
+      font-weight: 500;
+    }
+    
+    /* L x H inputs */
+    .lxh-pair {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      flex-wrap: nowrap;
+      width: fit-content;
+    }
+    
+    .lxh-input {
+      width: 70px;
+      min-width: 70px;
+      max-width: 70px;
+      text-align: center;
+      padding: 3px 4px;
+      font-size: 0.8125rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+    }
+    
+    .lxh-pair span {
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin: 0 10px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    
+    .lxh-pair .remove-lxh-btn {
+      margin-left: 2px;
+      flex-shrink: 0;
+    }
+    
+    .remove-lxh-btn {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      padding: 0;
+      min-width: 16px;
+      width: 16px;
+      min-height: 16px;
+      height: 16px;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      opacity: 0.8;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      outline: none;
+    }
+    
+    .remove-lxh-btn img {
+      display: block;
+      width: 14px;
+      height: 14px;
+    }
+    
+    .remove-lxh-btn:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    .remove-lxh-btn:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Button styles */
+    .add-lxh-btn, .add-photo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8125rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: background-color 0.2s, box-shadow 0.2s;
+      border: 1px solid transparent;
+      font-weight: 400;
+    }
+    
+    .add-measurement-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: background-color 0.2s, box-shadow 0.2s;
+      border: 1px solid transparent;
+      font-weight: 400;
+    }
+    
+    .add-lxh-btn {
+      background-color: #f0f0f0;
+      color: #333;
+      border-color: #e0e0e0;
+      margin-top: 0.5rem;
+    }
+    
+    .add-lxh-btn:hover {
+      background-color: #e5e5e5;
+      border-color: #d4d4d8;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .add-measurement-btn {
+      background-color: #e0f2fe;
+      color: #0c4a6e;
+      border-color: #bae6fd;
+      width: 100%;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    
+    .add-measurement-btn:hover {
+      background-color: #bae6fd;
+      border-color: #7dd3fc;
+      box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
+    }
+    
+    .add-photo-btn {
+      background-color: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+      margin-top: 0.5rem;
+    }
+    
+    .add-photo-btn:hover {
+      background-color: #bbf7d0;
+      border-color: #86efac;
+      box-shadow: 0 2px 4px rgba(34, 197, 94, 0.15);
+    }
+    
+    /* Smaller icons for compact buttons */
+    .add-lxh-btn i, .add-photo-btn i {
+      font-size: 0.75rem;
+    }
+    
+    .add-measurement-btn i {
+      font-size: 0.875rem;
+    }
+    
+    .measurement-subtotal {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: #4b5563;
+      text-align: right;
+      font-weight: 500;
+    }
+    
+    /* Photos */
+    .photos-container {
+      margin-top: 1rem;
+    }
+    
+    .photo-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .photo-thumbnail {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 0.25rem;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .photo-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .photo-remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .photo-remove-btn img {
+      filter: none;
+    }
+    
+    .photo-remove-btn:hover {
+      background: #dc2626;
+    }
+    
+    .measurement-remove-btn {
+      background: transparent;
+      color: #ef4444;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: all 0.2s ease;
+    }
+    
+    .measurement-remove-btn img {
+      filter: none;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .measurement-remove-btn:hover {
+      background: #fee2e2;
+    }
+    }
+    
+    .surface-remove-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    
+    .surface-remove-btn img {
+      filter: none;
+    }
+    
+    .surface-remove-btn:hover {
+      background: #dc2626;
+    }
+    
+    .hidden-file-input {
+      display: none;
+    }
+    
+    .surface-total-area-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-left: 1rem;
+    }
+    
+    /* Area settings icon styling */
+    .area-settings-icon {
+      background: none;
+      border: none;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .area-settings-icon:hover {
+      background-color: #f3f4f6;
+    }
+    
+    .area-settings-icon svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+    }
+    
+    .area-settings-icon svg circle {
+      transition: fill 0.2s ease;
+    }
+    
+    .area-settings-icon:hover svg circle {
+      fill: #374151;
+    }
+    
+    /* Modal overlay for area settings */
+    #area-settings-modal {
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.2s ease-out;
+    }
+    
+    #area-settings-modal .bg-white {
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    /* Modal styles for area settings */
+    .modal-header {
+      background-color: #f9fafb;
+    }
+    
+    .modal-body label {
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .modal-body input[type="radio"],
+    .modal-body input[type="checkbox"] {
+      cursor: pointer;
+    }
+    
+    /* Validation error styles */
+    .validation-error {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+    }
+    
+    .validation-error-message {
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+    
+    .paint-products-grid.validation-error {
+      padding: 0.5rem;
+      border: 1px solid #dc2626;
+      border-radius: 0.375rem;
+    }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spaced-out version: horizontal gap = 1.77 × (rₙ₋₁ + rₙ) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="424.18" height="17" viewBox="0 0 424.18 17">
+  <circle cx="6.50" cy="8.5" r="2.5" fill="#37AFE0"/>
+  <circle cx="16.23" cy="8.5" r="3.0" fill="#37AFE0"/>
+  <circle cx="26.86" cy="8.5" r="3.0" fill="#37AFE0"/>
+  <circle cx="37.48" cy="8.5" r="3.0" fill="#37AFE0"/>
+  <circle cx="49.87" cy="8.5" r="4.0" fill="#37AFE0"/>
+  <circle cx="64.03" cy="8.5" r="4.0" fill="#37AFE0"/>
+  <circle cx="79.07" cy="8.5" r="4.5" fill="#37AFE0"/>
+  <circle cx="95.89" cy="8.5" r="5.0" fill="#37AFE0"/>
+  <circle cx="113.59" cy="8.5" r="5.0" fill="#37AFE0"/>
+  <circle cx="131.28" cy="8.5" r="5.0" fill="#37AFE0"/>
+  <circle cx="149.87" cy="8.5" r="5.5" fill="#37AFE0"/>
+  <circle cx="170.22" cy="8.5" r="6.0" fill="#37AFE0"/>
+  <circle cx="191.47" cy="8.5" r="6.0" fill="#37AFE0"/>
+  <circle cx="213.59" cy="8.5" r="6.5" fill="#37AFE0"/>
+  <circle cx="235.72" cy="8.5" r="6.0" fill="#37AFE0"/>
+  <circle cx="256.95" cy="8.5" r="6.0" fill="#37AFE0"/>
+  <circle cx="277.31" cy="8.5" r="5.5" fill="#37AFE0"/>
+  <circle cx="295.89" cy="8.5" r="5.0" fill="#37AFE0"/>
+  <circle cx="313.59" cy="8.5" r="5.0" fill="#37AFE0"/>
+  <circle cx="330.41" cy="8.5" r="4.5" fill="#37AFE0"/>
+  <circle cx="346.34" cy="8.5" r="4.5" fill="#37AFE0"/>
+  <circle cx="361.38" cy="8.5" r="4.0" fill="#37AFE0"/>
+  <circle cx="375.55" cy="8.5" r="4.0" fill="#37AFE0"/>
+  <circle cx="388.82" cy="8.5" r="3.5" fill="#37AFE0"/>
+  <circle cx="400.32" cy="8.5" r="3.0" fill="#37AFE0"/>
+  <circle cx="410.94" cy="8.5" r="3.0" fill="#37AFE0"/>
+  <circle cx="420.68" cy="8.5" r="2.5" fill="#37AFE0"/>
+</svg>

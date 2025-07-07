@@ -1,0 +1,247 @@
+/* Custom Icon Solutions - Override Font Awesome with CSS Icons */
+
+/* Reset all Font Awesome references */
+[class*="fa-"]::before,
+[class*="fa-"]::after,
+.crm-entity-widget-img-contact::after,
+.crm-entity-widget-img-company::after,
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before,
+.crm-entity-widget-btn-edit::after,
+.crm-entity-widget-btn-select::after,
+.crm-entity-widget-btn-close::after,
+.crm-entity-widget-actions-btn-add::before {
+  font-family: system-ui, -apple-system, sans-serif !important;
+  font-weight: normal !important;
+}
+
+/* Better Contact/User Icon - Using Unicode character for consistency */
+.crm-entity-widget-img-contact {
+  position: relative;
+  overflow: hidden;
+}
+
+.crm-entity-widget-img-contact::before {
+  content: '👤' !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #4b5563;
+  filter: grayscale(100%);
+}
+
+.crm-entity-widget-img-contact::after {
+  display: none !important;
+}
+
+/* Better Company/Building Icon - Using Unicode character */
+.crm-entity-widget-img-company {
+  position: relative;
+  overflow: hidden;
+}
+
+.crm-entity-widget-img-company::before {
+  content: '🏢' !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #4b5563;
+  filter: grayscale(100%);
+}
+
+.crm-entity-widget-img-company::after {
+  display: none !important;
+}
+
+/* Phone Icon */
+.crm-entity-phone-field::before {
+  content: '📞' !important;
+  font-size: 18px;
+  color: #4b5563 !important;
+  filter: grayscale(100%);
+}
+
+/* Email Icon */
+.crm-entity-email-field::before {
+  content: '📧' !important;
+  font-size: 18px;
+  color: #4b5563 !important;
+  filter: grayscale(100%);
+}
+
+/* Edit Icon */
+.crm-entity-widget-btn-edit::after {
+  content: '✎' !important;
+  font-size: 14px;
+}
+
+/* Dropdown Arrow */
+.crm-entity-widget-btn-select::after {
+  content: '▾' !important;
+  font-size: 12px;
+}
+
+/* Close/X Icon */
+.crm-entity-widget-btn-close::after {
+  content: '✕' !important;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Add Plus Icon */
+.crm-entity-widget-actions-btn-add::before,
+.add-contact-icon {
+  content: '+' !important;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Better styling for icon containers */
+.crm-entity-widget-img-box,
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 2.5rem !important;
+}
+
+/* Input group icons */
+.input-icon::before {
+  content: '•';
+  font-size: 20px;
+  color: var(--color-gray-400);
+}
+/* Phone Icon */
+.crm-entity-phone-field::before {
+  content: '📞' !important;
+  font-size: 18px;
+  filter: grayscale(100%);
+}
+
+/* Email Icon */
+.crm-entity-email-field::before {
+  content: '📧' !important;
+  font-size: 18px;
+  filter: grayscale(100%);
+}
+
+/* Edit Icon */
+.crm-entity-widget-btn-edit::after {
+  content: '✎' !important;
+  font-size: 14px;
+}
+
+/* Dropdown Arrow */
+.crm-entity-widget-btn-select::after {
+  content: '▾' !important;
+  font-size: 12px;
+}
+
+/* Close/X Icon */
+.crm-entity-widget-btn-close::after {
+  content: '✕' !important;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Add Plus Icon */
+.crm-entity-widget-actions-btn-add::before,
+.add-contact-icon {
+  content: '+' !important;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Better styling for icon containers */
+.crm-entity-widget-img-box,
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 2.5rem !important;
+}
+
+/* Input group icons */
+.input-icon::before {
+  content: '•';
+  font-size: 20px;
+  color: var(--color-gray-400);
+}
+
+/* Ensure icon boxes maintain their shape */
+.crm-entity-widget-img-box {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Uniform icon area styling */
+.crm-entity-widget-content-search-box .crm-entity-widget-img-box {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* Ensure all icon areas have the same subtle background */
+.crm-entity-widget-img-box,
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before {
+  background-color: #f9fafb !important;
+}
+
+/* Final override to ensure uniform appearance */
+.crm-entity-widget-content-search-box .crm-entity-widget-img-box,
+.crm-entity-phone-field::before,
+.crm-entity-email-field::before {
+  background-color: #f9fafb !important;
+  border-right: 1px solid #e5e7eb !important;
+}
+
+/* Consistent hover states for all fields */
+.crm-entity-widget-content-search-box:hover .crm-entity-widget-img-box,
+.crm-entity-phone-field:hover::before,
+.crm-entity-email-field:hover::before {
+  background-color: #f3f4f6 !important;
+}
+
+/* Consistent focus states for all fields */
+.crm-entity-widget-content-search-box:focus-within .crm-entity-widget-img-box,
+.crm-entity-phone-field:focus-within::before,
+.crm-entity-email-field:focus-within::before {
+  background-color: #eff6ff !important;
+  border-right-color: #3b82f6 !important;
+}
+
+/* Mobile view improvements */
+@media (max-width: 640px) {
+  /* Ensure consistent icon sizes on mobile */
+  .crm-entity-widget-img-contact::before,
+  .crm-entity-widget-img-company::before,
+  .crm-entity-phone-field::before,
+  .crm-entity-email-field::before {
+    font-size: 16px;
+  }
+  
+  /* Ensure proper alignment on mobile */
+  .crm-entity-widget-content-search-row {
+    align-items: stretch !important;
+  }
+  
+  .crm-entity-widget-content-search-box,
+  .crm-entity-phone-field,
+  .crm-entity-email-field {
+    height: 2.5rem;
+    min-height: 2.5rem;
+  }
+}

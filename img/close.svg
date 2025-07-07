@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800px" height="800px" viewBox="0 -0.5 21 21" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <title>close [#1538] – X only</title>
+    <desc>Red close icon without surrounding square.</desc>
+
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dribbble-Light-Preview"
+           transform="translate(-139.000000, -160.000000)" fill="#FF0000">
+            <g id="icons" transform="translate(56.000000, 160.000000)">
+                <!-- Square removed; only the X remains -->
+                <path d="M89.7872,11.856 L92.01425,9.735 L89.7872,7.613 L91.2719,6.199
+                         L93.5,8.321 L95.72705,6.199 L97.21175,7.613 L94.9847,9.735
+                         L97.21175,11.856 L95.72705,13.27 L93.5,11.149 L91.2719,13.27
+                         Z"
+                      id="close-[#1538]"/>
+            </g>
+        </g>
+    </g>
+</svg>

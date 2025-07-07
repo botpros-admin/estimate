@@ -1,0 +1,517 @@
+/* Accessibility Enhancements for Paint Estimator
+   Comprehensive WCAG compliance and ARIA support */
+
+/* ========================================
+   Skip Navigation Links
+   ======================================== */
+/* Ensure skip nav is completely hidden and doesn't affect layout */
+body > .skip-nav:first-child {
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.skip-nav {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  background: #1f2937;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 0 0 0.375rem 0;
+  z-index: 9999;
+  transition: all 0.2s ease;
+}
+
+.skip-nav:focus {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  clip-path: none !important;
+  overflow: visible !important;
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  padding: 0.5rem 1rem !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* ========================================
+   Focus Indicators - WCAG 2.1 AA Compliant
+   ======================================== */
+/* Remove default browser outlines */
+*:focus {
+  outline: none;
+}
+
+/* Custom focus indicators for all interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transition: outline 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Dark background elements get light focus */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.3);
+}
+
+/* ========================================
+   Screen Reader Only Content
+   ======================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Make screen reader content visible when focused */
+.sr-only:focus {
+  position: absolute;
+  width: auto;
+  height: auto;
+  padding: 0.5rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background: #1f2937;
+  color: white;
+  z-index: 9999;
+  border-radius: 0.375rem;
+}
+
+/* ========================================
+   Accordion Accessibility Styling
+   ======================================== */
+/* Accordion headers as buttons */
+.accordion-header {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 2.5rem;
+}
+
+/* Accordion expand/collapse indicator */
+.accordion-indicator {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+/* Rotate indicator when expanded */
+[aria-expanded="true"] .accordion-indicator {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Accordion content transitions */
+.accordion-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.accordion-content[aria-hidden="true"] {
+  max-height: 0;
+  opacity: 0;
+}
+
+.accordion-content[aria-hidden="false"] {
+  max-height: none;
+  opacity: 1;
+}
+
+/* ========================================
+   Form Field Error States
+   ======================================== */
+/* Error styling for invalid fields */
+.field-error {
+  border-color: #dc2626 !important;
+  background-color: #fee2e2 !important;
+}
+
+.field-error:focus-visible {
+  outline-color: #dc2626;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
+}
+
+/* Error messages */
+.error-message {
+  display: block;
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Success states */
+.field-success {
+  border-color: #16a34a !important;
+  background-color: #f0fdf4 !important;
+}
+
+/* ========================================
+   Loading States and Announcements
+   ======================================== */
+/* Live region for screen reader announcements */
+.aria-live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Loading spinner with ARIA label */
+.loading-spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(59, 130, 246, 0.3);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* ========================================
+   Keyboard Navigation Indicators
+   ======================================== */
+/* Visual indicator for keyboard navigation mode */
+body.keyboard-nav *:focus {
+  outline: 3px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Tab panel styling */
+[role="tabpanel"]:focus {
+  outline: 2px dashed #3b82f6;
+  outline-offset: 4px;
+}
+
+/* ========================================
+   High Contrast Mode Support
+   ======================================== */
+@media (prefers-contrast: high) {
+  /* Increase contrast for borders */
+  input,
+  select,
+  textarea {
+    border-width: 2px;
+  }
+
+  /* Stronger focus indicators */
+  *:focus-visible {
+    outline-width: 4px;
+    outline-offset: 3px;
+  }
+
+  /* Higher contrast for error states */
+  .field-error {
+    border-color: #991b1b !important;
+    background-color: white !important;
+  }
+
+  .error-message {
+    color: #991b1b;
+    font-weight: 700;
+  }
+}
+
+/* ========================================
+   Reduced Motion Support
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .accordion-content {
+    transition: none;
+  }
+
+  .accordion-indicator {
+    transition: none;
+  }
+}
+
+/* ========================================
+   Touch Target Sizing (Mobile)
+   ======================================== */
+@media (max-width: 768px) {
+  /* Minimum 44x44px touch targets */
+  button,
+  a,
+  input[type="checkbox"],
+  input[type="radio"],
+  select,
+  [role="button"],
+  .toggle-switch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Increase spacing between interactive elements */
+  .btn + .btn,
+  .form-group + .form-group {
+    margin-top: 0.75rem;
+  }
+
+  /* Larger click areas for small buttons */
+  .photo-remove-btn,
+  .measurement-remove-btn,
+  .remove-lxh-btn,
+  .surface-remove-btn {
+    position: relative;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Extend clickable area with pseudo-element */
+  .photo-remove-btn::before,
+  .measurement-remove-btn::before,
+  .remove-lxh-btn::before,
+  .surface-remove-btn::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+  }
+}
+
+/* ========================================
+   Color Contrast Enhancements
+   ======================================== */
+/* Ensure WCAG AA contrast ratios */
+.text-gray-500 {
+  color: #6b7280; /* 4.5:1 contrast ratio */
+}
+
+.text-gray-600 {
+  color: #4b5563; /* 7:1 contrast ratio */
+}
+
+/* Placeholder contrast improvements */
+::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+/* ========================================
+   Form Label Associations
+   ======================================== */
+/* Visual association for labels */
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Required field indicators */
+.required-indicator {
+  color: #dc2626;
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+
+/* Help text styling */
+.help-text {
+  display: block;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* ========================================
+   Modal Accessibility
+   ======================================== */
+/* Focus trap styling */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+}
+
+/* Close button positioning */
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.modal-close:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Tooltip Accessibility
+   ======================================== */
+[role="tooltip"] {
+  position: absolute;
+  background: #1f2937;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+[aria-describedby]:hover + [role="tooltip"],
+[aria-describedby]:focus + [role="tooltip"] {
+  opacity: 1;
+}
+
+/* ========================================
+   Progress Indicators
+   ======================================== */
+.progress-container[role="progressbar"] {
+  position: relative;
+}
+
+.progress-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* ========================================
+   Validation Summary
+   ======================================== */
+.validation-summary {
+  background: #fee2e2;
+  border: 2px solid #dc2626;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.validation-summary h3 {
+  color: #991b1b;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.validation-summary ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  color: #991b1b;
+}
+
+.validation-summary a {
+  color: #991b1b;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.validation-summary a:hover,
+.validation-summary a:focus {
+  color: #7f1d1d;
+  text-decoration: none;
+}

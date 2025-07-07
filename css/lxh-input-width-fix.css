@@ -1,0 +1,49 @@
+/* Fix for L x H input width to ensure 6+ digits are visible */
+
+/* Override all other width settings for lxh-input */
+.lxh-input,
+input.lxh-input,
+input[type="number"].lxh-input {
+  width: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+  box-sizing: border-box !important;
+  padding: 3px 4px !important; /* Minimal padding to maximize space for numbers */
+  font-size: 0.8125rem !important; /* Slightly smaller font to fit more digits */
+}
+
+/* Ensure the container doesn't constrain the inputs */
+.lxh-pair {
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+
+/* Modal-specific overrides */
+#area-settings-modal .lxh-input {
+  width: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+}
+
+#area-settings-modal .lxh-pair {
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+
+/* Ensure measurement-details container doesn't constrain */
+.measurement-details {
+  overflow-x: auto !important;
+}
+
+/* Mobile adjustments if needed */
+@media (max-width: 768px) {
+  .lxh-input {
+    padding: 6px !important; /* Slightly more padding for touch targets */
+    font-size: 0.875rem !important; /* Restore normal font size on mobile */
+  }
+  
+  .lxh-pair {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "paint-estimator-server",
+  "version": "1.1.0",
+  "description": "Paint Estimator Server with Bitrix Integration",
+  "main": "server-with-bitrix.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:api": "node server-with-api.js",
+    "start:bitrix": "node server-with-bitrix.js",
+    "test:bitrix": "cd bitrix && node test-connection.js",
+    "dev": "nodemon server-with-bitrix.js"
+  },
+  "dependencies": {
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "querystring": "^0.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "paint",
+    "estimator",
+    "bitrix",
+    "crm",
+    "integration"
+  ],
+  "author": "Your Company",
+  "license": "ISC"
+}

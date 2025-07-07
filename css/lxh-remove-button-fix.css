@@ -1,0 +1,90 @@
+/* Style updates for L x H remove buttons - make them consistent with measurement remove buttons */
+
+/* Position the delete button closer to the inputs */
+.lxh-pair .remove-lxh-btn {
+  margin-left: 2px !important; /* Extremely close to inputs - just 2px */
+  margin-right: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Ensure tight spacing in the container */
+.lxh-pair {
+  gap: 0 !important; /* No gap between elements */
+}
+
+/* Compact input fields */
+.lxh-input {
+  font-size: 13px !important; /* 0.8125rem = 13px */
+}
+
+/* Increase spacing on the x separator */
+.lxh-pair span {
+  margin: 0 10px !important; /* Good spacing on each side */
+  padding: 0 !important;
+  font-size: 14px !important; /* Slightly larger x for visibility */
+}
+
+/* Style the button to match measurement-remove-btn */
+.remove-lxh-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  min-width: 16px !important;
+  width: 16px !important;
+  min-height: 16px !important;
+  height: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0.8 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: none !important;
+  position: relative !important;
+}
+
+/* Style the img inside */
+.remove-lxh-btn img {
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  pointer-events: none !important;
+}
+
+/* Hover state */
+.remove-lxh-btn:hover {
+  opacity: 1 !important;
+  transform: scale(1.1) !important;
+  background: transparent !important;
+}
+
+/* Focus state for accessibility */
+.remove-lxh-btn:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Mobile touch target */
+@media (max-width: 768px) {
+  .remove-lxh-btn {
+    min-width: 44px !important;
+    width: 44px !important;
+    min-height: 44px !important;
+    height: 44px !important;
+  }
+}
+
+/* Override any old SVG styles */
+.remove-lxh-btn svg {
+  display: none !important;
+}
+
+/* Override any old img styles */
+.remove-lxh-btn img {
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  pointer-events: none !important;
+}

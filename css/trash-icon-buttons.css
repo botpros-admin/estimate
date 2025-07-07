@@ -1,0 +1,189 @@
+/* Update styles for trash icon implementation */
+
+/* Measurement remove button */
+.measurement-remove-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.measurement-remove-btn img {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.measurement-remove-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.measurement-remove-btn:hover img {
+  opacity: 1 !important;
+}
+/* Surface remove button */
+.surface-remove-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.surface-remove-btn img {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.surface-remove-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.surface-remove-btn:hover img {
+  opacity: 1 !important;
+}
+
+/* L x H remove button */
+.remove-lxh-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 2px !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  margin-left: 2px !important;
+}
+
+.remove-lxh-btn img {
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.remove-lxh-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.remove-lxh-btn:hover img {
+  opacity: 1 !important;
+}
+/* Focus states for accessibility */
+.measurement-remove-btn:focus-visible,
+.surface-remove-btn:focus-visible,
+.remove-lxh-btn:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Mobile touch targets */
+@media (max-width: 768px) {
+  .measurement-remove-btn,
+  .surface-remove-btn {
+    width: 44px !important;
+    height: 44px !important;
+    padding: 8px !important;
+  }
+  
+  .measurement-remove-btn img,
+  .surface-remove-btn img {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .remove-lxh-btn {
+    width: 44px !important;
+    height: 44px !important;
+    padding: 12px !important;
+  }
+  
+  .remove-lxh-btn img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Hide any old SVG elements */
+.measurement-remove-btn svg,
+.surface-remove-btn svg,
+.remove-lxh-btn svg {
+  display: none !important;
+}
+
+/* Photo remove button */
+.photo-remove-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  padding: 2px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.photo-remove-btn img {
+  display: block !important;
+  width: 12px !important;
+  height: 12px !important;
+  pointer-events: none !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.photo-remove-btn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+.photo-remove-btn:hover img {
+  opacity: 1 !important;
+}
+
+/* Photo remove button focus state */
+.photo-remove-btn:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Hide any old photo SVG elements */
+.photo-remove-btn svg {
+  display: none !important;
+}

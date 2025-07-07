@@ -1,0 +1,633 @@
+/* Contract Generator Specific Styles */
+
+/* Form Sections */
+.form-section {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-title i {
+  color: var(--primary);
+}
+
+/* Client Summary */
+.client-summary,
+.scope-summary,
+.preparation-summary,
+.materials-summary {
+  margin-bottom: 2rem;
+}
+
+.client-summary h3,
+.scope-summary h3,
+.preparation-summary h3,
+.materials-summary h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+/* Summary boxes */
+.bg-gray-50 {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .bg-gray-50 {
+    padding: 0.75rem;
+  }
+}
+
+/* Remove old surfaces and materials list styles */
+
+/* Surfaces List */
+.surfaces-container {
+  margin-bottom: 2rem;
+}
+
+.surfaces-container h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.surfaces-list {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.surface-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.surface-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Materials List */
+.materials-list {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Inclusions/Exclusions */
+.inclusions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .inclusions-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.inclusion-column,
+.exclusion-column {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.inclusion-column h3,
+.exclusion-column h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.inclusion-item,
+.exclusion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.inclusion-item i {
+  font-size: 1.125rem;
+}
+
+.exclusion-item i {
+  font-size: 1.125rem;
+}
+
+/* Pricing Summary */
+.pricing-summary {
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.pricing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pricing-row:last-child {
+  border-bottom: none;
+}
+
+.pricing-row.total {
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #d1d5db;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.price {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.pricing-row.total .price {
+  font-size: 1.5rem;
+  color: #059669;
+}
+
+.discount-section {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-section {
+    padding: 1.5rem;
+  }
+  
+  .inclusions-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animation for form sections */
+.form-section {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Editable inclusions/exclusions styles */
+.editable-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.editable-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.editable-item .item-text {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.5rem;
+  border-radius: 0.25rem;
+  cursor: text;
+  transition: all 0.2s ease;
+  outline: none;
+  min-width: 0;
+}
+
+.editable-item .item-text:hover {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.editable-item .item-text:focus {
+  background-color: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.editable-item .delete-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-left: auto;
+}
+
+.editable-item:hover .delete-btn {
+  opacity: 0.7;
+}
+
+.editable-item .delete-btn:hover {
+  opacity: 1;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.editable-item .delete-btn:focus {
+  opacity: 1;
+  outline: 2px solid rgba(239, 68, 68, 0.5);
+  outline-offset: 2px;
+}
+
+.inclusion-item,
+.exclusion-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.inclusion-item:last-child,
+.exclusion-item:last-child {
+  border-bottom: none;
+}
+
+/* Button transitions for smooth interactions */
+button {
+  transition: all 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+/* Confirmation Modal Styles */
+#confirmation-modal {
+  animation: fadeIn 0.2s ease-out;
+}
+
+#confirmation-modal .bg-white {
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Modal responsive design */
+@media (max-width: 640px) {
+  #confirmation-modal .bg-white {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+  }
+}
+
+/* Delete button shake animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.delete-btn:active {
+  animation: shake 0.2s ease-in-out;
+}
+
+
+/* Mobile and tablet responsive fixes */
+@media (max-width: 1024px) {
+  /* Always show delete buttons on touch devices */
+  .delete-btn {
+    opacity: 1 !important;
+  }
+}
+
+/* Mobile responsive fixes for materials and surfaces */
+@media (max-width: 640px) {
+  /* Always show delete buttons on mobile */
+  .delete-btn {
+    opacity: 1 !important;
+  }
+  
+  /* Materials and surfaces summary items */
+  .materials-summary .space-y-2 > div,
+  .scope-summary .space-y-2 > div {
+    gap: 0.5rem;
+  }
+  
+  /* Ensure text doesn't get too cramped */
+  .materials-summary .text-sm,
+  .scope-summary .text-sm {
+    line-height: 1.4;
+  }
+  
+  /* Add more padding on mobile for better touch targets */
+  .materials-summary .py-2,
+  .scope-summary .py-2 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  /* Prevent text overflow with ellipsis if needed */
+  .materials-summary span,
+  .scope-summary span {
+    word-break: break-word;
+  }
+  
+  /* Better bullet spacing for details on mobile */
+  .materials-summary .text-gray-600,
+  .scope-summary .text-gray-600 {
+    display: block;
+    margin-top: 0.25rem;
+  }
+}
+
+/* Ensure the details don't get too long on any screen */
+.materials-summary .text-gray-600,
+.scope-summary .text-gray-600 {
+  max-width: 100%;
+}
+
+
+/* Ensure form-grid is responsive */
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Better bullet point (•) spacing */
+.materials-summary .text-gray-600,
+.scope-summary .text-gray-600 {
+  letter-spacing: 0.025em;
+}
+
+/* Alternative approach for better mobile display of multi-item details */
+@media (max-width: 640px) {
+  /* Optionally wrap long detail lists */
+  .materials-summary .text-gray-600,
+  .scope-summary .text-gray-600 {
+    white-space: normal;
+    word-spacing: 0.1em;
+  }
+}
+
+
+/* Mobile responsive pricing section */
+@media (max-width: 480px) {
+  .pricing-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .pricing-row span:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .pricing-row .price {
+    white-space: nowrap;
+  }
+  
+  /* Smaller font sizes for mobile */
+  .pricing-row.total {
+    font-size: 1.125rem;
+  }
+  
+  .pricing-row.total .price {
+    font-size: 1.25rem;
+  }
+}
+
+/* Very small screens - stack pricing items */
+@media (max-width: 360px) {
+  .pricing-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .pricing-row .price {
+    font-size: 1.125rem;
+  }
+}
+
+
+/* General mobile improvements */
+@media (max-width: 640px) {
+  /* Reduce section padding on mobile for more screen real estate */
+  .form-section {
+    padding: 1.25rem;
+  }
+  
+  /* Ensure all summaries have proper spacing */
+  .client-summary,
+  .scope-summary,
+  .preparation-summary,
+  .materials-summary {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Smaller section titles on mobile */
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Better spacing for form labels */
+  .form-label {
+    font-size: 0.875rem;
+  }
+}
+
+/* Ensure select dropdowns don't overflow on mobile */
+@media (max-width: 480px) {
+  select.input-field {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+
+/* Prevent text overflow issues */
+.materials-summary .font-medium,
+.scope-summary .font-medium {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Ensure minimum tap target size on mobile */
+@media (max-width: 640px) {
+  .inclusion-item,
+  .exclusion-item {
+    min-height: 44px; /* iOS recommended touch target */
+  }
+}
+
+
+/* Ensure bullet separators have proper spacing */
+.materials-summary .text-gray-600::after,
+.scope-summary .text-gray-600::after {
+  content: "\200B"; /* Zero-width space for better line breaking */
+  display: inline;
+}
+
+
+/* Scope of Work service type grouping */
+.scope-summary h4 {
+  color: #1f2937;
+  font-size: 1rem;
+  border-left: 3px solid var(--primary, #3b82f6);
+  padding-left: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.scope-summary .pl-4 {
+  margin-left: 0.75rem;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 1rem;
+}
+
+/* Service type containers */
+.scope-summary > div > div {
+  background-color: #fafafa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.scope-summary > div > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile adjustments for service grouping */
+@media (max-width: 640px) {
+  .scope-summary h4 {
+    font-size: 0.9375rem;
+  }
+  
+  .scope-summary .pl-4 {
+    margin-left: 0.5rem;
+    padding-left: 0.75rem;
+  }
+  
+  .scope-summary > div > div {
+    padding: 0.75rem;
+  }
+}
+
+/* Fix select dropdowns for responsiveness */
+select.input-field {
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  text-overflow: ellipsis;
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+}
+
+/* Ensure dropdown options are readable */
+select.input-field option {
+  white-space: normal;
+  word-wrap: break-word;
+  padding: 0.5rem;
+  line-height: 1.4;
+}
+
+/* Fix for payment schedule dropdown specifically */
+#payment-schedule {
+  min-width: 200px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  select.input-field {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem 2rem 0.75rem 0.75rem; /* Extra padding for arrow */
+  }
+  
+  #payment-schedule option {
+    font-size: 14px;
+  }
+}
+
+/* Ensure form grid is responsive */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Ensure dropdowns take full width on mobile */
+  .form-group {
+    width: 100%;
+  }
+  
+  select.input-field {
+    width: 100%;
+  }
+}

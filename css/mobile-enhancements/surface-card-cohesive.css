@@ -1,0 +1,203 @@
+/* FINAL ELEGANT DESIGN: Cohesive mobile surface section */
+
+@media (max-width: 768px) {
+  /* Reset container constraints */
+  .paint-card, .surfaces-container {
+    overflow: visible !important;
+  }
+  
+  /* Transform surfaces container into elegant card group */
+  .surfaces-container {
+    /* Break out of paint-card padding */
+    margin: 1rem -1rem;
+    padding: 0;
+    
+    /* Unified background section */
+    background: linear-gradient(to bottom, #f8fafc 0%, #f3f4f6 100%);
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  /* Header integrated into design */
+  .surfaces-container > h3 {
+    margin: 0;
+    padding: 1.5rem 1.25rem 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    background: transparent;
+    position: relative;
+  }
+  
+  /* Decorative line under header */
+  .surfaces-container > h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+  }
+  
+  /* Surface cards with unified style */
+  .surface-card {
+    /* Inset cards for depth */
+    margin: 0.75rem;
+    width: calc(100% - 1.5rem);
+    
+    /* Soft, blended appearance */
+    background: white;
+    border: 1px solid rgba(229, 231, 235, 0.8);
+    border-radius: 0.875rem;
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.04);
+    
+    transition: all 0.2s ease;
+  }
+  
+  /* Hover/active state for tactile feedback */
+  .surface-card:active {
+    transform: scale(0.99);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Header flows into content */
+  .surface-card-header {
+    background: linear-gradient(to bottom, #fafbfc 0%, #f9fafb 100%);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+    padding: 1rem 1.125rem;
+    border-radius: 0.875rem 0.875rem 0 0;
+  }
+  
+  /* Editable title with subtle styling */
+  .surface-title-input {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    padding: 0.375rem 0.5rem !important;
+    border-radius: 0.375rem !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .surface-title-input:hover {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-color: #e5e7eb !important;
+  }
+  
+  .surface-title-input:focus {
+    background: white !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  }
+  
+  /* Content area */
+  .surface-card-content {
+    padding: 1.125rem;
+  }
+  
+  /* Measurement blocks with softer style */
+  .measurement-block {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.625rem;
+    padding: 1rem;
+    margin-bottom: 0.875rem;
+    transition: all 0.2s ease;
+  }
+  
+  .measurement-block:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  }
+  
+  /* IMPROVED Toggle button layout */
+  .measurement-input-type-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+  }
+  
+  .toggle-label-left,
+  .toggle-label-right {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    transition: color 0.2s ease;
+  }
+  
+  .toggle-label-left.active,
+  .toggle-label-right.active {
+    color: #1f2937;
+    font-weight: 600;
+  }
+  
+  /* Toggle switch centered */
+  .toggle-switch {
+    flex-shrink: 0;
+  }
+  
+  /* Buttons with unified style */
+  .add-measurement-btn {
+    background: #eff6ff !important;
+    color: #1e40af !important;
+    border: 1px solid #bfdbfe !important;
+  }
+  
+  .add-photo-btn {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+    border: 1px solid #bbf7d0 !important;
+  }
+  
+  .add-photo-btn:hover {
+    background: #bbf7d0 !important;
+    border-color: #86efac !important;
+  }
+  
+  /* Primary button stands out */
+  .surfaces-container > .btn-primary {
+    margin: 0.75rem;
+    width: calc(100% - 1.5rem);
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    border-radius: 0.625rem;
+    padding: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    transition: all 0.2s ease;
+  }
+  
+  .surfaces-container > .btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+  }
+  
+  /* Total area display */
+  .surface-input-group {
+    background: linear-gradient(to bottom, #f8fafc 0%, #f3f4f6 100%);
+    border: 1px solid #e5e7eb;
+    border-radius: 0.625rem;
+    padding: 1rem;
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+  
+  .surface-total-area-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    display: block;
+    margin-top: 0.5rem;
+  }
+}

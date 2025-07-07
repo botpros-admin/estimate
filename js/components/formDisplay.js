@@ -1,0 +1,4 @@
+function updateFormDisplay() {
+  renderHeader();
+  renderProjectSpecificFields();
+}

@@ -1,0 +1,141 @@
+/* Modal Container Display Fix */
+/* Force correct display states for modal containers */
+
+#area-settings-modal .measurement-inputs-wrapper {
+  position: relative !important;
+  min-height: 80px !important;
+}
+
+/* Add Measurement Area Button Styling */
+#area-settings-modal .add-measurement-btn {
+  background: #3b82f6 !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.375rem !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s ease !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+#area-settings-modal .add-measurement-btn:hover {
+  background: #2563eb !important;
+}
+
+/* Multiple Measurement Areas Styling */
+#area-settings-modal .measurement-block {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+  margin-bottom: 1rem !important;
+  background: white !important;
+}
+
+#area-settings-modal .measurement-block:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Remove Button Styling */
+#area-settings-modal .measurement-remove-btn {
+  background: transparent !important;
+  color: #ef4444 !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin-left: 0.5rem !important;
+}
+
+#area-settings-modal .measurement-remove-btn img {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+#area-settings-modal .measurement-remove-btn:hover {
+  background: #fee2e2 !important;
+}
+}
+
+/* When toggle is NOT checked (dimensions mode) */
+#area-settings-modal .toggle-switch input[type="checkbox"]:not(:checked) ~ .measurement-details .lxh-inputs-container {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+#area-settings-modal .toggle-switch input[type="checkbox"]:not(:checked) ~ .measurement-details .total-input-container {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+}
+
+/* When toggle IS checked (total area mode) */
+#area-settings-modal .toggle-switch input[type="checkbox"]:checked ~ .measurement-details .lxh-inputs-container {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+}
+
+#area-settings-modal .toggle-switch input[type="checkbox"]:checked ~ .measurement-details .total-input-container {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+/* Fallback rules */
+#area-settings-modal .lxh-inputs-container {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+#area-settings-modal .total-input-container {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+}
+
+/* Override when total area is active */
+#area-settings-modal .toggle-label-right.active ~ .measurement-details .lxh-inputs-container {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+}
+
+#area-settings-modal .toggle-label-right.active ~ .measurement-details .total-input-container {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+/* Override when dimensions is active */
+#area-settings-modal .toggle-label-left.active ~ .measurement-details .lxh-inputs-container {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  opacity: 1 !important;
+}
+
+#area-settings-modal .toggle-label-left.active ~ .measurement-details .total-input-container {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+}

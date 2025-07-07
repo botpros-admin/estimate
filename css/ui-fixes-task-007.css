@@ -1,0 +1,143 @@
+/**
+ * UI Fixes for Dropdown Arrows and Button Sizing
+ * Task 007: Fix multiple dropdown arrows and oversized Previous/Next buttons
+ * 
+ * Problem 1: Multiple arrow implementations (background-image + ::after pseudo-elements)
+ * Problem 2: Mobile-optimized button sizes too large for desktop
+ */
+
+/* ========================================
+   Fix 1: Remove Duplicate Dropdown Arrows
+   ======================================== */
+/* Remove all ::after pseudo-elements from selects */
+select::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Ensure only background-image arrow is used */
+select {
+  /* Remove any content-based arrows */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  /* Use consistent SVG arrow */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 20px 20px;
+  padding-right: 2.5rem;
+}
+
+/* Override any specific select styling that adds arrows */
+.paint-finish-select::after,
+.paint-brand-select::after,
+.input-field::after,
+select.input-field::after {
+  content: none !important;
+  display: none !important;
+}
+/* ========================================
+   Fix 2: Previous/Next Button Sizing
+   ======================================== */
+/* Reset oversized button styling for desktop */
+@media (min-width: 769px) {
+  #prev-button,
+  #next-button,
+  .form-navigation button {
+    /* More reasonable desktop sizing */
+    min-height: 40px !important;
+    min-width: 100px !important;
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+  }
+  
+  /* Ensure proper button spacing */
+  .form-navigation {
+    margin-top: 1.5rem !important;
+    padding: 0 !important;
+  }
+}
+
+/* Keep mobile touch targets */
+@media (max-width: 768px) {
+  #prev-button,
+  #next-button {
+    /* Maintain accessibility on mobile */
+    min-height: 44px;
+    min-width: 110px;
+    padding: 11px 22px;
+  }
+}
+
+/* ========================================
+   Fix 3: Clean Select Appearance
+   ======================================== */
+/* Remove any Font Awesome or other icon fonts from selects */
+select {
+  font-family: inherit !important;
+}
+
+/* Ensure consistent select styling across all instances */
+.paint-finish-select,
+.paint-brand-select,
+.input-field,
+select.input-field {
+  /* Remove all pseudo-element arrows */
+  position: relative;
+}
+
+/* Target any container that might be adding arrows */
+.select-container::after,
+.dropdown-container::after,
+.select-wrapper::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* ========================================
+   Fix 4: Override Aggressive Rules
+   ======================================== */
+/* Override icon-overrides.css aggressive rules */
+select[class]::after,
+select[id]::after,
+select[data-field]::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Ensure our fixes take priority */
+select.paint-finish-select,
+select.paint-brand-select,
+select.abrasive-method-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.5rem center !important;
+  background-size: 20px 20px !important;
+}
+
+/* ========================================
+   Fix 5: Button Container Adjustments
+   ======================================== */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+/* Ensure buttons don't overflow on small screens */
+@media (max-width: 480px) {
+  .form-navigation {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  #prev-button,
+  #next-button {
+    width: 100%;
+  }
+}

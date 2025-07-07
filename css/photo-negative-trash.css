@@ -1,0 +1,129 @@
+/* Photo Remove Button Photo-Negative Effect Styling */
+/* This file implements the photo-negative effect for trash icons on photos */
+
+.photo-remove-btn {
+  /* Position at absolute top-right */
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  
+  /* Remove all borders and padding */
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 4px !important; /* Small padding for the icon */
+  margin: 0 !important;
+  
+  /* Make it bigger */
+  width: 32px !important;
+  height: 32px !important;
+  
+  /* Center the icon */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  /* Ensure it's clickable */
+  cursor: pointer !important;
+  z-index: 10 !important;
+  
+  /* White background for the blend mode */
+  background: white !important;
+  
+  /* Apply the photo-negative effect to the entire button */
+  mix-blend-mode: difference !important;
+  
+  /* Remove any shadows or outlines */
+  box-shadow: none !important;
+  outline: none !important;
+  
+  /* Transition for hover effects */
+  transition: transform 0.2s ease !important;
+}
+
+/* The trash icon image inside the button */
+.photo-remove-btn img {
+  /* Make the icon size appropriate */
+  width: 20px !important;
+  height: 20px !important;
+  
+  /* Ensure the icon is black for proper difference effect */
+  filter: brightness(0) !important; /* Makes any color icon pure black */
+  
+  /* Ensure the icon is visible */
+  opacity: 1 !important;
+  pointer-events: none !important;
+  
+  /* Remove any margins or padding */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove the ::before pseudo-element as we don't need it */
+.photo-remove-btn::before {
+  display: none !important;
+}
+
+/* Hover effect - slightly enlarge */
+.photo-remove-btn:hover {
+  transform: scale(1.1) !important;
+}
+
+/* Active/click effect */
+.photo-remove-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* Ensure photo thumbnails have proper overflow for positioning */
+.photo-thumbnail {
+  position: relative !important;
+  overflow: visible !important; /* Changed from hidden to visible so icon can be at edge */
+  
+  /* Create a stacking context for proper blend mode behavior */
+  isolation: isolate !important;
+}
+
+/* For mobile touch targets */
+@media (max-width: 768px), (pointer: coarse) {
+  .photo-remove-btn {
+    /* Maintain touch-friendly size */
+    width: 44px !important;
+    height: 44px !important;
+    padding: 6px !important;
+  }
+  
+  .photo-remove-btn img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* Override any conflicting styles from other CSS files */
+.photo-remove-btn,
+.photo-remove-btn:hover,
+.photo-remove-btn:focus,
+.photo-remove-btn:active {
+  background: white !important;
+  background-color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Fallback for browsers that don't support mix-blend-mode */
+@supports not (mix-blend-mode: difference) {
+  .photo-remove-btn {
+    /* Fallback to semi-transparent white background */
+    background: rgba(255, 255, 255, 0.9) !important;
+    mix-blend-mode: normal !important;
+  }
+  
+  .photo-remove-btn img {
+    /* Make icon visible on any background */
+    filter: none !important;
+    opacity: 0.8 !important;
+  }
+  
+  /* Add a subtle shadow for visibility */
+  .photo-remove-btn {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  }
+}

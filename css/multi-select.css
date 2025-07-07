@@ -1,0 +1,218 @@
+/* Multi-Select Component Styles */
+.main-ui-control.main-ui-multi-select {
+  position: relative;
+  min-height: 42px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid #d7d8db;
+  border-radius: 4px;
+  cursor: text;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.main-ui-control.main-ui-multi-select:hover {
+  border-color: #b7b8bb;
+}
+
+.main-ui-control.main-ui-multi-select:focus-within {
+  border-color: #2066b0;
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(32, 102, 176, 0.2);
+}
+
+.main-ui-control.main-ui-multi-select.error {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.main-ui-control.main-ui-multi-select.error:focus-within {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.2);
+}
+
+.main-ui-square-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.main-ui-square {
+  display: inline-flex;
+  align-items: center;
+  background: #e8f5ff;
+  border: 1px solid #c3e1fb;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 13px;
+  color: #333;
+  white-space: nowrap;
+  position: relative;
+  max-width: 200px;
+  cursor: default;
+  user-select: none;
+}
+
+.main-ui-square:hover {
+  background: #d7efff;
+  border-color: #a8d4f7;
+}
+
+.main-ui-square-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+.main-ui-square-delete {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.main-ui-square-delete:hover {
+  opacity: 1;
+}
+
+.main-ui-square-delete::before {
+  content: '×';
+  font-size: 18px;
+  line-height: 1;
+  color: #666;
+}
+
+.main-ui-square-search {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.main-ui-square-search-item {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 4px;
+  background: transparent;
+  min-width: 100px;
+}
+
+/* Dropdown for multi-select */
+.main-ui-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  margin-top: 2px;
+  background: #fff;
+  border: 1px solid #d7d8db;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+/* Dropdown positioned above when there's not enough space below */
+.main-ui-select-dropdown.dropdown-above {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 2px;
+  z-index: 1001; /* Higher z-index when positioned above */
+}
+
+/* Force Service Type and Abrasive Method dropdowns to always appear above with higher z-index */
+#service-type-container .main-ui-select-dropdown,
+#abrasive-method-container .main-ui-select-dropdown {
+  z-index: 1002;
+  min-height: 80px; /* Ensure enough height for both options */
+}
+
+#service-type-container .main-ui-select-dropdown.dropdown-above,
+#abrasive-method-container .main-ui-select-dropdown.dropdown-above {
+  z-index: 1003;
+  /* Force upward positioning for Service Type and Abrasive Method */
+  top: auto !important;
+  bottom: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+.main-ui-select-dropdown.active {
+  display: block;
+}
+
+.main-ui-select-option {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.main-ui-select-option:hover {
+  background-color: #f5f7fa;
+}
+
+.main-ui-select-option.selected {
+  background-color: #e8f5ff;
+  color: #2066b0;
+}
+
+.main-ui-select-option.highlighted {
+  background-color: #f0f0f0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .main-ui-control.main-ui-multi-select {
+    background: #1a1a1a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .main-ui-square {
+    background: #2a3f5f;
+    border-color: #3a5a8a;
+    color: #e0e0e0;
+  }
+  
+  .main-ui-square-delete::before {
+    color: #ccc;
+  }
+  
+  .main-ui-select-dropdown {
+    background: #1a1a1a;
+    border-color: #444;
+  }
+  
+  .main-ui-select-option {
+    color: #e0e0e0;
+  }
+  
+  .main-ui-select-option:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .main-ui-select-option.selected {
+    background-color: #1e3a5f;
+    color: #4a9eff;
+  }
+}

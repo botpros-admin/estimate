@@ -1,0 +1,179 @@
+/* Reduce padding between Measurements & Selection and all child elements */
+
+/* Reduce progress container spacing */
+.progress-container {
+  margin: 20px auto 1rem !important; /* Reduced from 40px auto 1.5rem */
+}
+
+/* Reduce main container top padding */
+.main-container {
+  padding-top: 10px !important; /* Reduced from 40px */
+  padding-bottom: 1rem !important;
+}
+
+/* Reduce form header padding */
+.form-header {
+  padding: 0.75rem 1rem !important; /* Reduced from 1.25rem 1.5rem */
+}
+
+/* Reduce form title (h2) margins */
+.form-title {
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Reduce form content padding */
+.form-content {
+  padding: 0.75rem !important; /* Reduced from 1.5rem */
+}
+
+/* Reduce form description margin */
+.form-description {
+  margin-bottom: 0.5rem !important; /* Reduced from 0.75rem */
+}
+
+/* Reduce paint selections container spacing */
+#paint-selections-container {
+  margin-top: 0 !important;
+}
+
+/* First paint card should have minimal top spacing */
+#paint-selections-container > .paint-card:first-child {
+  margin-top: 0 !important;
+}
+
+/* Reduce paint card padding */
+.paint-card {
+  padding: 1rem !important; /* Reduced from 1.5rem */
+  margin-bottom: 1rem !important; /* Reduced from 1.5rem */
+}
+
+/* Reduce surface card margins and padding */
+.surface-card {
+  margin-bottom: 0.75rem !important; /* Reduced from 1.5rem */
+}
+
+.surface-card-header {
+  padding: 0.75rem !important; /* Reduced from 1rem */
+}
+
+.surface-card-content {
+  padding: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Reduce measurement block padding */
+.measurement-block {
+  padding: 0.75rem !important; /* Reduced from 1rem */
+  margin-bottom: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Reduce spacing for surface selection */
+.surface-selection,
+.measurement-surface-select {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Reduce color input container spacing */
+.measurement-color-input-container {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Reduce spacing between form sections */
+.form-group {
+  margin-bottom: 0.75rem !important; /* Reduced from 1.5rem */
+}
+
+/* Reduce spacing in measurement inputs section */
+.measurement-inputs {
+  margin-bottom: 0.75rem !important;
+}
+
+/* Reduce toggle switch container spacing */
+.measurement-input-type-selector {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Reduce spacing for dimension inputs */
+.lxh-pair {
+  margin-bottom: 0.375rem !important; /* Reduced from 0.5rem */
+}
+
+/* Reduce button spacing */
+.add-lxh-btn,
+.add-measurement-btn {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Reduce area display spacing */
+.area-display {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Reduce photo section spacing */
+.measurement-photos {
+  margin-top: 0.5rem !important;
+}
+
+/* Reduce Add Photos button spacing */
+.add-photo-btn {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Specific adjustments for nested elements */
+.surface-card .measurement-block:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Reduce spacing for measurement headers and labels */
+.measurement-block h3,
+.measurement-block label {
+  margin-bottom: 0.25rem !important;
+}
+
+/* Ensure tight spacing between all child elements */
+.paint-card > *,
+.surface-card > *,
+.measurement-block > * {
+  margin-top: 0.5rem !important;
+}
+
+.paint-card > *:first-child,
+.surface-card > *:first-child,
+.measurement-block > *:first-child {
+  margin-top: 0 !important;
+}
+
+/* Mobile adjustments - slightly more padding for touch targets */
+@media (max-width: 768px) {
+  .progress-container {
+    margin: 10px auto 0.5rem !important;
+  }
+  
+  .main-container {
+    padding-top: 5px !important;
+  }
+  
+  .form-header {
+    padding: 0.875rem !important;
+  }
+  
+  .form-content {
+    padding: 0.875rem !important;
+  }
+  
+  .paint-card {
+    padding: 0.875rem !important;
+  }
+  
+  .surface-card-header,
+  .surface-card-content {
+    padding: 0.875rem !important;
+  }
+  
+  .measurement-block {
+    padding: 0.875rem !important;
+  }
+}

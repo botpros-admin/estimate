@@ -1,0 +1,45 @@
+/**
+ * Fix Accordion Duplicate Arrows
+ * Task 011: Hide duplicate arrow indicators on accordion headers
+ * 
+ * Problem: Accordion headers have TWO arrows:
+ * 1. chevron-icon SVG inside h3
+ * 2. accordion-indicator span
+ */
+
+/* ========================================
+   HIDE DUPLICATE ACCORDION ARROWS
+   ======================================== */
+/* Hide the extra accordion-indicator span */
+.accordion-indicator {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Alternative: Hide the chevron-icon instead if preferred */
+/*
+.chevron-icon {
+  display: none !important;
+}
+*/
+
+/* Ensure accordion headers only show ONE arrow */
+#accordion-header-paint-interior-1751769881201 .accordion-indicator,
+#accordion-header-paint-exterior-1751769881201 .accordion-indicator,
+div[id^="accordion-header"] .accordion-indicator,
+.accordion-header .accordion-indicator,
+[role="button"] .accordion-indicator {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Fix accordion header spacing after removing duplicate */
+div[id^="accordion-header"] h3,
+.accordion-header h3 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}

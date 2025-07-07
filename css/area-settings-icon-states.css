@@ -1,0 +1,38 @@
+/* Area Settings Icon States */
+.area-settings-icon {
+  transition: color 0.2s ease;
+}
+
+/* Default gray state */
+.area-settings-icon.text-gray-500 {
+  color: #6b7280;
+}
+
+.area-settings-icon.text-gray-500:hover {
+  color: #374151;
+}
+
+/* Edited blue state */
+.area-settings-icon.text-blue-400 {
+  color: #60a5fa !important;
+}
+
+.area-settings-icon.text-blue-400:hover {
+  color: #3b82f6 !important;
+}
+
+/* Ensure the SVG inherits the color */
+.area-settings-icon svg {
+  color: inherit;
+}
+
+/* Direct circle color override for blue state */
+.area-settings-icon.text-blue-400 svg circle {
+  fill: #60a5fa !important;
+}
+
+/* Direct circle color for gray state */
+.area-settings-icon.text-gray-500 svg circle {
+  fill: #6b7280;
+}
+

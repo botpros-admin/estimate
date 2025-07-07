@@ -1,0 +1,227 @@
+/* Print Optimization for Contract Pages - Task 015
+   Comprehensive print styles for contract.html and contract-preview.html */
+
+/* =================================================================
+   GLOBAL PRINT STYLES - Apply to all contract pages
+   ================================================================= */
+
+@media print {
+    /* Reset page margins and setup */
+    @page {
+        size: letter portrait;
+        margin: 0.5in;
+    }
+    
+    /* Hide non-printable elements */
+    .header,
+    #app-header,
+    .navigation,
+    .nav-buttons,
+    .action-buttons,
+    .button-group,
+    .preview-button,
+    .generate-button,
+    .modal,
+    .loading-spinner,
+    .toast,
+    .notification,
+    button:not(.print-button) {
+        display: none !important;
+    }
+    
+    /* Reset body for print */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* Container adjustments */
+    .container,
+    .main-container,
+    .content-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* =================================================================
+   CONTRACT.HTML SPECIFIC PRINT STYLES
+   ================================================================= */
+
+@media print {
+    /* Form elements should be read-only in print */
+    input,
+    select,
+    textarea {
+        border: none !important;
+        background: transparent !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        resize: none !important;
+    }
+    
+    /* Contract form sections */
+    .form-section {
+        page-break-inside: avoid !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Labels and values */
+    .form-group label {
+        font-weight: bold !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 5px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* =================================================================
+   CONTRACT-PREVIEW.HTML SPECIFIC PRINT STYLES
+   ================================================================= */
+
+@media print {
+    /* Page container for preview */
+    .page-container {
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always !important;
+    }
+    
+    /* Content spacing */
+    .page-content {
+        padding: 0 !important;
+        min-height: auto !important;
+    }
+    
+    /* Header adjustments */
+    .document-header {
+        page-break-inside: avoid !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Section handling */
+    .section {
+        page-break-inside: avoid !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Prevent orphaned headings */
+    .section-title {
+        page-break-after: avoid !important;
+    }
+    
+    /* Table formatting */
+    table {
+        page-break-inside: avoid !important;
+    }
+    
+    /* Signature section */
+    .footer-section,
+    .signature-section {
+        page-break-inside: avoid !important;
+        position: relative !important;
+        margin-top: 40px !important;
+    }
+}
+
+/* =================================================================
+   SHARED PRINT OPTIMIZATIONS
+   ================================================================= */
+
+@media print {
+    /* Ensure text is black for better print quality */
+    * {
+        color: black !important;
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    /* Links should not be underlined in print */
+    a {
+        text-decoration: none !important;
+    }
+    
+    /* Images optimization */
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid !important;
+    }
+    
+    /* List formatting */
+    ul, ol {
+        page-break-inside: avoid !important;
+    }
+    
+    /* Prevent empty pages */
+    .page-break {
+        page-break-before: always !important;
+    }
+    
+    /* Ensure content fills the page */
+    html, body {
+        height: auto !important;
+    }
+}
+
+/* =================================================================
+   CONTRACT FORM PRINT LAYOUT (contract.html)
+   ================================================================= */
+
+@media print {
+    /* Contract details section */
+    #contract-details {
+        page-break-inside: avoid !important;
+    }
+    
+    /* Payment schedule section */
+    #payment-section {
+        page-break-inside: avoid !important;
+        margin-top: 20px !important;
+    }
+    
+    /* Terms section */
+    #terms-section {
+        page-break-before: always !important;
+        margin-top: 0 !important;
+    }
+}
+
+/* =================================================================
+   FINAL ADJUSTMENTS
+   ================================================================= */
+
+@media print {
+    /* Remove all shadows and borders that don't print well */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    /* Ensure proper spacing between elements */
+    p, div, section {
+        orphans: 3;
+        widows: 3;
+    }
+    
+    /* Headers should stay with content */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+    }
+}

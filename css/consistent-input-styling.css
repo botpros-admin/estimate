@@ -1,0 +1,127 @@
+/* Ensure all input fields and selects have consistent white background styling */
+
+/* Base styles for all form controls */
+select,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box !important;
+  background-color: white !important;
+  border: 1px solid #d1d5db !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.375rem !important;
+  color: #1f2937 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Override for L x H inputs to maintain fixed width */
+.lxh-input {
+  width: 70px !important;
+  max-width: 70px !important;
+  min-width: 70px !important;
+}
+
+/* Paint selection dropdowns - uniform styling */
+.paint-finish-select,
+.paint-brand-select,
+.paint-product-select,
+select[id*="color-status-"],
+select.input-field {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  background-color: white !important;
+  border: 1px solid #d1d5db !important;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.375rem !important;
+  color: #1f2937 !important;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+/* Color input fields */
+input[id*="color-single-"],
+input[id*="color-"],
+input.input-field,
+.measurement-color-input {
+  background-color: white !important;
+  border: 1px solid #d1d5db !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.375rem !important;
+  color: #1f2937 !important;
+}
+
+/* Focus states */
+select:focus,
+input:focus,
+textarea:focus,
+.paint-finish-select:focus,
+.paint-brand-select:focus,
+select[id*="color-status-"]:focus,
+input[id*="color-single-"]:focus,
+select.input-field:focus,
+input.input-field:focus {
+  outline: none !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Hover states for better interactivity */
+select:hover,
+.paint-finish-select:hover,
+.paint-brand-select:hover,
+select[id*="color-status-"]:hover,
+select.input-field:hover {
+  border-color: #9ca3af !important;
+}
+
+/* Ensure dropdown arrow is visible on ALL selects */
+select,
+.paint-finish-select,
+.paint-brand-select,
+select[id*="color-status-"],
+select.input-field {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 0.5rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1.5em 1.5em !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+/* Disabled state */
+select:disabled,
+input:disabled,
+textarea:disabled,
+.paint-finish-select:disabled,
+.paint-brand-select:disabled,
+select[id*="color-status-"]:disabled,
+select.input-field:disabled,
+input.input-field:disabled {
+  background-color: #f9fafb !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
+/* Placeholder text color */
+input::placeholder,
+textarea::placeholder,
+input[id*="color-single-"]::placeholder,
+input.input-field::placeholder,
+.measurement-color-input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Ensure selects inside paint cards also have white background */
+.paint-card select,
+.paint-card input {
+  background-color: white !important;
+}

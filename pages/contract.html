@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Generator - Paint Pro Estimator</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  
+  <!-- Cross-Browser Compatibility - Ensures consistent rendering across browsers -->
+  <link rel="stylesheet" href="../css/cross-browser-compatibility.css">
+  
+  <link rel="stylesheet" href="../styles/contract-generator.css">
+  <link rel="stylesheet" href="../css/print-optimization.css">
+  
+  <style>
+    /* Remove double dropdown arrows - hide browser default arrow */
+    select {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+    }
+    
+    /* Payment Schedule dropdown specific fix */
+    #payment-schedule {
+      white-space: nowrap;
+    }
+    
+    #payment-schedule option {
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    
+    /* Fix dropdown arrow overlapping text */
+    select.input-field {
+      padding-right: 2.5rem !important;
+      /* Remove browser default arrow */
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+    }
+    
+    /* Ensure dropdowns are fully visible on mobile */
+    @media (max-width: 640px) {
+      select.input-field {
+        font-size: 16px;
+        -webkit-appearance: none;
+        background-position: right 0.75rem center;
+        padding-right: 3rem !important;
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Make dropdown text smaller if needed for long options */
+      #payment-schedule option {
+        font-size: 14px;
+        padding: 0.5rem;
+      }
+    }
+    
+    /* Ensure smooth transitions for client details visibility */
+    #client-summary-container {
+      transition: all 0.3s ease;
+    }
+    
+    #client-summary-container[style*="display: none"] {
+      margin: 0;
+      padding: 0;
+      height: 0;
+      overflow: hidden;
+    }
+    
+    /* Style for items being deleted */
+    .deleting {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .deleting .item-text {
+      pointer-events: none;
+    }
+  </style>
+  
+  <script src="../js/services/errorHandler.js"></script>
+  <script src="../js/formState.js"></script>
+  <script src="../js/form-validator.js"></script>
+  
+  <!-- React for contract state management -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Confirmation Modal - Ensure consistent modal button styling -->
+  <link rel="stylesheet" href="../css/confirmation-modal.css">
+</head>
+<body class="bg-gray-100">
+  <header class="app-header" id="app-header"></header>
+  
+  <div class="progress-container">
+    <div class="progress-info">
+      <div id="progress-step" class="progress-step">Contract Generation</div>
+      <div id="progress-percentage" class="progress-percentage">Step 3 of 3</div>
+    </div>
+    <div class="progress-bar">
+      <div id="progress-fill" class="progress-fill" style="width: 100%;"></div>
+    </div>
+  </div>
+  
+  <main class="main-container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2 class="form-title">Contract Details</h2>
+      </div>
+      
+      <form id="contract-form" class="form-content" data-validate-form="" onsubmit="return false;">
+        
+        <!-- Terms & Payment Section -->
+        <section id="terms" class="form-section">
+          <h2 class="section-title">
+            <i class="fas fa-calendar-check"></i>
+            Terms & Payment
+          </h2>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Valid Until <span class="required-indicator">*</span></label>
+              <input type="date" id="valid-until" class="input-field" data-validate="required futureDate">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Start Date <span class="required-indicator">*</span></label>
+              <div class="flex items-center gap-3">
+                <input type="date" id="start-date" class="input-field" data-validate="conditionalRequired">
+                <label class="flex items-center gap-2 text-sm">
+                  <input type="checkbox" id="start-date-tbd" class="w-4 h-4" onchange="toggleStartDateTBD()">
+                  <span>TBD</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Estimated Duration <span class="required-indicator">*</span></label>
+              <select id="duration" class="input-field" data-validate="required">
+                <option value="">Select Duration</option>
+                <option value="1-2 days">1-2 days</option>
+                <option value="3-5 days">3-5 days</option>
+                <option value="1 week">1 week</option>
+                <option value="2 weeks">2 weeks</option>
+                <option value="3 weeks">3 weeks</option>
+                <option value="1 month">1 month</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Payment Schedule <span class="required-indicator">*</span></label>
+              <select id="payment-schedule" class="input-field" data-validate="required">
+                <option value="">Select Schedule</option>
+                <option value="50-50">50% Deposit, 50% Completion</option>
+                <option value="thirds">1/3 Deposit, 1/3 Midpoint, 1/3 Completion</option>
+                <option value="net-30">Net 30 Days</option>
+                <option value="progressive">Progressive Payments</option>
+                <option value="custom">Custom Schedule</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Warranty Period</label>
+              <select id="warranty-period" class="input-field">
+                <option value="1">1 Year</option>
+                <option value="2">2 Years</option>
+                <option value="3">3 Years</option>
+                <option value="5">5 Years</option>
+                <option value="lifetime">Lifetime</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Who Supplies Materials?</label>
+              <select id="material-supply" class="input-field" style="width: 100%; max-width: 100%; font-size: 16px;">
+                <option value="contractor" style="white-space: normal; overflow-wrap: break-word;">Contractor Supplies All</option>
+                <option value="owner" style="white-space: normal; overflow-wrap: break-word;">Owner Supplies All</option>
+                <option value="mixed" style="white-space: normal; overflow-wrap: break-word;">Mixed (Specify Below)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div id="material-notes-container" class="form-group" style="display: none;">
+            <label class="form-label">Material Supply Notes</label>
+            <textarea id="material-notes" class="input-field" rows="3" placeholder="Specify which materials are supplied by whom..."></textarea>
+          </div>
+        </section>
+        
+        <!-- Inclusions/Exclusions Section -->
+        <section id="inclusions" class="form-section">
+          <h2 class="section-title">
+            <i class="fas fa-check-double"></i>
+            Inclusions & Exclusions
+          </h2>
+          
+          <div class="inclusions-container">
+            <div class="inclusion-column">
+              <h3>Included in Contract</h3>
+              <div id="inclusions-list" class="inclusion-list">
+                <div class="inclusion-item editable-item" id="inclusion-existing-0">
+                  <i class="fas fa-check text-green-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateInclusionText('inclusion-existing-0', this.textContent)" onfocus="selectAllText(this)">All labor and supervision</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('inclusion-existing-0', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="inclusion-item editable-item" id="inclusion-existing-1">
+                  <i class="fas fa-check text-green-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateInclusionText('inclusion-existing-1', this.textContent)" onfocus="selectAllText(this)">Surface preparation as specified</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('inclusion-existing-1', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="inclusion-item editable-item" id="inclusion-existing-2">
+                  <i class="fas fa-check text-green-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateInclusionText('inclusion-existing-2', this.textContent)" onfocus="selectAllText(this)">Premium quality paint products</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('inclusion-existing-2', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="inclusion-item editable-item" id="inclusion-existing-3">
+                  <i class="fas fa-check text-green-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateInclusionText('inclusion-existing-3', this.textContent)" onfocus="selectAllText(this)">Clean up and debris removal</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('inclusion-existing-3', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="inclusion-item editable-item" id="inclusion-existing-4">
+                  <i class="fas fa-check text-green-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateInclusionText('inclusion-existing-4', this.textContent)" onfocus="selectAllText(this)">Warranty coverage</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('inclusion-existing-4', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addInclusion()">
+                <i class="fas fa-plus"></i> Add Item
+              </button>
+            </div>
+            
+            <div class="exclusion-column">
+              <h3>Excluded from Contract</h3>
+              <div id="exclusions-list" class="exclusion-list">
+                <div class="exclusion-item editable-item" id="exclusion-existing-0">
+                  <i class="fas fa-times text-red-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateExclusionText('exclusion-existing-0', this.textContent)" onfocus="selectAllText(this)">Structural repairs</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('exclusion-existing-0', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="exclusion-item editable-item" id="exclusion-existing-1">
+                  <i class="fas fa-times text-red-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateExclusionText('exclusion-existing-1', this.textContent)" onfocus="selectAllText(this)">Lead paint removal</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('exclusion-existing-1', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="exclusion-item editable-item" id="exclusion-existing-2">
+                  <i class="fas fa-times text-red-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateExclusionText('exclusion-existing-2', this.textContent)" onfocus="selectAllText(this)">Asbestos remediation</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('exclusion-existing-2', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="exclusion-item editable-item" id="exclusion-existing-3">
+                  <i class="fas fa-times text-red-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateExclusionText('exclusion-existing-3', this.textContent)" onfocus="selectAllText(this)">Permit fees</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('exclusion-existing-3', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="exclusion-item editable-item" id="exclusion-existing-4">
+                  <i class="fas fa-times text-red-600"></i>
+                  <span class="item-text" contenteditable="true" onblur="updateExclusionText('exclusion-existing-4', this.textContent)" onfocus="selectAllText(this)">All areas not mentioned in this document</span>
+                  <button type="button" class="delete-btn" onclick="removeItem('exclusion-existing-4', event)" title="Remove item"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addExclusion()">
+                <i class="fas fa-plus"></i> Add Item
+              </button>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Pricing Section -->
+        <section id="pricing" class="form-section">
+          <h2 class="section-title">
+            <i class="fas fa-dollar-sign"></i>
+            Pricing & Total
+          </h2>
+          
+          <div class="pricing-summary">
+            <div class="pricing-row">
+              <span>Base Price</span>
+              <span id="base-price" class="price">$0.00</span>
+            </div>
+            <div class="pricing-row">
+              <span>Materials</span>
+              <span id="materials-cost" class="price">$0.00</span>
+            </div>
+            <div class="pricing-row">
+              <span>Additional Options</span>
+              <span id="options-cost" class="price">$0.00</span>
+            </div>
+            
+            <div class="discount-section">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Discount Amount</label>
+                  <input type="number" id="discount-amount" class="input-field" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Discount Reason</label>
+                  <input type="text" id="discount-reason" class="input-field" placeholder="e.g., Early booking discount">
+                </div>
+              </div>
+            </div>
+            
+            <div class="pricing-row total">
+              <span>Total Contract Value</span>
+              <span id="total-price" class="price">$0.00</span>
+            </div>
+          </div>
+          
+          <div class="form-group mt-4">
+            <label class="form-label">Special Pricing Notes</label>
+            <textarea id="pricing-notes" class="input-field" rows="2"></textarea>
+          </div>
+        </section>
+      </form>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="form-navigation">
+      <button type="button" id="prev-button" class="btn btn-secondary">Previous</button>
+      <button type="button" id="next-button" class="btn btn-primary" onclick="previewContract()">Preview Contract</button>
+    </div>
+  </main>
+  
+  <script>
+    // Protect hardcoded content with integrated materials
+    document.addEventListener('DOMContentLoaded', function() {
+      const surfacesSummary = document.getElementById('surfaces-summary');
+      if (surfacesSummary) {
+        // Store the hardcoded content
+        const hardcodedContent = surfacesSummary.innerHTML;
+        
+        // Override any attempts to clear it
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (surfacesSummary.innerHTML.trim() === '' || !surfacesSummary.querySelector('.font-medium.text-gray-900')) {
+              console.log('Restoring hardcoded content with integrated materials');
+              surfacesSummary.innerHTML = hardcodedContent;
+            }
+          });
+        });
+        
+        // Start observing after a short delay to allow initial setup
+        setTimeout(() => {
+          observer.observe(surfacesSummary, { childList: true, subtree: true });
+        }, 100);
+      }
+    });
+  </script>
+  
+  <script>
+    // Handle Start Date TBD toggle with state persistence
+    function toggleStartDateTBD() {
+      const checkbox = document.getElementById('start-date-tbd');
+      const dateInput = document.getElementById('start-date');
+      
+      if (checkbox.checked) {
+        dateInput.value = '';
+        dateInput.disabled = true;
+        dateInput.removeAttribute('data-validate');
+        dateInput.style.opacity = '0.5';
+        
+        // Save TBD state
+        if (window.contractState) {
+          window.contractState.startDateTBD = true;
+          window.contractState.startDate = '';
+        }
+        localStorage.setItem('contractStartDateTBD', 'true');
+      } else {
+        dateInput.disabled = false;
+        dateInput.setAttribute('data-validate', 'required futureDate');
+        dateInput.style.opacity = '1';
+        
+        // Clear TBD state
+        if (window.contractState) {
+          window.contractState.startDateTBD = false;
+        }
+        localStorage.removeItem('contractStartDateTBD');
+      }
+      
+      // Update form validation state
+      if (typeof validateForm === 'function') {
+        validateForm();
+      }
+      
+      // Save state to formState if available
+      if (window.formState && window.formState.saveState) {
+        window.formState.saveState();
+      }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkbox = document.getElementById('start-date-tbd');
+      const dateInput = document.getElementById('start-date');
+      
+      if (checkbox && dateInput) {
+        // Restore TBD state from localStorage or contractState
+        const savedTBD = localStorage.getItem('contractStartDateTBD') === 'true';
+        const contractTBD = window.contractState?.startDateTBD === true;
+        
+        if (savedTBD || contractTBD) {
+          checkbox.checked = true;
+          toggleStartDateTBD();
+        }
+      }
+    });
+  </script>
+  
+  <script src="../js/components/header.js"></script>
+  <script src="../js/consolidated/contract-enhancements.js"></script>
+  <script src="../js/contract-generator.js"></script>
+  <!-- Removed contract-scope-clean.js and contract-materials-clean.js to prevent duplication -->
+  
+  <script>
+    // Initialize step tracking for contract generation
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to initialize progress when formState is ready
+      function initializeProgress() {
+        if (typeof window.formState !== 'undefined' && window.formState) {
+          // Initialize if needed
+          if (typeof window.formState.init === 'function' && !window.formState.initialized) {
+            window.formState.init();
+          }
+          
+          // Set current step to 3 (final step)
+          window.formState.currentStep = 3;
+          if (typeof window.formState.updateTotalSteps === 'function') {
+            window.formState.updateTotalSteps();
+          }
+          
+          // Update progress display
+          const totalSteps = window.formState.totalSteps || 3;
+          const percentage = Math.round((3 / totalSteps) * 100);
+          const percentageEl = document.getElementById('progress-percentage');
+          const fillEl = document.getElementById('progress-fill');
+          
+          if (percentageEl) {
+            percentageEl.textContent = `Step 3 of ${totalSteps}`;
+          }
+          if (fillEl) {
+            fillEl.style.width = `${percentage}%`;
+          }
+        } else {
+          // Try again in 100ms
+          setTimeout(initializeProgress, 100);
+        }
+      }
+      
+      // Start the initialization
+      initializeProgress();
+    });
+  </script>
+</body>
+</html>

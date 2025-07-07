@@ -1,0 +1,190 @@
+/* TouchInput.module.css - Mobile-optimized input with 48px touch targets */
+
+.container {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 48px; /* Mobile touch target */
+  background: var(--color-bg-secondary, #f8f9fa);
+  border: 2px solid var(--color-border, #e0e0e0);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* Focus state */
+.inputWrapper.focused {
+  border-color: var(--color-primary, #007bff);
+  background: var(--color-bg-primary, #ffffff);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Error state */
+.inputWrapper.error {
+  border-color: var(--color-error, #dc3545);
+  background: rgba(220, 53, 69, 0.05);
+}
+
+.inputWrapper.error.focused {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Disabled state */
+.inputWrapper.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--color-bg-disabled, #f0f0f0);
+}
+/* Input container */
+.inputContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Base input styles */
+.input {
+  width: 100%;
+  min-height: 48px; /* Ensure 48px touch target */
+  padding: 16px 16px 8px 16px;
+  font-size: 16px; /* Prevents zoom on iOS */
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text-primary, #333333);
+  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Textarea specific */
+textarea.input {
+  resize: vertical;
+  min-height: 96px;
+  padding-top: 24px;
+}
+
+/* Label styles */
+.label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--color-text-secondary, #666666);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  padding: 0 4px;
+}
+/* Floating label state */
+.label.floating,
+.inputWrapper.hasValue .label {
+  top: 8px;
+  transform: translateY(0);
+  font-size: 12px;
+  color: var(--color-primary, #007bff);
+  background: var(--color-bg-secondary, #f8f9fa);
+}
+
+.inputWrapper.focused .label {
+  color: var(--color-primary, #007bff);
+}
+
+.inputWrapper.error .label {
+  color: var(--color-error, #dc3545);
+}
+
+/* Input with floating label */
+.inputWrapper.hasValue .input,
+.input:focus {
+  padding-top: 24px;
+  padding-bottom: 4px;
+}
+
+/* Required indicator */
+.required {
+  color: var(--color-error, #dc3545);
+  margin-left: 2px;
+}
+
+/* Icons and affixes */
+.icon,
+.prefix,
+.suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  color: var(--color-text-secondary, #666666);
+  min-width: 48px;
+  height: 48px;
+}
+.icon {
+  margin-right: -8px;
+}
+
+/* Helper text */
+.helperText {
+  margin-top: 6px;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--color-text-secondary, #666666);
+  line-height: 1.4;
+}
+
+.errorText {
+  color: var(--color-error, #dc3545);
+}
+
+/* Placeholder styling */
+.input::placeholder {
+  color: var(--color-text-tertiary, #999999);
+  opacity: 1;
+}
+
+/* Remove default styling */
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .inputWrapper {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .inputWrapper.focused {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-primary, #0d6efd);
+  }
+  
+  .input {
+    color: var(--color-text-primary-dark, #ffffff);
+  }
+  
+  .label {
+    color: var(--color-text-secondary-dark, #aaaaaa);
+  }
+  
+  .label.floating,
+  .inputWrapper.hasValue .label {
+    background: transparent;
+  }
+}

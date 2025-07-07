@@ -1,0 +1,27 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <g stroke="#3582ec" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Top arrow pointing up -->
+    <path d="M32 28 L32 8"></path>
+    <path d="M32 8 L27 13"></path>
+    <path d="M32 8 L37 13"></path>
+
+    <!-- Bottom arrow pointing down -->
+    <path d="M32 36 L32 56"></path>
+    <path d="M32 56 L27 51"></path>
+    <path d="M32 56 L37 51"></path>
+
+    <!-- Left arrow pointing left -->
+    <path d="M28 32 L8 32"></path>
+    <path d="M8 32 L13 27"></path>
+    <path d="M8 32 L13 37"></path>
+
+    <!-- Right arrow pointing right -->
+    <path d="M36 32 L56 32"></path>
+    <path d="M56 32 L51 27"></path>
+    <path d="M56 32 L51 37"></path>
+
+    <!-- Outer circle -->
+    <circle cx="32" cy="32" r="28"></circle>
+  </g>
+</svg>

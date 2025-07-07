@@ -1,0 +1,406 @@
+/* Photo Editor Styles - Modern, Professional Design */
+.photo-editor-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-editor-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+}
+
+/* Header - Sleek top bar */
+.photo-editor-header {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: 56px;
+  gap: 0;
+  position: relative;
+  z-index: 100;
+}
+
+/* Photo name - clean and modern */
+.photo-name-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0 16px;
+  height: 100%;
+  outline: none;
+  min-width: 0;
+}
+
+.photo-name-input:focus {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.photo-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Header buttons - icon style */
+.header-btn {
+  width: 56px;
+  height: 56px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.header-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.header-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Tools dropdown */
+.tools-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(40, 40, 40, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 4px;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  min-width: 180px;
+}
+
+.tools-dropdown.show {
+  display: block;
+}
+
+.tool-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+  gap: 12px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.tool-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tool-item.active {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.tool-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Color picker dropdown */
+.color-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(40, 40, 40, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 4px;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.color-dropdown.show {
+  display: block;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.active {
+  border-color: #fff;
+}
+
+.color-swatch.active::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom color picker */
+.custom-color-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Delete button styling */
+.photo-delete-btn {
+  color: #ef4444;
+}
+
+.photo-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Save button - prominent */
+.save-btn {
+  background: #3b82f6;
+  color: #fff;
+  margin-right: 8px;
+}
+
+.save-btn:hover {
+  background: #2563eb;
+}
+
+/* Canvas container */
+.photo-editor-canvas-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#photo-editor-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: crosshair;
+  display: block;
+}
+
+/* Text overlay */
+.text-overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.photo-text-annotation {
+  position: absolute;
+  pointer-events: auto;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: nowrap;
+  user-select: text;
+  outline: none;
+  min-width: 20px;
+}
+
+.photo-text-annotation:focus {
+  background: rgba(0, 0, 0, 0.9);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Toast notification */
+.photo-editor-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(40, 40, 40, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 10001;
+  font-size: 14px;
+}
+
+.photo-editor-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Photo thumbnail hover */
+.photo-thumbnail {
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-thumbnail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.2s;
+  pointer-events: none;
+}
+
+.photo-thumbnail:hover::before {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.photo-thumbnail:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Landscape optimizations */
+@media (orientation: landscape) and (max-height: 500px) {
+  .photo-editor-header {
+    height: 48px;
+  }
+  
+  .header-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .header-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .tools-dropdown,
+  .color-dropdown {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .photo-name-input {
+    font-size: 14px;
+    padding: 0 12px;
+  }
+  
+  .color-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .color-swatch {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Small screens - ultra compact */
+@media (max-width: 480px) {
+  .photo-editor-header {
+    height: 48px;
+  }
+  
+  .header-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .tools-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .color-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Ensure touch targets are adequate */
+@media (pointer: coarse) {
+  .header-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .tool-item {
+    min-height: 44px;
+  }
+  
+  .color-swatch {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
