@@ -15,7 +15,7 @@
       defaultLocation: 'both'
     },
     abrasive: {
-      name: 'Abrasive Cleaning',
+      name: 'Cleaning',
       allowsInterior: false,
       allowsExterior: true,
       defaultLocation: 'exterior',
@@ -136,7 +136,7 @@
           if (s.type === 'abrasive' && serviceConfig[s.type].locked) {
             return `<span class="inline-flex items-center">
               <i class="fas fa-info-circle text-blue-500 mr-1"></i>
-              Abrasive cleaning is exterior only
+              Cleaning is exterior only
             </span>`;
           }
           return '';

@@ -82,6 +82,17 @@ class MultiSelect {
       this.searchInput.readOnly = true;
       this.searchInput.style.caretColor = 'transparent';
       this.searchInput.addEventListener('keydown', (e) => e.preventDefault());
+      // Make the input invisible but keep it in the DOM
+      this.searchInput.style.opacity = '0';
+      this.searchInput.style.position = 'absolute';
+      this.searchInput.style.width = '1px';
+      this.searchInput.style.height = '1px';
+      this.searchInput.style.padding = '0';
+      this.searchInput.style.border = '0';
+      this.searchInput.style.margin = '-1px';
+      this.searchInput.style.overflow = 'hidden';
+      this.searchInput.style.clip = 'rect(0,0,0,0)';
+      this.searchInput.style.whiteSpace = 'nowrap';
     }
     
     searchSpan.appendChild(this.searchInput);
@@ -101,6 +112,11 @@ class MultiSelect {
     
     // Create hidden inputs for form submission
     this.updateHiddenInputs();
+    
+    // If no search, populate dropdown immediately
+    if (this.options.noSearch) {
+      this.renderDropdown('');
+    }
   }
   
   renderSelectedItems() {
@@ -214,10 +230,16 @@ class MultiSelect {
   }
   
   attachEvents() {
-    // Container click - focus search
+    // Container click - focus search or open dropdown if no search
     this.container.addEventListener('click', (e) => {
       if (e.target === this.container || e.target.classList.contains('main-ui-square-container')) {
-        this.searchInput.focus();
+        if (this.options.noSearch) {
+          // If no search, just toggle the dropdown
+          this.dropdown.classList.toggle('active');
+          this.positionDropdown();
+        } else {
+          this.searchInput.focus();
+        }
       }
     });
     

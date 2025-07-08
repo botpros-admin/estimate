@@ -61,13 +61,15 @@
       transition: color 0.2s ease;
     }
     
-    .scope-checkbox:checked + .scope-label {
+    .scope-checkbox:checked + .scope-label,
+    .scope-label.checked {
       background-color: #eff6ff;
       border-color: #3b82f6;
       color: #1e40af;
     }
     
-    .scope-checkbox:checked + .scope-label .scope-icon {
+    .scope-checkbox:checked + .scope-label .scope-icon,
+    .scope-label.checked .scope-icon {
       color: #3b82f6;
     }
     
@@ -357,7 +359,7 @@
                  data-no-search="true"
                  data-name="serviceTypes[]"
                  data-placeholder="Select service types..."
-                 data-items='[{"NAME":"Surface Coating","VALUE":"surface_coating"},{"NAME":"Abrasive Cleaning","VALUE":"abrasive"}]'
+                 data-items='[{"NAME":"Surface Coating","VALUE":"surface_coating"},{"NAME":"Cleaning","VALUE":"abrasive"}]'
                  data-value='[]'>
             </div>
           </div>
@@ -412,7 +414,7 @@
           </div>
         </div>
         
-        <!-- Abrasive Cleaning Options (hidden by default) -->
+        <!-- Cleaning Options (hidden by default) -->
         <div id="abrasive-options" class="form-group" style="display: none;">
           <label class="form-label">
             Cleaning Method <span class="required-indicator">*</span>
@@ -671,7 +673,7 @@
           // Show warning message
           const scopeError = document.getElementById('scope-error');
           if (scopeError) {
-            scopeError.textContent = 'Interior is not available for abrasive cleaning services';
+            scopeError.textContent = 'Interior is not available for cleaning services';
             scopeError.style.display = 'block';
             scopeError.style.color = '#dc2626';
             
@@ -723,12 +725,12 @@
       // Ensure selectedValues is an array
       const values = Array.isArray(selectedValues) ? selectedValues : [];
       
-      // Handle Abrasive Cleaning
+      // Handle Cleaning
       if (values.includes('abrasive')) {
         abrasiveOptions.style.display = 'block';
       } else {
         abrasiveOptions.style.display = 'none';
-        // Clear abrasive method if switching away
+        // Clear cleaning method if switching away
         if (window.abrasiveMethodMultiSelect) {
           window.abrasiveMethodMultiSelect.setValue([]);
         }
@@ -1322,7 +1324,7 @@
         window.serviceTypeMultiSelect = new MultiSelect(serviceTypeElement, {
           fieldName: 'serviceTypes[]',
           value: formState.data.serviceTypes.map(type => ({ 
-            NAME: type === 'surface_coating' ? 'Surface Coating' : 'Abrasive Cleaning', 
+            NAME: type === 'surface_coating' ? 'Surface Coating' : 'Cleaning', 
             VALUE: type 
           })),
           onChange: handleServiceTypeChange
@@ -1603,9 +1605,6 @@
       }
     });
   </script>
-  
-  <!-- Comprehensive fix for address error -->
-  <script src="../fixes/address-error-fix.js"></script>
   
   <!-- URL Parameter Handler -->
   <script src="../js/modules/url-params-handler.js"></script>

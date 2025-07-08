@@ -2504,7 +2504,7 @@
           }
         }
       } else if (serviceType === 'abrasive' || 
-                 serviceType === 'Abrasive Cleaning Method' || 
+                 serviceType === 'Cleaning Method' || 
                  serviceType.toLowerCase().includes('abrasive')) {
         // Create abrasive service cards (only if methods are selected)
         const abrasiveCards = createAbrasiveCardEnhanced();
