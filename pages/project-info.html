@@ -38,7 +38,6 @@
     .scope-checkbox {
       position: absolute;
       opacity: 0;
-      pointer-events: none;
     }
     
     .scope-label {
@@ -353,8 +352,9 @@
             Service Type <span class="required-indicator">*</span>
           </label>
           <div id="service-type-container">
-            <div id="service-type-multiselect" 
+            <div id="service-type-multiselect"
                  data-multi-select="true"
+                 data-no-search="true"
                  data-name="serviceTypes[]"
                  data-placeholder="Select service types..."
                  data-items='[{"NAME":"Surface Coating","VALUE":"surface_coating"},{"NAME":"Abrasive Cleaning","VALUE":"abrasive"}]'
@@ -371,6 +371,7 @@
           <div id="surface-coating-method-container">
             <div id="surface-coating-method-multiselect"
                  data-multi-select="true"
+                 data-no-search="true"
                  data-name="surfaceCoatingMethods[]"
                  data-placeholder="Select coating methods..."
                  data-items='[{"NAME":"Painting","VALUE":"painting"},{"NAME":"Concrete Coating","VALUE":"concrete"},{"NAME":"Wood Treatment","VALUE":"wood"}]'
@@ -419,6 +420,7 @@
           <div id="abrasive-method-container">
             <div id="abrasive-method-multiselect"
                  data-multi-select="true"
+                 data-no-search="true"
                  data-name="abrasiveMethods[]"
                  data-placeholder="Select methods..."
                  data-items='[{"NAME":"Sandblasting","VALUE":"sandblasting"},{"NAME":"Pressure Cleaning","VALUE":"pressure"},{"NAME":"Chemical Stripping","VALUE":"chemical"},{"NAME":"Grinding","VALUE":"grinding"}]'

@@ -112,6 +112,10 @@
   min-width: 100px;
 }
 
+.main-ui-square-search-item[readonly] {
+  cursor: pointer;
+}
+
 /* Dropdown for multi-select */
 .main-ui-select-dropdown {
   position: absolute;

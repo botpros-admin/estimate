@@ -9,6 +9,7 @@ class MultiSelect {
       items: options.items || [],
       value: options.value || [],
       onChange: options.onChange || (() => {}),
+      noSearch: options.noSearch || element.dataset.noSearch === 'true',
       ...options
     };
     
@@ -77,6 +78,11 @@ class MultiSelect {
     this.searchInput.type = 'text';
     this.searchInput.className = 'main-ui-square-search-item';
     this.searchInput.placeholder = this.selectedItems.length === 0 ? this.options.placeholder : '';
+    if (this.options.noSearch) {
+      this.searchInput.readOnly = true;
+      this.searchInput.style.caretColor = 'transparent';
+      this.searchInput.addEventListener('keydown', (e) => e.preventDefault());
+    }
     
     searchSpan.appendChild(this.searchInput);
     
