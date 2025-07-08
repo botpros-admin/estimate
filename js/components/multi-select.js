@@ -113,9 +113,9 @@ class MultiSelect {
     // Create hidden inputs for form submission
     this.updateHiddenInputs();
     
-    // If no search, populate dropdown immediately
+    // If no search, prepare dropdown content but don't show it
     if (this.options.noSearch) {
-      this.renderDropdown('');
+      this.renderDropdown('', false);
     }
   }
   
@@ -148,7 +148,7 @@ class MultiSelect {
     }
   }
   
-  renderDropdown(filter = '') {
+  renderDropdown(filter = '', showDropdown = true) {
     const lowerFilter = filter.toLowerCase();
     
     // Filter items
@@ -186,7 +186,9 @@ class MultiSelect {
     });
     
     // Show dropdown temporarily to measure height
-    this.dropdown.classList.add('active');
+    if (showDropdown) {
+      this.dropdown.classList.add('active');
+    }
     this.dropdown.classList.remove('dropdown-above');
     
     // Calculate positioning
@@ -234,9 +236,12 @@ class MultiSelect {
     this.container.addEventListener('click', (e) => {
       if (e.target === this.container || e.target.classList.contains('main-ui-square-container')) {
         if (this.options.noSearch) {
-          // If no search, just toggle the dropdown
-          this.dropdown.classList.toggle('active');
-          this.positionDropdown();
+          // If no search, render dropdown and toggle visibility
+          const isActive = this.dropdown.classList.contains('active');
+          this.renderDropdown('', !isActive);
+          if (!isActive) {
+            this.positionDropdown();
+          }
         } else {
           this.searchInput.focus();
         }
@@ -372,6 +377,11 @@ class MultiSelect {
     this.renderSelectedItems();
     this.updateHiddenInputs();
     this.options.onChange(this.getValue());
+    
+    // Re-render dropdown to show the removed item as available again
+    const currentSearchValue = this.searchInput ? this.searchInput.value : '';
+    const isDropdownActive = this.dropdown.classList.contains('active');
+    this.renderDropdown(currentSearchValue, isDropdownActive);
   }
   
   updateHiddenInputs() {
