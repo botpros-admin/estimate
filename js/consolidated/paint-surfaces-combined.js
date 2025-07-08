@@ -297,6 +297,30 @@
       if (clickedChevron) {
         clickedChevron.style.transform = '';
       }
+      
+      // Auto-scroll to the expanded card
+      // Use setTimeout to ensure DOM has updated
+      setTimeout(() => {
+        // Find the card container (parent of the header)
+        const cardContainer = clickedHeader.closest('.paint-card') || clickedHeader.parentElement;
+        
+        if (cardContainer) {
+          // Calculate offset from top (accounting for fixed headers)
+          const headerHeight = document.querySelector('.app-header')?.offsetHeight || 0;
+          const progressHeight = document.querySelector('.progress-container')?.offsetHeight || 0;
+          const offset = headerHeight + progressHeight + 20; // 20px extra padding
+          
+          // Get the card's position
+          const cardTop = cardContainer.getBoundingClientRect().top + window.pageYOffset;
+          const scrollToPosition = cardTop - offset;
+          
+          // Smooth scroll to the card
+          window.scrollTo({
+            top: scrollToPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
     }
     // If it was already expanded, it stays collapsed (all sections are now collapsed)
   }
