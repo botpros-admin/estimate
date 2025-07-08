@@ -236,9 +236,12 @@ class MultiSelect {
     this.container.addEventListener('click', (e) => {
       if (e.target === this.container || e.target.classList.contains('main-ui-square-container')) {
         if (this.options.noSearch) {
-          // If no search, just toggle the dropdown
-          this.dropdown.classList.toggle('active');
-          this.positionDropdown();
+          // If no search, render dropdown and toggle visibility
+          const isActive = this.dropdown.classList.contains('active');
+          this.renderDropdown('', !isActive);
+          if (!isActive) {
+            this.positionDropdown();
+          }
         } else {
           this.searchInput.focus();
         }
@@ -374,6 +377,11 @@ class MultiSelect {
     this.renderSelectedItems();
     this.updateHiddenInputs();
     this.options.onChange(this.getValue());
+    
+    // Re-render dropdown to show the removed item as available again
+    const currentSearchValue = this.searchInput ? this.searchInput.value : '';
+    const isDropdownActive = this.dropdown.classList.contains('active');
+    this.renderDropdown(currentSearchValue, isDropdownActive);
   }
   
   updateHiddenInputs() {
