@@ -1,0 +1,55 @@
+/**
+ * Company Field Validation Override
+ * Ensures company field never shows validation error styling
+ */
+
+/* Remove validation error styling from company field - using multiple selectors for better coverage */
+.crm-entity-widget-content-inner-row.validation-field-error {
+    /* Reset styles but only for company field */
+}
+
+/* Target company field specifically by its structure */
+.crm-entity-widget-content-inner-row:nth-of-type(3).validation-field-error {
+    border: none !important;
+    background-color: transparent !important;
+    animation: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Additional targeting based on content */
+.crm-entity-widget-content-inner-row .crm-entity-widget-content-block-title-text {
+    /* This will be used by JavaScript to identify company rows */
+}
+
+/* Override validation styles for any element that might be the company container */
+[data-entity-type="company"].validation-field-error,
+[data-field="company"].validation-field-error,
+.company-row.validation-field-error,
+.company-container.validation-field-error,
+#company-field.validation-field-error {
+    border: none !important;
+    background-color: transparent !important;
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+/* Ensure company input fields don't show error styling */
+.crm-entity-widget-content-inner-row:nth-of-type(3) input,
+.crm-entity-widget-content-inner-row:nth-of-type(3) .crm-entity-widget-content-input {
+    border-color: #e5e7eb !important;
+    background-color: white !important;
+    box-shadow: none !important;
+}
+
+/* Remove red background from company row */
+.crm-entity-widget-content-inner-row:nth-of-type(3) {
+    background-color: transparent !important;
+}
+
+/* Override the specific validation field error styles for company */
+.validation-field-error.company-exempt {
+    border: none !important;
+    background-color: transparent !important;
+    animation: none !important;
+}

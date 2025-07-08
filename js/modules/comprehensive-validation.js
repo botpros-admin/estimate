@@ -302,6 +302,14 @@ window.ComprehensiveValidation = {
             el.classList.remove('validation-field-error');
         });
         
+        // Specifically ensure company row never has validation error
+        document.querySelectorAll('.crm-entity-widget-content-inner-row').forEach(row => {
+            const titleText = row.querySelector('.crm-entity-widget-content-block-title-text');
+            if (titleText && titleText.textContent === 'Company') {
+                row.classList.remove('validation-field-error');
+            }
+        });
+        
         // Validate all required fields with asterisks (except those in conditional sections and multi-selects)
         const allInputs = document.querySelectorAll('input:not([type="hidden"]), select, textarea');
         allInputs.forEach(element => {
@@ -330,9 +338,14 @@ window.ComprehensiveValidation = {
         }        
         // Validate contacts
         if (!this.validateContacts()) {
-            // Add visual error indicator to contact rows
+            // Add visual error indicator to contact rows (but exclude company row)
             const contactRows = document.querySelectorAll('.crm-entity-widget-content-inner-row');
             contactRows.forEach(row => {
+                // Skip the company row - it has "Company" as title text
+                const titleText = row.querySelector('.crm-entity-widget-content-block-title-text');
+                if (titleText && titleText.textContent === 'Company') {
+                    return; // Skip company row
+                }
                 row.classList.add('validation-field-error');
             });
         }
