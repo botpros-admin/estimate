@@ -245,7 +245,7 @@
       });
     }
     
-    // Add cleaning scope if selected
+    // Add abrasive cleaning scope if selected
     if (serviceTypes.includes('abrasive')) {
       const abrasiveMethods = formState.data.abrasiveMethods || [];
       abrasiveMethods.forEach(method => {

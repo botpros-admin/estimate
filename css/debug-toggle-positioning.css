@@ -1,0 +1,61 @@
+/* DEBUG: Highlight toggle positioning for testing */
+.measurement-block {
+  border: 1px dashed #ccc !important;
+  margin: 10px 0 !important;
+  padding: 15px !important;
+}
+
+.measurement-input-type-selector {
+  border: 2px solid #3b82f6 !important;
+  background-color: #dbeafe !important;
+}
+
+.measurement-calculation-type-selector {
+  border: 2px solid #10b981 !important;
+  background-color: #d1fae5 !important;
+}
+
+.measurement-details {
+  border: 2px solid #f59e0b !important;
+  background-color: #fef3c7 !important;
+  margin-top: 10px !important;
+  padding: 10px !important;
+}
+
+/* Add order labels for debugging */
+.measurement-input-type-selector::before {
+  content: "1. Dimensions/Total Toggle";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 12px;
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.measurement-calculation-type-selector::before {
+  content: "2. Square/Linear Toggle";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 12px;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.measurement-details::before {
+  content: "3. Measurement Details";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 12px;
+  color: #f59e0b;
+  font-weight: bold;
+}
+
+/* Make containers relative for absolute positioning of labels */
+.measurement-input-type-selector,
+.measurement-calculation-type-selector,
+.measurement-details {
+  position: relative !important;
+}

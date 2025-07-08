@@ -1,0 +1,98 @@
+/* Square/Linear Calculation Type Toggle Styles - Match existing toggle exactly */
+.measurement-calculation-type-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.measurement-calculation-type-selector .toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.measurement-calculation-type-selector .toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.measurement-calculation-type-selector .toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d1d5db;
+  transition: 0.3s;
+  border-radius: 20px;
+}
+
+.measurement-calculation-type-selector .toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.measurement-calculation-type-selector input:checked + .toggle-slider {
+  background-color: #3b82f6;
+}
+
+.measurement-calculation-type-selector input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.measurement-calculation-type-selector .toggle-label-left,
+.measurement-calculation-type-selector .toggle-label-right {
+  color: #6b7280;
+  transition: color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.measurement-calculation-type-selector .toggle-label-left.active,
+.measurement-calculation-type-selector .toggle-label-right.active {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Linear mode dimension input adjustments */
+.lxh-pair .lxh-input:first-of-type:only-child {
+  width: 100%;
+  flex: 1;
+}
+
+/* Hide height input and x symbol in linear mode */
+.lxh-pair.linear-mode span,
+.lxh-pair.linear-mode .lxh-input:last-of-type {
+  display: none !important;
+}
+
+.lxh-pair.linear-mode .lxh-input:first-of-type {
+  width: 100%;
+  margin-right: 0;
+}
+
+/* Ensure proper spacing in linear mode */
+.measurement-calculation-type-selector + .measurement-details .lxh-inputs-container {
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments for linear mode */
+@media (max-width: 768px) {
+  .lxh-pair.linear-mode .lxh-input:first-of-type {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
