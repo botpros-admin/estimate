@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Alignment Fix Verification</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/complete-styles.css">
+    <link rel="stylesheet" href="../css/square-linear-toggle.css">
+    <link rel="stylesheet" href="../css/toggle-alignment-fix.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e5e7eb;
+        }
+        .alignment-guide {
+            border-left: 2px solid #3b82f6;
+            padding-left: 15px;
+            margin: 10px 0;
+        }
+        .dimensions-box {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>✅ Toggle Alignment Fix Verification</h1>
+    
+    <div class="test-container">
+        <h3>Fixed Toggles - Should be perfectly aligned</h3>
+        <div class="alignment-guide">
+            <!-- Dimensions/Total Area Toggle -->
+            <div class="measurement-input-type-selector">
+                <span class="toggle-label-left active">Dimensions</span>
+                <label class="toggle-switch" for="toggle-meas-fixed">
+                    <input type="checkbox" id="toggle-meas-fixed" aria-label="Toggle between dimensions and total area input" role="switch" aria-checked="false">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label-right">Total Area</span>
+            </div>
+            
+            <!-- Square/Linear Toggle -->
+            <div class="measurement-calculation-type-selector" style="display: flex;">
+                <span class="toggle-label-left active">Square</span>
+                <label class="toggle-switch" for="toggle-calc-fixed">
+                    <input type="checkbox" id="toggle-calc-fixed" aria-label="Toggle between square and linear calculation" role="switch" aria-checked="false">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label-right">Linear</span>
+            </div>
+        </div>
+        
+        <div class="dimensions-box">
+            <strong>Expected Results:</strong><br>
+            • Both toggles should have identical width: ~209px<br>
+            • Both toggles should have height: 44px<br>
+            • Both should be left-aligned (not centered)<br>
+            • Toggle switches should be exactly 50px × 24px<br>
+            • Gap between elements: 0.75rem (12px)<br>
+            • No dimension differences between toggles
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h3>🔧 What Was Fixed</h3>
+        <ul>
+            <li><strong>CSS Syntax Errors:</strong> Fixed missing class selectors (.) in CSS files</li>
+            <li><strong>Centering Issue:</strong> Changed justify-content from 'center' to 'flex-start' for left alignment</li>
+            <li><strong>Dimension Consistency:</strong> Enforced identical dimensions for both toggles</li>
+            <li><strong>Gap Standardization:</strong> Ensured both toggles use 0.75rem gap</li>
+            <li><strong>Style Conflicts:</strong> Created comprehensive override CSS to ensure consistency</li>
+        </ul>
+    </div>
+    
+    <div class="test-container">
+        <h3>📁 Files Modified</h3>
+        <ul>
+            <li><code>pages/surfaces.html</code> - Fixed CSS syntax and centering</li>
+            <li><code>css/square-linear-toggle.css</code> - Updated to match exact toggle styling</li>
+            <li><code>css/toggle-alignment-fix.css</code> - NEW: Comprehensive fix file</li>
+        </ul>
+    </div>
+    
+    <script>
+        // Test the toggles
+        const measToggle = document.getElementById('toggle-meas-fixed');
+        const calcToggle = document.getElementById('toggle-calc-fixed');
+        
+        // Add interactivity to verify everything works
+        measToggle.addEventListener('change', () => {
+            const parent = measToggle.closest('.measurement-input-type-selector');
+            const leftLabel = parent.querySelector('.toggle-label-left');
+            const rightLabel = parent.querySelector('.toggle-label-right');
+            
+            leftLabel.classList.toggle('active', !measToggle.checked);
+            rightLabel.classList.toggle('active', measToggle.checked);
+        });
+        
+        calcToggle.addEventListener('change', () => {
+            const parent = calcToggle.closest('.measurement-calculation-type-selector');
+            const leftLabel = parent.querySelector('.toggle-label-left');
+            const rightLabel = parent.querySelector('.toggle-label-right');
+            
+            leftLabel.classList.toggle('active', !calcToggle.checked);
+            rightLabel.classList.toggle('active', calcToggle.checked);
+        });
+        
+        // Measure and log dimensions for verification
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const measSelector = document.querySelector('.measurement-input-type-selector');
+                const calcSelector = document.querySelector('.measurement-calculation-type-selector');
+                
+                if (measSelector && calcSelector) {
+                    const measRect = measSelector.getBoundingClientRect();
+                    const calcRect = calcSelector.getBoundingClientRect();
+                    
+                    console.log('Measurement Toggle Dimensions:', {
+                        width: measRect.width,
+                        height: measRect.height
+                    });
+                    
+                    console.log('Calculation Toggle Dimensions:', {
+                        width: calcRect.width,
+                        height: calcRect.height
+                    });
+                    
+                    const widthDiff = Math.abs(measRect.width - calcRect.width);
+                    const heightDiff = Math.abs(measRect.height - calcRect.height);
+                    
+                    console.log('Dimension Differences:', {
+                        widthDiff: widthDiff,
+                        heightDiff: heightDiff,
+                        isAligned: widthDiff < 1 && heightDiff < 1
+                    });
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

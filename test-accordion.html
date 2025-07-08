@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accordion Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        .p-3 {
+            padding: 0.75rem;
+        }
+        .bg-gray-50 {
+            background-color: #f9fafb;
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .service-content {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            margin-top: 5px;
+        }
+        .chevron-icon {
+            transition: transform 0.2s ease;
+        }
+        .paint-card {
+            margin-bottom: 20px;
+        }
+        h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .test-message {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-message">
+        <h2>Accordion Functionality Test</h2>
+        <p>Click on any of the section headers below to test the accordion functionality.</p>
+        <p>Only one section should be open at a time, and they should expand/collapse smoothly.</p>
+    </div>
+
+    <div class="paint-card" data-paint-id="test-section-1">
+        <div class="mb-4 p-3 bg-gray-50 rounded-lg" style="cursor: pointer;" role="button" tabindex="0">
+            <h3>
+                Test Section 1 - Interior Paint
+                <svg class="chevron-icon ml-auto transform transition-transform" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="transform: rotate(-90deg);">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </h3>
+        </div>
+        <div class="service-content" style="display: none;">
+            <h4>Interior Paint Content</h4>
+            <p>This is the content for the interior paint section. It should show when the header is clicked.</p>
+            <select>
+                <option>Flat/Matte</option>
+                <option>Satin</option>
+                <option>Semi-Gloss</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="paint-card" data-paint-id="test-section-2">
+        <div class="mb-4 p-3 bg-gray-50 rounded-lg" style="cursor: pointer;" role="button" tabindex="0">
+            <h3>
+                Test Section 2 - Exterior Paint
+                <svg class="chevron-icon ml-auto transform transition-transform" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="transform: rotate(-90deg);">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </h3>
+        </div>
+        <div class="service-content" style="display: none;">
+            <h4>Exterior Paint Content</h4>
+            <p>This is the content for the exterior paint section. Only one section should be visible at a time.</p>
+            <button>Test Button</button>
+        </div>
+    </div>
+
+    <div class="paint-card" data-service-id="test-surface-coating">
+        <div class="mb-4 p-3 bg-gray-50 rounded-lg" style="cursor: pointer;" role="button" tabindex="0">
+            <h3>
+                Test Section 3 - Surface Coating
+                <svg class="chevron-icon ml-auto transform transition-transform" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="transform: rotate(-90deg);">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </h3>
+        </div>
+        <div class="service-content" style="display: none;">
+            <h4>Surface Coating Content</h4>
+            <p>This is the content for the surface coating section. The chevron should rotate when expanded.</p>
+            <input type="text" placeholder="Test input field">
+        </div>
+    </div>
+
+    <script>
+        // Debug function to show what's happening
+        window.testAccordion = function() {
+            console.log('Testing accordion functionality...');
+            console.log('Available accordion functions:', window.AccordionUnified);
+            
+            const headers = document.querySelectorAll('.mb-4.p-3.bg-gray-50.rounded-lg');
+            console.log(`Found ${headers.length} accordion headers`);
+            
+            headers.forEach((header, index) => {
+                console.log(`Header ${index}:`, {
+                    text: header.querySelector('h3')?.textContent?.trim(),
+                    hasClickListener: header.onclick !== null,
+                    isProcessed: header.dataset.accordionFixed === 'true'
+                });
+            });
+        };
+        
+        // Call test function after a short delay
+        setTimeout(() => {
+            console.log('=== ACCORDION TEST PAGE LOADED ===');
+            testAccordion();
+        }, 1000);
+    </script>
+    
+    <!-- Load the unified accordion fix -->
+    <script src="../js/accordion-fix-unified.js"></script>
+</body>
+</html>

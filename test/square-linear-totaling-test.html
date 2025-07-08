@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square vs Linear Totaling Test</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/surface-styles.css">
+    <link rel="stylesheet" href="../css/square-linear-toggle.css">
+    <link rel="stylesheet" href="../css/paint-card-styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .test-description {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .results-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .highlight {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>Square vs Linear Totaling Test</h1>
+        <p>Testing separate tracking of square footage and linear footage</p>
+    </div>
+
+    <div class="test-description">
+        <h2>Test Scenario</h2>
+        <p>This test demonstrates the fix for the linear vs square foot totaling issue:</p>
+        <ul>
+            <li><strong>Problem:</strong> Linear measurements were being added to square foot totals</li>
+            <li><strong>Solution:</strong> Now tracks and displays both totals separately</li>
+            <li><strong>Expected Result:</strong> Two separate total lines showing square feet and linear feet</li>
+        </ul>
+        
+        <div class="highlight">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Add measurements using the controls below</li>
+                <li>Toggle between "Square" and "Linear" calculation modes</li>
+                <li>Observe that totals are tracked separately in the results panel</li>
+                <li>Square measurements contribute to "Square Feet" total</li>
+                <li>Linear measurements contribute to "Linear Footage" total</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Main content area for surfaces -->
+    <div id="paint-cards-container"></div>
+
+    <div class="results-panel">
+        <h3>Expected Results</h3>
+        <div id="test-results">
+            <p>Create a surface with measurements to see the separate totaling in action.</p>
+        </div>
+    </div>
+
+    <!-- Required scripts -->
+    <script src="../js/utils/formatting.js"></script>
+    <script src="../js/modules/form-state.js"></script>
+    <script src="../js/modules/confirmations.js"></script>
+    <script src="../js/consolidated/paint-surfaces-combined.js"></script>
+    
+    <script>
+        // Initialize the test
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize form state
+            if (typeof window.formState === 'undefined') {
+                window.formState = new FormState();
+            }
+            
+            // Create a test paint card with a surface
+            const paintCardsContainer = document.getElementById('paint-cards-container');
+            
+            // Initialize with test data
+            if (!window.formState.data.paintSelections) {
+                window.formState.data.paintSelections = [];
+            }
+            if (!window.formState.data.surfaces) {
+                window.formState.data.surfaces = [];
+            }
+            
+            // Create a test paint selection
+            const testPaintId = 'test-paint-' + Date.now();
+            window.formState.data.paintSelections.push({
+                id: testPaintId,
+                name: 'Test Paint',
+                color: '#ffffff',
+                type: 'interior'
+            });
+            
+            // Create test surface data structure
+            const testSurfaceId = 'test-surface-' + Date.now();
+            const testSurface = {
+                id: testSurfaceId,
+                paintId: testPaintId,
+                surfaceType: 'walls',
+                measurements: [
+                    {
+                        id: 'test-measurement-1',
+                        description: 'Square Area Test',
+                        entryType: 'lxh',
+                        calculationType: 'square',
+                        isDeduction: false,
+                        dimensions: [
+                            { id: 'dim-1', l: '10', h: '8' }
+                        ],
+                        photos: [],
+                        color: ''
+                    },
+                    {
+                        id: 'test-measurement-2', 
+                        description: 'Linear Test',
+                        entryType: 'lxh',
+                        calculationType: 'linear',
+                        isDeduction: false,
+                        dimensions: [
+                            { id: 'dim-2', l: '12', h: '' }
+                        ],
+                        photos: [],
+                        color: ''
+                    }
+                ],
+                calculatedTotalArea: 0,
+                calculatedTotalSquareArea: 0,
+                calculatedTotalLinearArea: 0
+            };
+            
+            window.formState.data.surfaces.push(testSurface);
+            
+            // Create the surface card UI
+            const surfaceCard = createSurfaceCard(testSurface);
+            paintCardsContainer.appendChild(surfaceCard);
+            
+            // Update results display
+            updateTestResults();
+            
+            // Monitor for changes
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                        updateTestResults();
+                    }
+                });
+            });
+            
+            observer.observe(paintCardsContainer, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        });
+        
+        function updateTestResults() {
+            const resultsDiv = document.getElementById('test-results');
+            const surface = window.formState.data.surfaces[0];
+            
+            if (surface) {
+                const squareTotal = surface.calculatedTotalSquareArea || 0;
+                const linearTotal = surface.calculatedTotalLinearArea || 0;
+                
+                resultsDiv.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4>Square Footage Total</h4>
+                            <div style="font-size: 24px; font-weight: bold; color: #2563eb;">
+                                ${squareTotal.toFixed(2)} sq ft
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Linear Footage Total</h4>
+                            <div style="font-size: 24px; font-weight: bold; color: #059669;">
+                                ${linearTotal.toFixed(2)} linear ft
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background-color: #f0f9ff; border-radius: 4px;">
+                        <small><strong>Status:</strong> ${squareTotal > 0 || linearTotal > 0 ? 
+                            'Successfully tracking separate totals! ✅' : 
+                            'Add some measurements to see the totals in action.'}</small>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

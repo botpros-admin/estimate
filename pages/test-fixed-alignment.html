@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Toggle Alignment Test</title>
+    <link rel="stylesheet" href="../css/square-linear-toggle.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e5e7eb;
+        }
+        /* Original toggle styling */
+        .measurement-input-type-selector {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            margin-bottom: 0.75rem;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .measurement-input-type-selector .toggle-label-left,
+        .measurement-input-type-selector .toggle-label-right {
+            color: #6b7280;
+            transition: color 0.2s ease;
+            font-size: 13px;
+            user-select: none;
+        }
+        .measurement-input-type-selector .toggle-label-left.active,
+        .measurement-input-type-selector .toggle-label-right.active {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .measurement-input-type-selector .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            margin: 0 8px;
+        }
+        .measurement-input-type-selector .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .measurement-input-type-selector .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+        .measurement-input-type-selector .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .measurement-input-type-selector input:checked + .toggle-slider {
+            background-color: #3b82f6;
+        }
+        .measurement-input-type-selector input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        .alignment-guide {
+            border-left: 2px dashed #3b82f6;
+            padding-left: 10px;
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fixed Toggle Alignment</h1>
+    
+    <div class="test-section">
+        <h3>✅ FIXED: Both toggles now align to the left</h3>
+        <div class="alignment-guide">
+            <!-- Original Dimensions/Total Area Toggle -->
+            <div class="measurement-input-type-selector">
+                <span class="toggle-label-left active">Dimensions</span>
+                <label class="toggle-switch" for="toggle-original">
+                    <input type="checkbox" id="toggle-original" aria-label="Toggle between dimensions and total area input" role="switch" aria-checked="false">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label-right">Total Area</span>
+            </div>
+            
+            <!-- New Square/Linear Toggle -->
+            <div class="measurement-calculation-type-selector">
+                <span class="toggle-label-left active">Square</span>
+                <label class="toggle-switch" for="toggle-calc">
+                    <input type="checkbox" id="toggle-calc" aria-label="Toggle between square and linear calculation" role="switch" aria-checked="false">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label-right">Linear</span>
+            </div>
+        </div>
+        
+        <p><strong>Both toggles are now perfectly aligned to the left!</strong></p>
+        <p>✅ Removed background container</p>
+        <p>✅ Removed padding and border</p>
+        <p>✅ Added justify-content: flex-start</p>
+        <p>✅ Consistent gap spacing (8px)</p>
+    </div>
+
+    <script>
+        // Test functionality
+        const origToggle = document.getElementById('toggle-original');
+        const calcToggle = document.getElementById('toggle-calc');
+        const calcContainer = document.querySelector('.measurement-calculation-type-selector');
+        
+        origToggle.addEventListener('change', () => {
+            const isTotal = origToggle.checked;
+            calcContainer.style.display = isTotal ? 'none' : 'flex';
+            
+            // Update labels
+            const origLeft = origToggle.parentElement.parentElement.querySelector('.toggle-label-left');
+            const origRight = origToggle.parentElement.parentElement.querySelector('.toggle-label-right');
+            origLeft.classList.toggle('active', !isTotal);
+            origRight.classList.toggle('active', isTotal);
+        });
+        
+        calcToggle.addEventListener('change', () => {
+            const isLinear = calcToggle.checked;
+            const calcLeft = calcToggle.parentElement.parentElement.querySelector('.toggle-label-left');
+            const calcRight = calcToggle.parentElement.parentElement.querySelector('.toggle-label-right');
+            calcLeft.classList.toggle('active', !isLinear);
+            calcRight.classList.toggle('active', isLinear);
+        });
+    </script>
+</body>
+</html>

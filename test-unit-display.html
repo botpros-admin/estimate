@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Display Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-case { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .expected { color: green; font-weight: bold; }
+        .result { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Unit Display Logic Test</h1>
+    
+    <div class="test-case">
+        <h3>Test Case 1: Dimensions + Square</h3>
+        <div class="expected">Expected: "Sq Ft"</div>
+        <div class="result" id="result1"></div>
+    </div>
+    
+    <div class="test-case">
+        <h3>Test Case 2: Dimensions + Linear</h3>
+        <div class="expected">Expected: "Linear"</div>
+        <div class="result" id="result2"></div>
+    </div>
+    
+    <div class="test-case">
+        <h3>Test Case 3: Total Area + Square</h3>
+        <div class="expected">Expected: "Sq Ft"</div>
+        <div class="result" id="result3"></div>
+    </div>
+    
+    <div class="test-case">
+        <h3>Test Case 4: Total Area + Linear</h3>
+        <div class="expected">Expected: "Linear" ⭐ (This is the fix!)</div>
+        <div class="result" id="result4"></div>
+    </div>
+
+    <script>
+        // Test the unit determination logic
+        function getUnits(entryType, calculationType) {
+            let units = 'Sq Ft';
+            if ((entryType === 'lxh' && calculationType === 'linear') || 
+                (entryType === 'total' && calculationType === 'linear')) {
+                units = 'Linear';
+            }
+            return units;
+        }
+
+        // Run tests
+        document.getElementById('result1').textContent = 'Result: ' + getUnits('lxh', 'square');
+        document.getElementById('result2').textContent = 'Result: ' + getUnits('lxh', 'linear');
+        document.getElementById('result3').textContent = 'Result: ' + getUnits('total', 'square');
+        document.getElementById('result4').textContent = 'Result: ' + getUnits('total', 'linear');
+    </script>
+</body>
+</html>
