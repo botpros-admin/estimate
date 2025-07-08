@@ -113,9 +113,15 @@ class MultiSelect {
     // Create hidden inputs for form submission
     this.updateHiddenInputs();
     
-    // If no search, populate dropdown immediately
+    // If no search, prepare dropdown content but don't show it
     if (this.options.noSearch) {
+      const originalActive = this.dropdown.classList.contains('active');
       this.renderDropdown('');
+      // Remove active class if it wasn't already active
+      if (!originalActive) {
+        this.dropdown.classList.remove('active');
+        this.dropdown.classList.remove('dropdown-above');
+      }
     }
   }
   
