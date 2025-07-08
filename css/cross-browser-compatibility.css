@@ -358,7 +358,8 @@ button::-moz-focus-inner,
 
 /* Prevent text selection on buttons */
 button,
-.btn {
+.btn,
+.paint-product-card {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
