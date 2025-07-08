@@ -115,13 +115,7 @@ class MultiSelect {
     
     // If no search, prepare dropdown content but don't show it
     if (this.options.noSearch) {
-      const originalActive = this.dropdown.classList.contains('active');
-      this.renderDropdown('');
-      // Remove active class if it wasn't already active
-      if (!originalActive) {
-        this.dropdown.classList.remove('active');
-        this.dropdown.classList.remove('dropdown-above');
-      }
+      this.renderDropdown('', false);
     }
   }
   
@@ -154,7 +148,7 @@ class MultiSelect {
     }
   }
   
-  renderDropdown(filter = '') {
+  renderDropdown(filter = '', showDropdown = true) {
     const lowerFilter = filter.toLowerCase();
     
     // Filter items
@@ -192,7 +186,9 @@ class MultiSelect {
     });
     
     // Show dropdown temporarily to measure height
-    this.dropdown.classList.add('active');
+    if (showDropdown) {
+      this.dropdown.classList.add('active');
+    }
     this.dropdown.classList.remove('dropdown-above');
     
     // Calculate positioning

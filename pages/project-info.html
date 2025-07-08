@@ -390,6 +390,7 @@
           <div id="concrete-coating-container">
             <div id="concrete-coating-multiselect"
                  data-multi-select="true"
+                 data-no-search="true"
                  data-name="concreteCoatingTypes[]"
                  data-placeholder="Select concrete coating services..."
                  data-items='[{"NAME":"Epoxy Floors","VALUE":"epoxy_floors"},{"NAME":"Sealing","VALUE":"sealing"},{"NAME":"Decorative Overlays","VALUE":"decorative_overlays"},{"NAME":"Dye & Colorants","VALUE":"dye_colorants"},{"NAME":"Polishing","VALUE":"polishing"}]'
@@ -406,6 +407,7 @@
           <div id="wood-coating-container">
             <div id="wood-coating-multiselect"
                  data-multi-select="true"
+                 data-no-search="true"
                  data-name="woodCoatingTypes[]"
                  data-placeholder="Select wood treatment services..."
                  data-items='[{"NAME":"Stains","VALUE":"stains"},{"NAME":"Sealers","VALUE":"sealers"},{"NAME":"Protective Clearcoat","VALUE":"protective_clearcoat"}]'
@@ -1399,7 +1401,7 @@
       }
       
       // Initialize wood coating multi-select
-      const woodCoatingElement = document.getElementById('wood-coating-multiselect');
+      const woodCoatingElement = document.getElementById('wood-coating-multiselect');('wood-coating-multiselect');
       if (woodCoatingElement) {
         // Ensure woodCoatingTypes is an array
         if (!Array.isArray(formState.data.woodCoatingTypes)) {
