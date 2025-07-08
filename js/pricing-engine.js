@@ -129,7 +129,7 @@
           subtotal: selectionMaterialCost + selectionLaborCost
         });
       } else if (['sandblasting', 'pressure', 'chemical'].includes(selection.type)) {
-        // Abrasive cleaning services (labor only)
+        // Cleaning services (labor only)
         const cleaningArea = calculateTotalProjectArea() / 2; // Assume half the area
         const selectionLaborCost = calculateLaborCost(selection.type, cleaningArea);
         

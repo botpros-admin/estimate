@@ -116,6 +116,35 @@
   cursor: pointer;
 }
 
+/* Remove focus outline on search input */
+.main-ui-square-search-item:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Mobile-specific: remove tap highlight and focus styles */
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+  .main-ui-square-search-item {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  .main-ui-square-container,
+  .main-ui-square-container * {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Remove any focus styles on mobile */
+  .main-ui-square-container:focus,
+  .main-ui-square-container *:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
 /* Dropdown for multi-select */
 .main-ui-select-dropdown {
   position: absolute;

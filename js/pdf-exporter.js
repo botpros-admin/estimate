@@ -410,7 +410,7 @@ const PDFExporter = {
         }
         
         if (data.serviceTypes?.includes('abrasive')) {
-            items.push('Abrasive cleaning/sandblasting of designated surfaces');
+            items.push('Cleaning/sandblasting of designated surfaces');
             items.push('Proper containment and disposal of debris');
         }
         
