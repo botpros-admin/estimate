@@ -1,0 +1,125 @@
+/* Accordion Behavior Fixes - Ensure proper click handling and visual feedback */
+
+/* Ensure headers are properly styled for clicking */
+.mb-4.p-3.bg-gray-50.rounded-lg {
+  cursor: pointer !important;
+  user-select: none !important;
+  position: relative !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Ensure all child elements are non-interactive */
+.mb-4.p-3.bg-gray-50.rounded-lg * {
+  pointer-events: none !important;
+}
+
+/* Make the header itself fully clickable */
+.mb-4.p-3.bg-gray-50.rounded-lg {
+  pointer-events: auto !important;
+}
+
+/* Ensure service content transitions smoothly */
+.service-content {
+  transition: all 0.3s ease !important;
+  overflow: hidden !important;
+}
+
+/* When collapsed */
+.service-content[style*="display: none"] {
+  max-height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* When expanded */
+.service-content[style*="display: block"] {
+  max-height: none !important;
+  opacity: 1 !important;
+}
+
+/* Chevron icon transitions */
+.chevron-icon {
+  transition: transform 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+/* Ensure consistent header height */
+.mb-4.p-3.bg-gray-50.rounded-lg {
+  min-height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Fix for headers inside paint cards */
+.paint-card .mb-4.p-3.bg-gray-50.rounded-lg {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Ensure proper z-index for clickable headers */
+.mb-4.p-3.bg-gray-50.rounded-lg {
+  z-index: 1 !important;
+}
+
+/* Visual feedback on hover */
+.mb-4.p-3.bg-gray-50.rounded-lg:hover {
+  background-color: #e5e7eb !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Active state */
+.mb-4.p-3.bg-gray-50.rounded-lg:active {
+  background-color: #d1d5db !important;
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ensure headers in different card types work consistently */
+[data-service-id] .mb-4.p-3.bg-gray-50.rounded-lg,
+.paint-card .mb-4.p-3.bg-gray-50.rounded-lg {
+  cursor: pointer !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Fix for abrasive method cards */
+[data-service-id*="abrasive"] .mb-4.p-3.bg-gray-50.rounded-lg {
+  cursor: pointer !important;
+}
+
+/* Ensure long press doesn't interfere with click */
+.mb-4.p-3.bg-gray-50.rounded-lg.long-press-active {
+  opacity: 0.6 !important;
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px), (pointer: coarse) {
+  .mb-4.p-3.bg-gray-50.rounded-lg {
+    min-height: 64px !important;
+    padding: 20px !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Larger touch target */
+  .mb-4.p-3.bg-gray-50.rounded-lg::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
+    z-index: -1;
+  }
+}
+
+/* Fix paint card overflow issues that might prevent clicking */
+.paint-card {
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* Ensure card content doesn't overlap headers */
+.paint-card > * {
+  position: relative !important;
+}
