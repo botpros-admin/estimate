@@ -1,0 +1,107 @@
+/* TOGGLE ALIGNMENT FIX - Ensure both toggles are identical */
+
+/* Force both toggles to have identical layouts */
+.measurement-input-type-selector,
+.measurement-calculation-type-selector {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+/* Force both toggle switches to have identical dimensions */
+.measurement-input-type-selector .toggle-switch,
+.measurement-calculation-type-selector .toggle-switch {
+  position: relative !important;
+  display: inline-block !important;
+  width: 50px !important;
+  height: 24px !important;
+  min-width: 50px !important;
+  min-height: 24px !important;
+  max-width: 50px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Force both toggle sliders to be identical */
+.measurement-input-type-selector .toggle-slider,
+.measurement-calculation-type-selector .toggle-slider {
+  position: absolute !important;
+  cursor: pointer !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: #d1d5db !important;
+  transition: 0.3s !important;
+  border-radius: 20px !important;
+  width: 50px !important;
+  height: 24px !important;
+}
+
+/* Force both toggle sliders' ::before pseudo-elements to be identical */
+.measurement-input-type-selector .toggle-slider:before,
+.measurement-calculation-type-selector .toggle-slider:before {
+  position: absolute !important;
+  content: "" !important;
+  height: 20px !important;
+  width: 20px !important;
+  left: 2px !important;
+  bottom: 2px !important;
+  background-color: white !important;
+  transition: 0.3s !important;
+  border-radius: 50% !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Force both toggle labels to have identical styling */
+.measurement-input-type-selector .toggle-label-left,
+.measurement-input-type-selector .toggle-label-right,
+.measurement-calculation-type-selector .toggle-label-left,
+.measurement-calculation-type-selector .toggle-label-right {
+  color: #6b7280 !important;
+  transition: color 0.2s ease !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* Force both active toggle labels to have identical styling */
+.measurement-input-type-selector .toggle-label-left.active,
+.measurement-input-type-selector .toggle-label-right.active,
+.measurement-calculation-type-selector .toggle-label-left.active,
+.measurement-calculation-type-selector .toggle-label-right.active {
+  color: #3b82f6 !important;
+  font-weight: 600 !important;
+}
+
+/* Force both checked toggle sliders to be identical */
+.measurement-input-type-selector input:checked + .toggle-slider,
+.measurement-calculation-type-selector input:checked + .toggle-slider {
+  background-color: #3b82f6 !important;
+}
+
+/* Force both checked toggle sliders' ::before to be identical */
+.measurement-input-type-selector input:checked + .toggle-slider:before,
+.measurement-calculation-type-selector input:checked + .toggle-slider:before {
+  transform: translateX(26px) !important;
+}
+
+/* Hide input elements for both toggles */
+.measurement-input-type-selector .toggle-switch input,
+.measurement-calculation-type-selector .toggle-switch input {
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ensure measurement-calculation-type-selector shows properly when visible */
+.measurement-calculation-type-selector[style*="display: block"],
+.measurement-calculation-type-selector[style*="display: flex"] {
+  display: flex !important;
+}
